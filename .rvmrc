@@ -1,0 +1,3 @@
+rvm use 1.9.3
+rvm gemset create cheech_pool
+rvm gemset use cheech_pool
