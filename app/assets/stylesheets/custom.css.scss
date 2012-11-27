@@ -1,4 +1,5 @@
 @import "bootstrap";
+@import "bootstrap-responsive";
 
 /* mixins, variables, etc. */
 
@@ -18,15 +19,13 @@ html {
 }
 
 body {
-  padding-top: 60px;
+  @media (min-width: 980px) {
+    padding-top: 60px;
+  }
 }
 
 section {
   overflow: auto;
-}
-
-textarea {
-  resize: vertical;
 }
 
 .center {
@@ -66,19 +65,27 @@ p {
 
 /* header */
 
-#logo {
-  float: left;
-  margin-right: 10px;
-  font-size: 1.7em;
-  color: $lightPurple;
-  letter-spacing: -1px;
-  padding-top: 9px;
-  font-weight: bold;
-  line-height: 1;
+header {
 
-  &:hover {
-   color: $lightPurple;
-   text-decoration: none;
+  navbar {
+    margin:  0;
+    padding: 0;
+  }
+
+  #logo {
+    float: left;
+    margin-right: 10px;
+    font-size: 1.7em;
+    color: $lightPurple;
+    letter-spacing: -1px;
+    padding-top: 9px;
+    font-weight: bold;
+    line-height: 1;
+
+    &:hover {
+      color: $lightPurple;
+      text-decoration: none;
+    }
   }
 }
 
@@ -150,7 +157,7 @@ input, textarea, select, .uneditable-input {
 
 #error_explanation {
   color: #f00;
-  u1 {
+  ul {
     list-style: none;
     margin: 0 0 18px 0;
   }
