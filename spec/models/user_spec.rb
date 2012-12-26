@@ -138,5 +138,13 @@ describe User do
     it "should have the right smack in the right order" do
       @user.smacks.should == [newer_smack, older_smack]
     end
+
+    it "should destroy associated microposts" do
+      smacks = @user.smacks
+      @user.destroy
+      smacks.each do |smack|
+        Smack.find_by_id(smack.id).should be_nil
+      end
+    end
   end
 end

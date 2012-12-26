@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
                   :password, 
                   :password_confirmation
   has_secure_password
-  has_many :smacks
+  has_many :smacks, dependent: :destroy
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
