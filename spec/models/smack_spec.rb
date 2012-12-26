@@ -26,4 +26,20 @@ describe Smack do
       end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
     end
   end
+
+  describe "with no content" do
+    before { @smack.content = "" }
+    it { should_not be_valid }
+  end
+
+
+  describe "with blank content" do
+    before { @smack.content = " " }
+    it { should_not be_valid }
+  end
+
+  describe "with content that is too long" do
+    before { @smack.content = "a" * 141 }
+    it { should_not be_valid }
+  end
 end
