@@ -124,4 +124,19 @@ describe User do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
   end
+
+  describe "smack associations" do
+
+    before { @user.save }
+    let!(:older_smack) do
+      FactoryGirl.create(:smack, user: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_smack) do
+      FactoryGirl.create(:smack, user: @user, created_at: 1.hour.ago)
+    end
+
+    it "should have the right smack in the right order" do
+      @user.smacks.should == [newer_smack, older_smack]
+    end
+  end
 end
