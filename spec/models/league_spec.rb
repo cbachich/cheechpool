@@ -17,4 +17,16 @@ describe League do
   subject { @league }
 
   it { should respond_to(:name) }
+
+  it { should be_valid }
+
+  describe "when name is not present" do
+    before { @league.name = " " }
+    it { should_not be_valid }
+  end
+
+  describe "when name is too long" do
+    before { @league.name = "a" * 51 }
+    it { should_not be_valid }
+  end
 end
