@@ -1,12 +1,27 @@
-<div class="center hero-unit">
-  <h1>Welcome to CheechPool!</h1>
-  
-  <h2>
-    A pick-em pool website for Reality TV series.
-  </h2>
+<% if signed_in? %>
+  <div class="row">
+    <aside class="span4">
+      <section>
+        <%= render 'shared/user_info' %>
+      </section>
+      <section>
+        <%= render 'shared/smack_form' %>
+      </section>
+    </aside>
+  </div>
+<% else %>
+  <div class="center hero-unit">
+    <h1>Welcome to CheechPool!</h1>
+    
+    <h2>
+      A pick-em pool website for Reality TV series.
+    </h2>
 
-  <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
-</div>
+    <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+  </div>
 
-<%= link_to image_tag("http://www.onlyinatlanticcity.com/wp-content/uploads/2012/04/survivor.jpg", size: "200x10", alt: "Survivor"), 'http://www.cbs.com/survivor' %>
-<%= link_to image_tag("http://news.doddleme.com/wp-content/uploads/2012/09/big-brother-cbs-logo.jpg", size: "200x10", alt: "Big Brother"), 'http://www.cbs.com/big_brother' %>
+  <%= link_to image_tag("http://www.onlyinatlanticcity.com/wp-content/uploads/2012/04/survivor.jpg", size: "200x10", alt: "Survivor"), 'http://www.cbs.com/survivor' %>
+  <%= link_to image_tag("http://news.doddleme.com/wp-content/uploads/2012/09/big-brother-cbs-logo.jpg", size: "200x10", alt: "Big Brother"), 'http://www.cbs.com/big_brother' %>
+
+  </div>
+<% end %>
