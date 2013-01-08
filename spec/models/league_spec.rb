@@ -29,4 +29,14 @@ describe League do
     before { @league.name = "a" * 51 }
     it { should_not be_valid }
   end
+
+  describe "when name is already taken" do
+    before do
+      league_with_same_name = @league.dup
+      league_with_same_name.name = @league.name.upcase
+      league_with_same_name.save
+    end
+
+    it { should_not be_valid }
+  end
 end
