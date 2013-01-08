@@ -14,4 +14,8 @@ FactoryGirl.define do
     content "Lorem ipsum"
     user
   end
+
+  factory :league do
+    name "test league"
+  end
 end

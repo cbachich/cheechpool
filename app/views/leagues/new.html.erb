@@ -1,0 +1,15 @@
+<% provide(:title, 'Create League') %>
+<h1>Create League</h1>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@league) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+
+      <%= f.submit "Create new league", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>
