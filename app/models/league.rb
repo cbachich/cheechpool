@@ -10,8 +10,13 @@
 
 class League < ActiveRecord::Base
   attr_accessible :name
+  has_and_belongs_to_many :users
 
   before_save { |league| league.name = name.downcase }
 
   validates :name, presence:true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
+
+  def add_user(id)
+    LeagueUser.create(league_id: self.id, user_id: id)
+  end
 end
