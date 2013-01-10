@@ -2,6 +2,7 @@ class LeaguesController < ApplicationController
 
   def show
     @league = League.find(params[:id])
+    @smacks = @league.smacks.paginate(page: params[:page])
   end
 
   def new

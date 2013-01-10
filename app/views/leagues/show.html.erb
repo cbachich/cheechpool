@@ -3,3 +3,10 @@
 <% @league.users.each do |user| %>
   <li><%= user.name %></li>
 <% end %>
+<% if @league.smacks.any? %>
+  <h3>Smacks (<%= @league.smacks.count %>)</h3>
+  <ol class="smacks">
+    <%= render @smacks %>
+  </ol>
+  <%= will_paginate @smacks %>
+<% end %>
