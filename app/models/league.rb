@@ -17,7 +17,9 @@ class League < ActiveRecord::Base
 
   validates :name, presence:true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
 
-  def add_user(id)
-    LeagueUser.create(league_id: self.id, user_id: id)
+  def user_in_league(user)
+    if self.users.any?
+      self.users.exists?(user)
+    end
   end
 end

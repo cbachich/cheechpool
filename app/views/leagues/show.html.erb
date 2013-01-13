@@ -1,7 +1,8 @@
 <% provide(:title, @league.name) %>
 <h1><%= @league.name %></h1>
+<p><%= render 'join_league' %>
 <% @league.users.each do |user| %>
-  <li><%= user.name %></li>
+  <li><%= link_to user.name, user %></li>
 <% end %>
 <% if @league.smacks.any? %>
   <h3>Smacks (<%= @league.smacks.count %>)</h3>

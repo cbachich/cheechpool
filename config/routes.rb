@@ -8,6 +8,8 @@ CheechPool::Application.routes.draw do
 
   match '/signup',     to: 'users#new'
   match '/new_league', to: 'leagues#new'
+  match '/leagues/:id/add_user' => 'leagues#add_user', as: :join
+  match '/leagues/:id/remove_user' => 'leagues#remove_user', as: :quit
   match '/signin',     to: 'sessions#new'
   match '/signout',    to: 'sessions#destroy', via: :delete
   match '/help',       to: 'static_pages#help'
