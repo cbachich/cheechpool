@@ -28,4 +28,10 @@ class LeaguesController < ApplicationController
     LeagueUser.create(league_id: @league.id, user_id: current_user.id)
     redirect_to @league
   end
+
+  def remove_user
+    @league = League.find(params[:id])
+    LeagueUser.find_by_user_id_and_league_id(current_user.id, @league.id).destroy
+    redirect_to @league
+  end
 end
