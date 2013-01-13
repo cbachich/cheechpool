@@ -28,11 +28,20 @@ gem 'jquery-rails', '2.1.3'
 group :test do
   gem 'rspec-rails', '2.11.4'
   gem 'capybara', '1.1.2'
-  gem 'rb-inotify', '0.8.8'
-  gem 'libnotify', '0.8.0'
   gem 'guard-spork', '1.2.3'
   gem 'spork', '0.9.2'
   gem 'factory_girl_rails', '4.1.0'
+
+  # For watching the file system and notifications on...
+  #   linux
+  gem 'rb-inotify', '0.8.8', require: false
+  gem 'libnotify', '0.8.0', require: false
+  #   os x
+  gem 'rb-fsevent', '0.9.3', require: false
+  gem 'growl', '1.0.3', require: false
+  #   windows
+  gem 'wdm', '0.0.3', :platforms => [:mswin, :mingw], :require => false
+  gem 'rb-notifu', '0.0.4', require: false
 end
 
 group :production do
