@@ -17,4 +17,8 @@ class LeaguesController < ApplicationController
       render 'new'
     end
   end
+
+  def index
+    @leagues = League.paginate(page: params[:page])
+  end
 end
