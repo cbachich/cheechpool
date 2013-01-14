@@ -3,6 +3,7 @@ class LeaguesController < ApplicationController
   def show
     @league = League.find(params[:id])
     @smacks = @league.smacks.paginate(page: params[:page])
+    @league_user = LeagueUser.find_by_user_id_and_league_id(current_user.id, @league.id)
   end
 
   def new
@@ -13,6 +14,7 @@ class LeaguesController < ApplicationController
     @league = League.new(params[:league])
     if @league.save
       flash[:success] = "League created!"
+      LeagueUser.create(league_id: @league.id, user_id: current_user.id, admin: true)
       redirect_to @league
     else
       render 'new'
@@ -25,8 +27,12 @@ class LeaguesController < ApplicationController
 
   def add_user
     @league = League.find(params[:id])
-    LeagueUser.create(league_id: @league.id, user_id: current_user.id)
-    flash[:success] = "Joined this league!"
+    if LeagueUser.exists?(user_id: current_user.id, league_id: @league.id)
+      flash[:error] = "User already joined in this league!"
+    else
+      LeagueUser.create(league_id: @league.id, user_id: current_user.id)
+      flash[:success] = "Joined this league!"
+    end
     redirect_to @league
   end
 

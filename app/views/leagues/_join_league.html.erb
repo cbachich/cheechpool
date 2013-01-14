@@ -1,5 +1,9 @@
 <% if  @league.user_in_league(current_user) %>
-  <%= link_to "Leave this league!", quit_url(id: @league.id), confirm: "Are you sure?" %>
+  <% if @league_user.admin? %>
+    <p>Tired of the league? Delete it!</p>
+  <% else %>
+    <%= link_to "Leave this league!", quit_url(id: @league.id), confirm: "Are you sure?" %>
+  <% end %>
 <% else %>
   <%= link_to "Join this league!", join_url(id: @league.id) %>
 <% end %>
