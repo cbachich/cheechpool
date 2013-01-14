@@ -8,8 +8,28 @@
     </section>
   </aside>
   <div class="span8">
-    <% if @user.smacks.any? %>
-      <h3>Smacks (<%= @user.smacks.count %>)</h3>
+    <h1>Profile</h1>
+    <h3>Basic Information</h3>
+    <p>Email: <%= @user.email %></p>
+    <p>Joined on: <%= @user.created_at %></p>
+    <p>Admin:  
+      <% if @user.admin %>
+        Yes
+      <% else %>
+        No
+      <% end %>
+    </p>
+    <% if @leagues.any? %>
+      <h3>Leagues (<%= @leagues.count %>)</h3>
+      <ul class="leagues">
+        <% @leagues.each do |league| %>
+          <%= render "leagues/league", league: league %>
+        <% end %>
+      </ul>
+      <%= will_paginate @leagues %>
+    <% end %>
+    <% if @smacks.any? %>
+      <h3>Smacks (<%= @smacks.count %>)</h3>
       <ol class="smacks">
         <%= render @smacks %>
       </ol>

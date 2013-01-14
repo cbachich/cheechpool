@@ -5,6 +5,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @leagues = @user.leagues.paginate(page: params[:page])
     @smacks = @user.smacks.paginate(page: params[:page])
   end
 
