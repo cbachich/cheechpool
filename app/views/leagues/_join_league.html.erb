@@ -1,6 +1,9 @@
 <% if  @league.user_in_league(current_user) %>
   <% if @league_user.admin? %>
-    <p>Tired of the league? Delete it!</p>
+    <p>Tired of the league? 
+      <%= link_to "Delete it!", @league, method: :delete, 
+        confirm: "Are you sure?" %>
+    </p>
   <% else %>
     <%= link_to "Leave this league!", quit_url(id: @league.id), confirm: "Are you sure?" %>
   <% end %>

@@ -25,6 +25,12 @@ class LeaguesController < ApplicationController
     @leagues = League.paginate(page: params[:page])
   end
 
+  def destroy
+    League.find(params[:id]).destroy
+    flash[:success] = "League destroyed!"
+    redirect_to leagues_path
+  end
+
   def add_user
     @league = League.find(params[:id])
     if LeagueUser.exists?(user_id: current_user.id, league_id: @league.id)
