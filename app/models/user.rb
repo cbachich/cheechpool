@@ -16,7 +16,8 @@ class User < ActiveRecord::Base
   attr_accessible :email, 
                   :name, 
                   :password, 
-                  :password_confirmation
+                  :password_confirmation,
+                  :active_league_id
   has_secure_password
   has_many :smacks, dependent: :destroy
   has_and_belongs_to_many :leagues
@@ -37,14 +38,16 @@ class User < ActiveRecord::Base
 
   validates :password, 
             presence: true,
-            length: { minimum: 6 }
+            length: { minimum: 6 }, 
+            on: :create
 
   validates :password_confirmation,
-            presence: true
+            presence: true,
+            on: :create
 
   private
 
     def create_remember_token
-      self.remember_token = SecureRandom.urlsafe_base64
+      self.remember_token ||= SecureRandom.urlsafe_base64
     end
 end

@@ -13,7 +13,11 @@ describe "League pages" do
   end
 
   describe "create page" do
-    before { visit new_league_path }
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      sign_in user
+      visit new_league_path
+    end
 
     it { should have_selector('h1',    text: 'Create League') }
     it { should have_selector('title', text: 'Create League') }
