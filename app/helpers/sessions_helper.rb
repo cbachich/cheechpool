@@ -33,6 +33,10 @@ module SessionsHelper
     end
   end
 
+  def current_leagues
+    current_user.leagues
+  end
+
   def redirect_back_or(default)
     redirect_to(session[:return_to] || default)
     session.delete(:return_to)
