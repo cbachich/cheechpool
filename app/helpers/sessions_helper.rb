@@ -45,4 +45,14 @@ module SessionsHelper
   def store_location
     session[:return_to] = request.fullpath
   end
+
+  def active_league?
+    if signed_in?
+      !current_user.active_league_id.blank?
+    end
+  end
+
+  def active_league
+    League.find(current_user.active_league_id)
+  end
 end

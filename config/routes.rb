@@ -7,6 +7,7 @@ CheechPool::Application.routes.draw do
   root to: 'static_pages#home'
 
   match '/signup',     to: 'users#new'
+  match '/users/:id/set_active_league/:league_id' => 'users#set_active_league', as: :set_active
   match '/new_league', to: 'leagues#new'
   match '/leagues/:id/add_user' => 'leagues#add_user', as: :join
   match '/leagues/:id/remove_user' => 'leagues#remove_user', as: :quit

@@ -46,8 +46,13 @@ class LeaguesController < ApplicationController
 
   def remove_user
     @league = League.find(params[:id])
-    if LeagueUser.exists?(user_id: current_user.id, league_id: @league.id)
-      LeagueUser.find_by_user_id_and_league_id(current_user.id, @league.id).destroy
+    @user = current_user
+    if LeagueUser.exists?(user_id: @user.id, league_id: @league.id)
+      LeagueUser.find_by_user_id_and_league_id(@user.id, @league.id).destroy
+      if @user.active_league_id == @league.id
+        @user.active_league_id = nil
+        @user.save
+      end
       flash[:success] = "Quit this league!"
     else
       flash[:error] = "User is not in this league!"

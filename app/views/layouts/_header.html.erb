@@ -1,7 +1,12 @@
 <header class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <%= link_to "CheechPool", root_path, id: "logo" %>
+      
+      <% if active_league? %>
+        <%= link_to "CheechPool - #{active_league.name}", root_path, id: "logo" %>
+      <% else %>
+        <%= link_to "CheechPool", root_path, id: "logo" %>
+      <% end %>
       <nav>
         <ul class="nav pull-right">
           <% if signed_in? %>
@@ -18,7 +23,7 @@
               <ul class="dropdown-menu">
                 <% if current_leagues.any? %>
                   <% current_leagues.each do |league| %>
-                    <li><%= league.name %></li>
+                    <li><%= link_to league.name, set_active_url(id: current_user.id, league_id: league.id) %></li>
                   <% end %>
                 <% else %>
                   <li>No current leagues</li>

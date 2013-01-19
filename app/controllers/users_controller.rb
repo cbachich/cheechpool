@@ -47,6 +47,18 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
+  def set_active_league
+    @user = User.find(params[:id])
+    @user.active_league_id = params[:league_id]
+    if @user.save
+      @league_name = League.find(@user.active_league_id).name
+      flash[:success] = "Switched to #{@league_name}"
+    else
+      flash[:error] = "Unable to switch leagues!"
+    end
+    redirect_to(root_path)
+  end
+
   private
 
     def signed_in_user
