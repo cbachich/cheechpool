@@ -1,14 +1,6 @@
 <% if signed_in? %>
-  <div class="row">
-    <aside class="span4">
-      <section>
-        <%= render 'shared/user_info' %>
-      </section>
-      <section>
-        <%= render 'shared/smack_form' %>
-      </section>
-    </aside>
-  </div>
+  <h1>Smacks</h1>
+  <%= render 'shared/feed_items' %>
 <% else %>
   <div class="center hero-unit">
     <h1>Welcome to CheechPool!</h1>

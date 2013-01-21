@@ -1,0 +1,13 @@
+<% if league_smacks.any? %>
+  <% league_smacks.each do |smack| %>
+    <li id="<%= smack.id %>">
+      <span class="user">
+        <%= link_to smack.user.name, smack.user %>
+      </span>
+      <span class="content"><%= smack.content %></span>
+      <span class="timestamp">
+        Posted <%= time_ago_in_words(smack.created_at) %> ago.
+      </span>
+    </li>
+  <% end %>
+<% end %>

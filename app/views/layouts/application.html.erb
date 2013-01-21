@@ -13,6 +13,7 @@
     <% flash.each do |key, value| %>
       <%= content_tag(:div, value, class: "alert alert-#{key}") %>
     <% end %>
+    <%= render 'layouts/user_bar' %>
     <%= yield %>
     <%= render 'layouts/footer' %>
   </div>

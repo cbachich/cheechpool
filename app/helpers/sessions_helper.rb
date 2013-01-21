@@ -55,4 +55,12 @@ module SessionsHelper
   def active_league
     League.find(current_user.active_league_id)
   end
+
+  def current_smack
+    current_user.smacks.build if signed_in?
+  end
+
+  def league_smacks
+    active_league.smacks
+  end
 end
