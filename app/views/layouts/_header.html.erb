@@ -1,50 +1,13 @@
 <header class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      
-      <% if active_league? %>
-        <%= link_to "CheechPool - #{active_league.name}", root_path, id: "logo" %>
-      <% else %>
-        <%= link_to "CheechPool", root_path, id: "logo" %>
-      <% end %>
+      <%= render 'layouts/logo' %> 
       <nav>
         <ul class="nav pull-right">
           <% if signed_in? %>
             <li><%= link_to "Users", users_path %></li>
-            <li id="fat-menu" class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <% if current_leagues.any? %>
-                  Leagues (<%= current_leagues.count %>)
-                <% else %>
-                  Leagues
-                <% end %>
-                <b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <% if current_leagues.any? %>
-                  <% current_leagues.each do |league| %>
-                    <li><%= link_to league.name, set_active_url(id: current_user.id, league_id: league.id) %></li>
-                  <% end %>
-                <% else %>
-                  <li>No current leagues</li>
-                <% end %>
-                <li class="divider"></li>
-                <li><%= link_to "View All Leagues", leagues_path %></li>
-              </ul>
-            </li>
-            <li id="fat-menu" class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <%= current_user.name %><b class="caret"></b>
-              </a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Profile", current_user %></li>
-                <li><%= link_to "Settings", edit_user_path(current_user) %></li>
-                <li class="divider"></li>
-                <li>
-                  <%= link_to "Sign out", signout_path, method: "delete" %>
-                </li>
-              </ul>
-            </li>
+            <%= render 'layouts/leagues_dropdown' %>
+            <%= render 'layouts/user_dropdown' %>
           <% else   %>
             <li><%= link_to "Sign in", signin_path %></li>
           <% end %>

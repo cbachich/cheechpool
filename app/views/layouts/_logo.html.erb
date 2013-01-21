@@ -1,0 +1,5 @@
+<% if active_league? %>
+  <%= link_to "CheechPool - #{active_league.name}", root_path, id: "logo" %>
+<% else %>
+  <%= link_to "CheechPool", root_path, id: "logo" %>
+<% end %>
