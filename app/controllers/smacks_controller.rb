@@ -3,6 +3,7 @@ class SmacksController < ApplicationController
 
   def create
     @smack = current_user.smacks.build(params[:smack])
+    @smack.league_id = active_league.id
     if @smack.save
       flash[:success] = "Smack Talk posted!"
       redirect_to root_path
