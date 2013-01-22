@@ -13,6 +13,7 @@ FactoryGirl.define do
   factory :smack do
     content "Lorem ipsum"
     user
+    league
   end
 
   factory :league do
