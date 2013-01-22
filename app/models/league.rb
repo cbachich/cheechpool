@@ -13,8 +13,6 @@ class League < ActiveRecord::Base
   has_and_belongs_to_many :users
   has_many :smacks
 
-  before_save { |league| league.name = name.downcase }
-
   validates :name, presence:true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
 
   def user_in_league(user)
