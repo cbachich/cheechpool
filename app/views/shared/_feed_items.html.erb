@@ -1,4 +1,5 @@
 <% if league_smacks.any? %>
+  <h3>Smacks (<%= league_smacks.count %>)</h3>
   <ol class="smacks">
     <% league_smacks.each do |smack| %>
       <li id="<%= smack.id %>">
