@@ -4,12 +4,10 @@ class SmacksController < ApplicationController
   def create
     @smack = current_user.smacks.build(params[:smack])
     @smack.league_id = active_league.id
-    if @smack.save
-      flash[:success] = "Smack Talk posted!"
-      redirect_to root_path
-    else
-      render 'static_pages/home'
+    if !@smack.save
+      flash[:error] = "Smack couldn't be posted!"
     end
+    redirect_to root_path
   end
 
   def destroy
