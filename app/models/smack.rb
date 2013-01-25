@@ -7,6 +7,7 @@
 #  user_id    :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  league_id  :integer
 #
 
 class Smack < ActiveRecord::Base

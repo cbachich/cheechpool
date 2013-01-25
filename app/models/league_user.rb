@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: leagues_users
+#
+#  id         :integer          not null, primary key
+#  league_id  :integer
+#  user_id    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  admin      :boolean          default(FALSE)
+#
+
 class LeagueUser < ActiveRecord::Base
   set_table_name "leagues_users"
 
