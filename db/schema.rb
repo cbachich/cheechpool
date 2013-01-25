@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130125143346) do
+ActiveRecord::Schema.define(:version => 20130125151209) do
 
   create_table "leagues", :force => true do |t|
     t.string   "name"
@@ -34,11 +34,11 @@ ActiveRecord::Schema.define(:version => 20130125143346) do
   create_table "picks", :force => true do |t|
     t.integer  "user_id"
     t.integer  "league_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-    t.integer  "pickable_id"
-    t.string   "pickable_type"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.integer  "week"
+    t.integer  "value"
+    t.boolean  "picked"
   end
 
   create_table "smacks", :force => true do |t|

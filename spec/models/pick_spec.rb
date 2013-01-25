@@ -2,14 +2,14 @@
 #
 # Table name: picks
 #
-#  id            :integer          not null, primary key
-#  user_id       :integer
-#  league_id     :integer
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  pickable_id   :integer
-#  pickable_type :string(255)
-#  week          :integer
+#  id         :integer          not null, primary key
+#  user_id    :integer
+#  league_id  :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  week       :integer
+#  value      :integer
+#  picked     :boolean
 #
 
 require 'spec_helper'
