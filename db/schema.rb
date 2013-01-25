@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130124161935) do
+ActiveRecord::Schema.define(:version => 20130125143346) do
 
   create_table "leagues", :force => true do |t|
     t.string   "name"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(:version => 20130124161935) do
     t.datetime "updated_at",    :null => false
     t.integer  "pickable_id"
     t.string   "pickable_type"
+    t.integer  "week"
   end
 
   create_table "smacks", :force => true do |t|
