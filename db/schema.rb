@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130128052828) do
+ActiveRecord::Schema.define(:version => 20130128155145) do
 
   create_table "leagues", :force => true do |t|
     t.string   "name"
@@ -51,6 +51,16 @@ ActiveRecord::Schema.define(:version => 20130128052828) do
   end
 
   add_index "smacks", ["user_id", "created_at"], :name => "index_smacks_on_user_id_and_created_at"
+
+  create_table "team_picks", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "league_id"
+    t.integer  "week"
+    t.boolean  "picked"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "team_id"
+  end
 
   create_table "teams", :force => true do |t|
     t.string   "name"
