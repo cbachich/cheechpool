@@ -2,7 +2,10 @@
   <h3>Users (<%= @league.users.count %>)</h3>
   <ol class="users">
     <% @league.users.each do |user| %>
-      <li><%= link_to user.name, user %></li>
+      <li>
+        <%= gravatar_for user, size: 52 %>
+        <%= link_to user.name, user %>
+      </li>
     <% end %>
   </ol>
 <% end %>
