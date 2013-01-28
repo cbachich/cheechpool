@@ -10,10 +10,11 @@
 #  updated_at     :datetime         not null
 #  team_id        :integer
 #  league_id      :integer
+#  info_url       :string(255)
 #
 
 class Player < ActiveRecord::Base
-  attr_accessible :image_url, :name, :voted_out_week, :league_id
+  attr_accessible :info_url, :image_url, :name, :voted_out_week, :league_id
   belongs_to :teams
   belongs_to :leagues
 end

@@ -10,6 +10,7 @@
 #  updated_at     :datetime         not null
 #  team_id        :integer
 #  league_id      :integer
+#  info_url       :string(255)
 #
 
 require 'spec_helper'

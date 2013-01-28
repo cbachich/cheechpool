@@ -7,7 +7,7 @@
     <% @players.each do |player| %>
       <li>
         <span class="player_image">
-          <%= image_tag player.image_url, size: "68x85" %>
+          <%= link_to image_tag( player.image_url, size: "68x85" ), player.info_url %>
         </span>
         <span class="content">
           <%= player.name %>
