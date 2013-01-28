@@ -13,7 +13,7 @@
 #
 
 class Player < ActiveRecord::Base
-  attr_accessible :image_url, :name, :voted_out_week
+  attr_accessible :image_url, :name, :voted_out_week, :league_id
   belongs_to :teams
   belongs_to :leagues
 end
