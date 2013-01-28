@@ -13,4 +13,5 @@
 
 class Team < ActiveRecord::Base
   attr_accessible :disband_week, :image_url, :name, :start_week
+  has_many :players
 end
