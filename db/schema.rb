@@ -31,16 +31,6 @@ ActiveRecord::Schema.define(:version => 20130128004159) do
 
   add_index "leagues_users", ["league_id", "user_id"], :name => "index_leagues_users_on_league_id_and_user_id"
 
-  create_table "picks", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "league_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "week"
-    t.integer  "value"
-    t.boolean  "picked"
-  end
-
   create_table "players", :force => true do |t|
     t.string   "name"
     t.integer  "voted_out_week"
