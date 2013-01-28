@@ -2,7 +2,9 @@ class LeaguesController < ApplicationController
   
   def show
     @league = League.find(params[:id])
+    @players = @league.players
     @smacks = @league.smacks.paginate(page: params[:page])
+
     if @league.user_in_league(current_user)
       @league_user = LeagueUser.find_by_user_id_and_league_id(current_user.id, @league.id)
     end

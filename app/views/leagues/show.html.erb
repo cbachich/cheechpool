@@ -1,6 +1,24 @@
 <% provide(:title, @league.name) %>
 <h1><%= @league.name %></h1>
 <%= render 'join_league' %>
+<% if @players.any? %>
+  <h3>Survivors (<%= @players.count %>)</h3>
+  <ol class="players">
+    <% @players.each do |player| %>
+      <li>
+        <span class="player_image">
+          <%= image_tag player.image_url, size: "68x85" %>
+        </span>
+        <span class="content">
+          <%= player.name %>
+        </span>
+        <span class="timestamp">
+          <%= Team.find(player.team_id).name %>
+        </span>
+      </li>
+    <% end %> 
+  </ol>
+<% end %>
 <% if @league.users.any? %>
   <h3>Users (<%= @league.users.count %>)</h3>
   <ol class="users">
