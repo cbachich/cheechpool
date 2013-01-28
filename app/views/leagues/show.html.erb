@@ -1,36 +1,7 @@
 <% provide(:title, @league.name) %>
 <h1><%= @league.name %></h1>
 <%= render 'join_league' %>
-<% if @players.any? %>
-  <h3>Survivors (<%= @players.count %>)</h3>
-  <ol class="players">
-    <% @players.each do |player| %>
-      <li>
-        <span class="player_image">
-          <%= link_to image_tag( player.image_url, size: "68x85" ), player.info_url %>
-        </span>
-        <span class="content">
-          <%= player.name %>
-        </span>
-        <span class="timestamp">
-          <%= Team.find(player.team_id).name %>
-        </span>
-      </li>
-    <% end %> 
-  </ol>
-<% end %>
-<% if @league.users.any? %>
-  <h3>Users (<%= @league.users.count %>)</h3>
-  <ol class="users">
-    <% @league.users.each do |user| %>
-      <li><%= link_to user.name, user %></li>
-    <% end %>
-  </ol>
-<% end %>
-<% if @league.smacks.any? %>
-  <h3>Smacks (<%= @league.smacks.count %>)</h3>
-  <ol class="smacks">
-    <%= render @smacks %>
-  </ol>
-  <%= will_paginate @smacks %>
-<% end %>
+<%= render 'team_list' %>
+<%= render 'player_list' %>
+<%= render 'user_list' %>
+<%= render 'smack_list' %>

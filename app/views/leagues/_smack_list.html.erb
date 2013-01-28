@@ -1,0 +1,7 @@
+<% if @league.smacks.any? %>
+  <h3>Smacks (<%= @league.smacks.count %>)</h3>
+  <ol class="smacks">
+    <%= render @smacks %>
+  </ol>
+  <%= will_paginate @smacks %>
+<% end %>
