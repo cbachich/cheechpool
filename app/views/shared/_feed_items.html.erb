@@ -3,6 +3,7 @@
   <ol class="smacks">
     <% league_smacks.each do |smack| %>
       <li id="<%= smack.id %>">
+        <%= gravatar_for smack.user, size: 52 %>
         <span class="user">
           <%= link_to smack.user.name, smack.user %>
         </span>
