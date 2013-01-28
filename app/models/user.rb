@@ -21,7 +21,6 @@ class User < ActiveRecord::Base
                   :active_league_id
   has_secure_password
   has_many :smacks, dependent: :destroy
-  has_many :picks
   has_and_belongs_to_many :leagues
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
