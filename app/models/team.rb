@@ -14,6 +14,9 @@
 
 class Team < ActiveRecord::Base
   attr_accessible :disband_week, :image_url, :name, :start_week
+  
   has_many :players
+  has_many :team_wins
+
   belongs_to :leagues
 end

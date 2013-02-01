@@ -15,6 +15,16 @@ laura.voted_out_week = 1
 laura.save
 andrea.voted_out_week = 2
 andrea.save
+brandon.voted_out_week = 3
+brandon.save
+sher.player_wins.create(week: 3)
+
+################
+# Team Results #
+################
+
+gota.team_wins.create(week: 1)
+bikal.team_wins.create(week: 2)
 
 ################
 # Cheech Picks #
