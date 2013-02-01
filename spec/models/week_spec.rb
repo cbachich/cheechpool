@@ -1,17 +1,18 @@
 # == Schema Information
 #
-# Table name: team_picks
+# Table name: weeks
 #
 #  id         :integer          not null, primary key
-#  picked     :boolean
+#  league_id  :integer
+#  user_id    :integer
+#  score      :integer
+#  number     :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  team_id    :integer
-#  week_id    :integer
 #
 
 require 'spec_helper'
 
-describe TeamPick do
+describe Week do
   pending "add some examples to (or delete) #{__FILE__}"
 end

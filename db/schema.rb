@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130128161301) do
+ActiveRecord::Schema.define(:version => 20130201193351) do
 
   create_table "leagues", :force => true do |t|
     t.string   "name"
@@ -33,13 +33,11 @@ ActiveRecord::Schema.define(:version => 20130128161301) do
 
   create_table "player_picks", :force => true do |t|
     t.integer  "player_id"
-    t.integer  "user_id"
-    t.integer  "league_id"
-    t.integer  "week"
     t.integer  "value"
     t.boolean  "picked"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "week_id"
   end
 
   create_table "players", :force => true do |t|
@@ -64,13 +62,11 @@ ActiveRecord::Schema.define(:version => 20130128161301) do
   add_index "smacks", ["user_id", "created_at"], :name => "index_smacks_on_user_id_and_created_at"
 
   create_table "team_picks", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "league_id"
-    t.integer  "week"
     t.boolean  "picked"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "team_id"
+    t.integer  "week_id"
   end
 
   create_table "teams", :force => true do |t|
@@ -96,5 +92,14 @@ ActiveRecord::Schema.define(:version => 20130128161301) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
+
+  create_table "weeks", :force => true do |t|
+    t.integer  "league_id"
+    t.integer  "user_id"
+    t.integer  "score"
+    t.integer  "number"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
 end

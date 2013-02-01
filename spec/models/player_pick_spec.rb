@@ -4,13 +4,11 @@
 #
 #  id         :integer          not null, primary key
 #  player_id  :integer
-#  user_id    :integer
-#  league_id  :integer
-#  week       :integer
 #  value      :integer
 #  picked     :boolean
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  week_id    :integer
 #
 
 require 'spec_helper'
