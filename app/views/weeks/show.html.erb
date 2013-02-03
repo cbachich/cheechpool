@@ -27,5 +27,18 @@
       </tr>
       <%= render 'weeks/gen_rows', rows: @immunity_table, player: false %>
     <% end %>
+    <tr>
+      <td colspan="3">
+        <p style="text-align: center">Week Scores</p>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <% @score_table.each do |col| %>
+        <td>
+          <%= col %>
+        </td>
+      <% end %>
+    </tr>
   </tbody>
 </table>
