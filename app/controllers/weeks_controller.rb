@@ -84,7 +84,8 @@ class WeeksController < ApplicationController
 
       score_table = []
       @weeks.each do |week|
-        player_score = player_value(week,player)
+        player_value = player_value(week,player)
+        player_score = adjusted_value(player_value,week.player_picks.count)
         team_wins.each do |team_win|
           player_score += 10 if team_picked(week,team_win)
         end
@@ -96,6 +97,10 @@ class WeeksController < ApplicationController
 
     def player_value(week,player)
       week.player_picks.find_by_player_id(player.id).value
+    end
+
+    def adjusted_value(player_value,num_of_players)
+      ((num_of_players - player_value) * (20.0 / (num_of_players - 1))).round
     end
 
     def team_picked(week,team_win)
