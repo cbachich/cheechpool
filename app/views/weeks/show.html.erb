@@ -1,0 +1,34 @@
+<% provide(:title, "Scoreboard") %>
+<h1>Scoreboard - Week <%= @week_number %></h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <% @users.each do |user| %>
+        <th><%= user.name %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @player_table.each do |row| %>
+      <tr>
+        <td><%= Player.find(row[0]).name %></td>
+        <% row.drop(1).each do |col| %>
+          <td><%= col %></td>
+        <% end %>
+      </tr>
+    <% end %>
+    <tr>
+      <td colspan="3"><p style="text-align: center">Immunity</p></td>
+    </tr>
+    <% @immunity_table.each do |row| %>
+      <tr>
+        <td><%= Team.find(row[0]).name %></td>
+        <% row.drop(1).each do |col| %>
+          <td><%= col %></td>
+        <% end %>
+      </tr>
+    <% end %>
+    
+  </tbody>
+</table>
