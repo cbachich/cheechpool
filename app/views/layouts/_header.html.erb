@@ -5,6 +5,7 @@
       <nav>
         <ul class="nav pull-right">
           <% if signed_in? %>
+            <li><%= link_to "Scoreboard", '/leagues/1/weeks/1' %></li>
             <li><%= link_to "Users", users_path %></li>
             <%= render 'layouts/leagues_dropdown' %>
             <%= render 'layouts/user_dropdown' %>

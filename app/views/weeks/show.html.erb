@@ -1,5 +1,18 @@
 <% provide(:title, "Scoreboard") %>
-<h1>Scoreboard - Week <%= @week_number %></h1>
+<h1>
+  Scoreboard - Week <%= @week_number %>
+</h1>
+<p style="text-align: center">
+  <% if @week_number != 1 %>
+    <%= link_to "/leagues/#{active_league.id}/weeks/#{@week_number-1}" do %>
+      <i class="icon-search icon-step-backward"></i>
+    <% end %>
+  <% end %>
+  Navigate Weeks
+  <%= link_to "/leagues/#{active_league.id}/weeks/#{@week_number+1}" do %>
+    <i class="icon-search icon-step-forward"></i>
+  <% end %>
+</p>
 <table class="table table-striped">
   <thead>
     <tr>
