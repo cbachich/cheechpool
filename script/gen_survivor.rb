@@ -1,5 +1,10 @@
 league = League.create(name: "Survivor - Caramoan")
 
+Challenge.create(name: "Elimination")
+Challenge.create(name: "Reward")
+Challenge.create(name: "Immunity")
+Challenge.create(name: "Winner")
+
 bikal = league.teams.create(name: "Bikal", start_week: 1, image_url: "http://wwwimage.cbsstatic.com/base/files/styles/596xh/public/101917_d24774.jpg")
 
 gota = league.teams.create(name: "Gota", start_week: 1, image_url: "http://wwwimage.cbsstatic.com/base/files/styles/596xh/public/101917_d01507.jpg")
