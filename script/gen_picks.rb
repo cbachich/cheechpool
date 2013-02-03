@@ -27,8 +27,10 @@ sher.player_wins.create(week: 3)
 # Team Results #
 ################
 
-gota.team_wins.create(week: 1)
-bikal.team_wins.create(week: 2)
+gota.team_wins.create( week: 1, challenge_id: immunity.id)
+bikal.team_wins.create(week: 1, challenge_id: reward.id)
+bikal.team_wins.create(week: 2, challenge_id: immunity.id)
+gota.team_wins.create( week: 2, challenge_id: reward.id)
 
 ################
 # Cheech Picks #

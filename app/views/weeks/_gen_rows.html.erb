@@ -1,0 +1,14 @@
+<% rows.each do |row| %>
+  </tr>
+    <td>
+      <% if player %>
+        <%= Player.find(row[0]).name %>
+      <% else %>
+        <%= Team.find(row[0]).name %>
+      <% end %>
+    </td>
+    <% row.drop(1).each do |col| %>
+      <td><%= col %></td>
+    <% end %>
+  </tr>
+<% end %>

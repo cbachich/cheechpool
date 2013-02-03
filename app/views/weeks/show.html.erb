@@ -10,35 +10,22 @@
     </tr>
   </thead>
   <tbody>
-    <% @player_table.each do |row| %>
+    <%= render 'weeks/gen_rows', rows: @player_table, player: true %>
+    <% if !@reward_table.empty? %>
       <tr>
-        <td><%= Player.find(row[0]).name %></td>
-        <% row.drop(1).each do |col| %>
-          <td><%= col %></td>
-        <% end %>
+        <td colspan="3">
+          <p style="text-align: center">Reward</p>
+        </td>
       </tr>
+      <%= render 'weeks/gen_rows', rows: @reward_table, player: false%>
     <% end %>
-    <tr>
-      <td colspan="3"><p style="text-align: center">Reward</p></td>
-    </tr>
-    <% @reward_table.each do |row| %>
+    <% if !@immunity_table.empty? %>
       <tr>
-        <td><%= Team.find(row[0]).name %></td>
-        <% row.drop(1).each do |col| %>
-          <td><%= col %></td>
-        <% end %>
+        <td colspan="3">
+          <p style="text-align: center">Immunity</p>
+        </td>
       </tr>
-    <% end %>
-    <tr>
-      <td colspan="3"><p style="text-align: center">Immunity</p></td>
-    </tr>
-    <% @immunity_table.each do |row| %>
-      <tr>
-        <td><%= Team.find(row[0]).name %></td>
-        <% row.drop(1).each do |col| %>
-          <td><%= col %></td>
-        <% end %>
-      </tr>
+      <%= render 'weeks/gen_rows', rows: @immunity_table, player: false %>
     <% end %>
   </tbody>
 </table>
