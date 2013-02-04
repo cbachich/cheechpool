@@ -1,0 +1,37 @@
+<% provide(:title, @league.name) %>
+<h1><%= @league.name %> Setup</h1>
+
+<div class="row">
+  <h2>Select who will win the show:</h2>
+  <p>
+    If you want to do some investigating, click on each player picture to get navigated to their bio page. Make sure to navigate back to this page to make your selection or you won't be part of the league!
+  <p>
+  <%= form_tag join_path do %>
+    <% @players.each do |player| %>
+      <div class="span2" style="text-align: center">
+        <p>
+          <%= link_to image_tag( player.image_url, size: "68x85" ), player.info_url %>
+        </p>
+        <p>
+          <%= label_tag :player_selection, player.name %>
+        </p>
+        <p>
+          Team: <%= Team.find(player.team_id).name %>
+        </p>
+        <p>
+          <% if player == @players.first %>
+            <%= radio_button_tag :player_selection, player.id, checked: true %>
+          <% else %>
+            <%= radio_button_tag :player_selection, player.id %>
+          <% end %>
+        </p>
+      </div>
+    <% end %>
+    <div class="span8" style="text-align: center">
+      <%= submit_tag "Confirm", class: "btn btn-large btn-primary" %>
+    </div>
+  <% end %>
+  <!--<div class="span8" style="text-align: center">
+    <%= link_to "Join League", join_url(id: @league.id), class: "btn btn-large btn-primary" %>
+  </div>-->
+</div>

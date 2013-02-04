@@ -18,7 +18,7 @@ class UsersController < ApplicationController
     if @user.save
       sign_in @user
       flash[:success] = "Welcome to CheechPool!"
-      redirect_to @user
+      redirect_to leagues_path 
     else
       render 'new'
     end

@@ -12,6 +12,17 @@ reward = Challenge.find_by_name("Reward")
 immunity = Challenge.find_by_name("Immunity")
 winner = Challenge.find_by_name("Winner")
 
+#################
+# Signup Player #
+#################
+
+cheech_league = LeagueUser.find_by_league_id_and_user_id(survivor.id, cheech.id)
+cheech_league.player_id = laura.id
+cheech_league.save
+bob_league = LeagueUser.find_by_league_id_and_user_id(survivor.id, bob.id)
+bob_league.player_id = andrea.id
+bob_league.save
+
 ##################
 # Player Results #
 ##################

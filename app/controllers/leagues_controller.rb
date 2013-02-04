@@ -36,13 +36,21 @@ class LeaguesController < ApplicationController
     redirect_to leagues_path
   end
 
+  def add_user_setup
+    @league = League.find(params[:id])
+    @players = Player.find_all_by_league_id(@league.id)
+  end
+
   def add_user
     @league = League.find(params[:id])
     if LeagueUser.exists?(user_id: current_user.id, league_id: @league.id)
       flash[:error] = "User already joined in this league!"
     else
-      join_league(@league, current_user, false)
-      flash[:success] = "Joined this league!"
+      player = Player.find(params[:player_selection])
+      league_user = join_league(@league, current_user, false)
+      league_user.player_id = player.id
+      league_user.save
+      flash[:success] = "Joined this league with #{player.name}!"
     end
     redirect_to @league
   end
@@ -66,8 +74,8 @@ class LeaguesController < ApplicationController
   private
 
     def join_league(league,user,admin)
-      LeagueUser.create(league_id: league.id, user_id: user.id, admin: admin)
       user.active_league_id = league.id
       user.save
+      LeagueUser.create(league_id: league.id, user_id: user.id, admin: admin)
     end
 end
