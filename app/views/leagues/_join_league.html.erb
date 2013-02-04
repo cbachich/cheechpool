@@ -1,12 +1,14 @@
-<% if  @league.user_in_league(current_user) %>
-  <% if @league_user.admin? %>
-    <p>Tired of the league? 
-      <%= link_to "Delete it!", @league, class: "btn btn-large btn-primary", method: :delete, 
-        confirm: "Are you sure?" %>
-    </p>
+<div style="text-align: center">
+  <% if  @league.user_in_league(current_user) %>
+    <% if @league_user.admin? %>
+      <p>Tired of the league? 
+        <%= link_to "Delete it!", @league, class: "btn btn-large btn-primary", method: :delete, 
+          confirm: "Are you sure?" %>
+      </p>
+    <% else %>
+      <%= link_to "Leave this league!", quit_url(id: @league.id), class: "btn btn-large btn-primary", confirm: "Are you sure?" %>
+    <% end %>
   <% else %>
-    <%= link_to "Leave this league!", quit_url(id: @league.id), class: "btn btn-large btn-primary", confirm: "Are you sure?" %>
+    <%= link_to "Join this league!", join_setup_url(id: @league.id), class: "btn btn-large btn-primary" %>
   <% end %>
-<% else %>
-  <%= link_to "Join this league!", join_setup_url(id: @league.id), class: "btn btn-large btn-primary" %>
-<% end %>
+</div>

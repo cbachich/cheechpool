@@ -1,18 +1,21 @@
-<% if @players.any? %>
-  <h3>Survivors (<%= @players.count %>)</h3>
-  <ol class="users">
-    <% @players.each do |player| %>
-      <li>
-        <span class="icon_image">
-          <%= link_to image_tag( player.image_url, size: "68x85" ), player.info_url %>
-        </span>
-        <span class="content">
-          <%= player.name %>
-        </span>
-        <span class="timestamp">
-          <%= Team.find(player.team_id).name %>
-        </span>
-      </li>
-    <% end %> 
-  </ol>
+<% if @teams.any? %>
+  <% @teams.each do |team| %>
+    <h3><%= team.name %> (<%= team.players.count %>)</h3>
+    <div class="row">
+      <% team.players.each do |player| %>
+        <div class="span2" style="margin-bottom: 10px">
+          <div>
+            <%= player.name %>
+          </div>
+          <% if player.voted_out_week.nil? %>
+            <div>
+          <% else %>
+            <div style="opacity: 0.4">
+          <% end %>
+            <%= link_to image_tag( player.image_url, size: "68x85" ), player.info_url %>
+          </div>
+        </div>
+      <% end %> 
+    </div>
+  <% end %>
 <% end %>

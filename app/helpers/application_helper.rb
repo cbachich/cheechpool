@@ -9,4 +9,9 @@ module ApplicationHelper
       "#{page_title} | #{base_title}"
     end
   end
+
+  def get_league_user_player(user,league)
+    player_id = LeagueUser.find_by_user_id_and_league_id(user.id,league.id).player_id
+    Player.find(player_id)
+  end
 end

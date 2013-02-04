@@ -1,11 +1,22 @@
 <% if @league.users.any? %>
   <h3>Users (<%= @league.users.count %>)</h3>
-  <ol class="users">
+  <div class="row">
     <% @league.users.each do |user| %>
-      <li>
-        <%= gravatar_for user, size: 52 %>
-        <%= link_to user.name, user %>
-      </li>
+      <div class="span2" style="margin-bottom: 10px">
+        <div style="text-align: center">
+          <%= link_to user.name, user %>
+        </div>
+        <div style="margin-left: 25px">
+          <%= gravatar_for user, size: 52 %>
+          <% if get_league_user_player(user,@league).voted_out_week.nil? %>
+            <div>
+          <% else %>
+            <div style="opacity: 0.4">
+          <% end %>
+            <%= link_to image_tag( get_league_user_player(user,@league).image_url, size: "52x52" ), get_league_user_player(user,@league).info_url %>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </ol>
+  </div>
 <% end %>
