@@ -1,9 +1,15 @@
 class WeeksController < ApplicationController
   def show
-    league = League.find(params[:league_id])
+    @league = League.find(params[:league_id])
     @week_number = params[:week_number].to_i
-    @weeks = league.weeks.find_all_by_number(@week_number)
-    @users = league.users
+
+    if @league.current_week < @week_number
+      redirect_to "/leagues/#{@league.id}/weeks/#{@league.current_week}"
+      return
+    end
+
+    @weeks = @league.weeks.find_all_by_number(@week_number)
+    @users = @league.users
     @player_table = create_player_table
     @reward_table = create_team_table("Reward")
     @immunity_table = create_team_table("Immunity")
@@ -13,14 +19,20 @@ class WeeksController < ApplicationController
   private
 
     def create_player_table
-      # Add all of the players to the initial column
+      players = get_this_weeks_players
+
       player_table = []
-      @weeks[0].player_picks.each do |player_pick|
-        if voted_out(player_pick.player_id)
-          player_table << [true, player_pick.player_id]
+      players.each_with_index do |player, i|
+
+        # Add the player to the initial column and
+        # add a flag to indicate if the player was voted
+        # out that week
+        if player.voted_out_week == @week_number
+          player_table << [true, player.id]
         else
-          player_table << [false, player_pick.player_id]
+          player_table << [false, player.id]
         end
+
       end
  
       # Add player picks to the table
@@ -41,9 +53,12 @@ class WeeksController < ApplicationController
       player_table
     end
 
-    def voted_out(player_id)
-      player = Player.find(player_id)
-      player.voted_out_week == @week_number
+    def get_this_weeks_players
+      players = []
+      @league.players.each do |player|
+        players << player if player.voted_out_week.nil? || (player.voted_out_week > @week_number) 
+      end
+      players
     end
 
     def create_team_table(challenge)
