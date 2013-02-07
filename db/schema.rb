@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130206145543) do
+ActiveRecord::Schema.define(:version => 20130206162415) do
 
   create_table "challenges", :force => true do |t|
     t.string   "name"
@@ -45,8 +45,10 @@ ActiveRecord::Schema.define(:version => 20130206145543) do
     t.boolean  "picked"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
-    t.integer  "week_id"
     t.integer  "challenge_id"
+    t.integer  "user_id"
+    t.integer  "league_id"
+    t.integer  "week"
   end
 
   create_table "player_wins", :force => true do |t|
@@ -83,8 +85,10 @@ ActiveRecord::Schema.define(:version => 20130206145543) do
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.integer  "team_id"
-    t.integer  "week_id"
     t.integer  "challenge_id"
+    t.integer  "user_id"
+    t.integer  "league_id"
+    t.integer  "week"
   end
 
   create_table "team_wins", :force => true do |t|
@@ -118,14 +122,5 @@ ActiveRecord::Schema.define(:version => 20130206145543) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["remember_token"], :name => "index_users_on_remember_token"
-
-  create_table "weeks", :force => true do |t|
-    t.integer  "league_id"
-    t.integer  "user_id"
-    t.integer  "score"
-    t.integer  "number"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
 
 end

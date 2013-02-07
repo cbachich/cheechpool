@@ -2,10 +2,11 @@
 #
 # Table name: leagues
 #
-#  id         :integer          not null, primary key
-#  name       :string(255)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id           :integer          not null, primary key
+#  name         :string(255)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  current_week :integer          default(1)
 #
 
 class League < ActiveRecord::Base
@@ -14,7 +15,8 @@ class League < ActiveRecord::Base
   has_many :smacks
   has_many :players
   has_many :teams
-  has_many :weeks
+  has_many :player_picks
+  has_many :team_picks
 
   validates :name, presence:true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
 

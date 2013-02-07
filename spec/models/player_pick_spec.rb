@@ -8,8 +8,10 @@
 #  picked       :boolean
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  week_id      :integer
 #  challenge_id :integer
+#  user_id      :integer
+#  league_id    :integer
+#  week         :integer
 #
 
 require 'spec_helper'

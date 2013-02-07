@@ -2,10 +2,11 @@
 #
 # Table name: leagues
 #
-#  id         :integer          not null, primary key
-#  name       :string(255)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id           :integer          not null, primary key
+#  name         :string(255)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  current_week :integer          default(1)
 #
 
 require 'spec_helper'

@@ -8,6 +8,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  admin      :boolean          default(FALSE)
+#  player_id  :integer
 #
 
 class LeagueUser < ActiveRecord::Base
