@@ -25,6 +25,6 @@ cheech_smack = cheech.smacks.create(content: "Just kidding!")
 cheech_smack.league_id = survivor.id
 cheech_smack.save
 
-cheech_smack = cheech.smacks.create(content: "Or am I? <_<", league_id: )
+cheech_smack = cheech.smacks.create(content: "Or am I? <_<")
 cheech_smack.league_id = survivor.id
 cheech_smack.save
