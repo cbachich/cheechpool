@@ -13,15 +13,15 @@ cheech_league.save
 cheech.active_league_id = survivor.id
 cheech.save
 
-cheech_smack = cheech.smacks.create(content: "Welcome to CheechPool hosting this year's Survivor - Caramoan!", league_id: )
+cheech_smack = cheech.smacks.create(content: "Welcome to CheechPool hosting this year's Survivor - Caramoan!")
 cheech_smack.league_id = survivor.id
 cheech_smack.save
 
-cheech_smack = cheech.smacks.create(content: "Make sure to post some smack and here, but about each other and not the website! I'll ban anyone saying anything bad about CheechPool!", league_id: )
+cheech_smack = cheech.smacks.create(content: "Make sure to post some smack and here, but about each other and not the website! I'll ban anyone saying anything bad about CheechPool!")
 cheech_smack.league_id = survivor.id
 cheech_smack.save
 
-cheech_smack = cheech.smacks.create(content: "Just kidding!", league_id: )
+cheech_smack = cheech.smacks.create(content: "Just kidding!")
 cheech_smack.league_id = survivor.id
 cheech_smack.save
 
