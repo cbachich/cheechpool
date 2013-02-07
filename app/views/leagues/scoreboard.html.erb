@@ -1,0 +1,28 @@
+<% provide(:title, "Scoreboard") %>
+<h1>
+  Scoreboard - Week <%= @week_number %>
+</h1>
+<p style="text-align: center">
+  <% if @week_number != 1 %>
+    <%= link_to "/leagues/#{active_league.id}/week/#{@week_number-1}" do %>
+      <i class="icon-search icon-step-backward"></i>
+    <% end %>
+  <% end %>
+  Navigate Weeks
+  <%= link_to "/leagues/#{active_league.id}/week/#{@week_number+1}" do %>
+    <i class="icon-search icon-step-forward"></i>
+  <% end %>
+</p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <% @users.each do |user| %>
+        <th><%= user.name %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render 'leagues/gen_rows', rows: @player_table, player: true %>
+  </tbody>
+</table>

@@ -70,11 +70,63 @@ class LeaguesController < ApplicationController
     redirect_to @league
   end
 
+  def scoreboard
+    @league = League.find(params[:league_id])
+    @week_number = params[:week_number].to_i
+
+    if @league.current_week < @week_number
+      redirect_to "/leagues/#{@league.id}/week/#{@league.current_week}"
+      return
+    end
+
+    @users = @league.users
+    @player_table = create_player_table
+    #@reward_table = create_team_table("Reward")
+    #@immunity_table = create_team_table("Immunity")
+    #@score_table = create_score_table
+  end
+
   private
 
     def join_league(league,user,admin)
       user.active_league_id = league.id
       user.save
       LeagueUser.create(league_id: league.id, user_id: user.id, admin: admin)
+    end
+
+    def create_player_table
+      players = get_this_weeks_players
+
+      player_table = []
+      players.each_with_index do |player, i|
+
+        # Add the player to the initial column and
+        # add a flag to indicate if the player was voted
+        # out that week
+        if player.voted_out_week == @week_number
+          player_table << [true, player.id]
+        else
+          player_table << [false, player.id]
+        end
+
+        @users.each do |user|
+          player_pick = user.player_picks.find_by_league_id_and_player_id_and_week_and_picked(@league.id, player.id, @week_number,nil)
+          if player_pick.nil?
+            player_table[i] << ""
+          else
+            player_table[i] << player_pick.value
+          end
+        end
+      end
+
+      player_table
+    end
+
+    def get_this_weeks_players
+      players = []
+      @league.players.each do |player|
+        players << player if player.voted_out_week.nil? || (player.voted_out_week >= @week_number) 
+      end
+      players
     end
 end

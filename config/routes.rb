@@ -1,7 +1,6 @@
 CheechPool::Application.routes.draw do
   resources :users
   resources :leagues
-  resources :weeks
   resources :sessions, only: [:new, :create, :destroy]
   resources :smacks,   only: [:create, :destroy]
 
@@ -13,12 +12,12 @@ CheechPool::Application.routes.draw do
   match '/leagues/:id/add_user_setup' => 'leagues#add_user_setup', as: :join_setup
   match '/leagues/:id/add_user' => 'leagues#add_user', as: :join
   match '/leagues/:id/remove_user' => 'leagues#remove_user', as: :quit
+  match '/leagues/:league_id/week/:week_number' => 'leagues#scoreboard', as: :scoreboard
   match '/signin',     to: 'sessions#new'
   match '/signout',    to: 'sessions#destroy', via: :delete
   match '/help',       to: 'static_pages#help'
   match '/about',      to: 'static_pages#about'
   match '/contact',    to: 'static_pages#contact'
-  match '/leagues/:league_id/weeks/:week_number' => 'weeks#show', as: :scoreboard
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
