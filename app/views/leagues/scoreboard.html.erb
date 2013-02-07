@@ -23,6 +23,23 @@
     </tr>
   </thead>
   <tbody>
-    <%= render 'leagues/gen_rows', rows: @player_table, player: true %>
+    <% @challenges.each_with_index do |challenge, i| %>
+      <% if challenge.name == "Elimination" %>
+        <%= render 'leagues/gen_rows', rows: @tables[i], player: true %>
+      <% else %>
+        <tr>
+          <td>
+            <%= @tables[i][0] %>
+          </td>
+          <% @tables[i].drop(1).each do |content| %>
+            <td>
+              <% if content != "" %>
+                <%= image_tag content, size: "68x68" %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% end %>
   </tbody>
 </table>

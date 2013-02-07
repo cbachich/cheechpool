@@ -80,7 +80,15 @@ class LeaguesController < ApplicationController
     end
 
     @users = @league.users
-    @player_table = create_player_table
+    @challenges = @league.picksheets.find_by_week(@week_number).challenges
+    @tables = []
+    @challenges.each do |challenge|
+      if challenge.name == "Elimination"
+        @tables << create_player_table
+      else
+        @tables << create_picked_table(challenge)
+      end
+    end
     #@reward_table = create_team_table("Reward")
     #@immunity_table = create_team_table("Immunity")
     #@score_table = create_score_table
@@ -120,6 +128,20 @@ class LeaguesController < ApplicationController
       end
 
       player_table
+    end
+
+    def create_picked_table(challenge)
+      picked_table = [challenge.name]
+      @users.each do |user|
+        team_pick = user.team_picks.find_by_league_id_and_week_and_picked_and_challenge_id(@league.id, @week_number, true, challenge.id)
+        if team_pick.nil?
+          picked_table << ""
+        else
+          picked_table << Team.find(team_pick.team_id).image_url
+        end
+      end
+
+      picked_table
     end
 
     def get_this_weeks_players

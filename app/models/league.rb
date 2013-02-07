@@ -17,6 +17,7 @@ class League < ActiveRecord::Base
   has_many :teams
   has_many :player_picks
   has_many :team_picks
+  has_many :picksheets
 
   validates :name, presence:true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
 
