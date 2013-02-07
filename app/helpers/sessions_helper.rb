@@ -56,6 +56,10 @@ module SessionsHelper
     League.find(current_user.active_league_id)
   end
 
+  def active_week
+    active_league.current_week
+  end
+
   def current_smack
     current_user.smacks.build if signed_in?
   end

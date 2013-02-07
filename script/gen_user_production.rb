@@ -17,7 +17,7 @@ cheech_smack = cheech.smacks.create(content: "Welcome to CheechPool hosting this
 cheech_smack.league_id = survivor.id
 cheech_smack.save
 
-cheech_smack = cheech.smacks.create(content: "Make sure to post some smack and here, but about each other and not the website! I'll ban anyone saying anything bad about CheechPool!", league_id: )
+cheech_smack = cheech.smacks.create(content: "Make sure to post some smack on here... about each other... not the website or me! I'll ban anyone saying anything bad about CheechPool!", league_id: )
 cheech_smack.league_id = survivor.id
 cheech_smack.save
 
