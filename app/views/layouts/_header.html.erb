@@ -1,24 +1,22 @@
-<header class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
+<header>
+  <div class="navbar">
+    <div class="navbar-inner">
       <%= render 'layouts/logo' %> 
-      <nav>
-        <ul class="nav pull-right">
-          <% if signed_in? %>
-            <% if active_league? %>
-              <li><%= link_to "Picksheet", picksheet_path %></li>
-              <% if active_week >= 1 %>
-                <li><%= link_to "Scoreboard", '/leagues/1/week/1' %></li>
-              <% end %>
+      <ul class="nav pull-right">
+        <% if signed_in? %>
+          <% if active_league? %>
+            <li><%= link_to "Picksheet", picksheet_path %></li>
+            <% if active_week >= 1 %>
+              <li><%= link_to "Scoreboard", '/leagues/1/week/1' %></li>
             <% end %>
-            <li><%= link_to "Users", users_path %></li>
-            <%= render 'layouts/leagues_dropdown' %>
-            <%= render 'layouts/user_dropdown' %>
-          <% else   %>
-            <li><%= link_to "Sign in", signin_path %></li>
           <% end %>
-        </ul>
-      </nav>
+          <li><%= link_to "Users", users_path %></li>
+          <%= render 'layouts/leagues_dropdown' %>
+          <%= render 'layouts/user_dropdown' %>
+        <% else   %>
+          <li><%= link_to "Sign in", signin_path %></li>
+        <% end %>
+      </ul>
     </div>
   </div>
 </header>

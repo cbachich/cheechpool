@@ -12,11 +12,6 @@ html {
   overflow-y: scroll;
 }
 
-body {
-  @media (min-width: 980px) {
-    padding-top: 60px;
-  }
-}
 
 section {
   overflow: auto;
@@ -64,26 +59,15 @@ p {
 /* header */
 
 header {
-
-  navbar {
-    margin:  0;
-    padding: 0;
+  div {
+    padding: 10px 0px;
   }
 
-  #logo {
-    float: left;
-    margin-right: 10px;
+  h1 {
     font-size: 1.7em;
-    color: $lightPurple;
+    font-weight: 400;
+    margin-bottom: 5px;
     letter-spacing: -1px;
-    padding-top: 9px;
-    font-weight: bold;
-    line-height: 1;
-
-    &:hover {
-      color: $lightPurple;
-      text-decoration: none;
-    }
   }
 }
 
