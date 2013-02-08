@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
 
   validates :name,  
             presence: true, 
-            length: { maximum: 50 }
+            length: { maximum: 15 }
 
   validates :email, 
             presence: true, 

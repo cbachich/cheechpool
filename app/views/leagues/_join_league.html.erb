@@ -9,6 +9,6 @@
       <%= link_to "Leave this league!", quit_url(id: @league.id), class: "btn btn-large btn-primary", confirm: "Are you sure?" %>
     <% end %>
   <% else %>
-    <%= link_to "Join this league!", join_setup_url(id: @league.id), class: "btn btn-large btn-primary" %>
+    <%= link_to "Join this league!", join_url(id: @league.id), class: "btn btn-large btn-primary" %>
   <% end %>
 </div>

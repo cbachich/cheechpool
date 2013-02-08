@@ -1,15 +1,14 @@
-<% provide(:title, @league.name) %>
-<h1><%= @league.name %> Setup</h1>
+<h1>Preshow Picksheet</h1>
 <h2>Select who will win the show:</h2>
 <p>
-    If you want to do some investigating, click on each player picture to get navigated to their bio page. Make sure to navigate back to this page to make your selection or you won't be part of the league!
+    If you want to do some investigating, click on each player picture to get navigated to their bio page. Make sure to navigate back to this page to make your selection!
 </p>
 <div class="row-fluid">
-  <%= form_tag join_path do %>
-    <% @players.each do |player| %>
+  <%= form_tag make_picks_path do %>
+    <% players.each do |player| %>
       <div class="span2" style="text-align: center; border: solid 1px; margin-top: 10px">
         <div style="margin-top: 10px; margin-bottom: 10px">
-          <% if player == @players.first %>
+          <% if active_league_user.player_id == player.id %>
             <%= radio_button_tag :player_selection, player.id, checked: true %>
           <% else %>
             <%= radio_button_tag :player_selection, player.id %>
@@ -29,7 +28,7 @@
       </div>
     <% end %>
     <div class="span12" style="text-align: center; margin-top: 10px">
-      <%= submit_tag "Select Survivor and Join League", class: "btn btn-large btn-primary" %>
+      <%= submit_tag "Select Survivor", class: "btn btn-large btn-primary" %>
     </div>
   <% end %>
 </div>

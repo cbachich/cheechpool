@@ -1,0 +1,4 @@
+<% provide(:title, "Picksheet") %>
+<% if active_week == 0 %>
+  <%= render 'leagues/preshow', players: @players %>
+<% end %>

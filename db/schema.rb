@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130207072721) do
+ActiveRecord::Schema.define(:version => 20130207155622) do
 
   create_table "challenges", :force => true do |t|
     t.string   "name"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(:version => 20130207072721) do
     t.string   "name"
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
-    t.integer  "current_week", :default => 1
+    t.integer  "current_week", :default => 0
   end
 
   add_index "leagues", ["name"], :name => "index_leagues_on_name", :unique => true

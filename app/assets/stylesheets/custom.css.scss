@@ -129,7 +129,6 @@ aside {
       padding-top: 0;
     }
     span {
-      display: block;
       margin-bottom: 3px;
       line-height: 1;
     }
@@ -138,6 +137,9 @@ aside {
       text-align: left;
       letter-spacing: -1px;
       margin-bottom: 3px;
+    }
+    textarea {
+      width: 90%;
     }
   }
 }
