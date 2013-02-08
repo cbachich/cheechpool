@@ -56,6 +56,10 @@ module SessionsHelper
     League.find(current_user.active_league_id)
   end
 
+  def active_league_user
+    LeagueUser.find_by_league_id_and_user_id(active_league.id, current_user.id)
+  end
+
   def active_week
     active_league.current_week
   end

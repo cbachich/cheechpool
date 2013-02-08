@@ -35,21 +35,13 @@ class LeaguesController < ApplicationController
     redirect_to leagues_path
   end
 
-  def add_user_setup
-    @league = League.find(params[:id])
-    @players = Player.find_all_by_league_id(@league.id)
-  end
-
   def add_user
     @league = League.find(params[:id])
     if LeagueUser.exists?(user_id: current_user.id, league_id: @league.id)
       flash[:error] = "User already joined in this league!"
     else
-      player = Player.find(params[:player_selection])
-      league_user = join_league(@league, current_user, false)
-      league_user.player_id = player.id
-      league_user.save
-      flash[:success] = "Joined this league with #{player.name}!"
+      join_league(@league, current_user, false)
+      flash[:success] = "Joined this league!"
     end
     redirect_to @league
   end
@@ -68,6 +60,22 @@ class LeaguesController < ApplicationController
       flash[:error] = "User is not in this league!"
     end
     redirect_to @league
+  end
+
+  def picksheet
+    @players = Player.find_all_by_league_id(active_league.id)
+  end
+
+  def make_picks
+    player = Player.find(params[:player_selection])
+    league_user = active_league_user
+    league_user.player_id = player.id
+    if league_user.save
+      flash[:success] = "Changed player pick to #{player.name}"
+    else
+      flash[:error] = "Pick was not able to be made!"
+    end
+    redirect_to picksheet_path
   end
 
   def scoreboard
@@ -99,7 +107,12 @@ class LeaguesController < ApplicationController
     def join_league(league,user,admin)
       user.active_league_id = league.id
       user.save
-      LeagueUser.create(league_id: league.id, user_id: user.id, admin: admin)
+      league_user = LeagueUser.create(league_id: league.id, user_id: user.id, admin: admin)
+      
+      # Select a random player for an initial pick
+      players = league.players
+      league_user.player_id = players[rand(players.count)].id
+      league_user.save
     end
 
     def create_player_table

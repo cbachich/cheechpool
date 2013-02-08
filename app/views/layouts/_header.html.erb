@@ -5,10 +5,11 @@
       <nav>
         <ul class="nav pull-right">
           <% if signed_in? %>
-            <% if active_league? & (active_week >= 1) %>
-              <li>
-                <%= link_to "Scoreboard", '/leagues/1/week/1' %>
-              </li>
+            <% if active_league? %>
+              <li><%= link_to "Picksheet", picksheet_path %></li>
+              <% if active_week >= 1 %>
+                <li><%= link_to "Scoreboard", '/leagues/1/week/1' %></li>
+              <% end %>
             <% end %>
             <li><%= link_to "Users", users_path %></li>
             <%= render 'layouts/leagues_dropdown' %>
