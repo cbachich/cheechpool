@@ -1,0 +1,18 @@
+<h1>Week <%= active_week %> Picksheet</h1>
+<div class="row">
+  <%= form_tag make_picks_path do %>
+    <% i = 0 %>
+    <% @picks.each do |pick| %>
+      <% if pick[0] == 'Elimination' %>
+        <%= render '/leagues/picksheet/player_elim', players: pick[1], player_picks: pick[2]%>
+      <% else %>
+        <%= render '/leagues/picksheet/team_pick', challenge: pick[0], teams: pick[1], team_picks: pick[2], index: i %>
+        <% i+=1 %>
+      <% end %>
+    <% end %>
+    
+    <div class="span9" style="text-align: center; margin-top: 10px">
+      <%= submit_tag "Make Picks", class: "btn btn-large btn-primary" %>
+    </div>
+  <% end %>
+</div>

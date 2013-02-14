@@ -1,0 +1,20 @@
+<div class="span9">
+  <h2>Pick <%= challenge %> Challenge Winner:</h2>
+  <p>
+  Vote for the team you think is going to win the <%= challenge %> challenge.
+  </p>
+</div>
+<% teams.each_with_index do |team, i| %>
+  <div class="span4" style="text-align: center">
+    <div>
+      <%= image_tag team.image_url, size: "128x128" %>
+    </div>
+    <div>
+      <% if team_picks[i] %>
+        <%= radio_button_tag :team_selection[index], team.id, checked: true %>
+      <% else %>
+        <%= radio_button_tag :team_selection[index], team.id %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

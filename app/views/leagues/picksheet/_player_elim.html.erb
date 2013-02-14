@@ -1,0 +1,14 @@
+<div class="span9">
+  <h2>Rank Players:</h2>
+  <p>
+    Rank the players based on the likeliness they will be voted out of the game this week. The lowest number is associated with the player you think is <b>MOST</b> likely to be voted out this week, while the highest number is associated with the <b>LEAST</b> likely player. Only one number can be assigned to each player. So you should have all numbers ranging from 1 to <%= players.count %>.
+  </p>
+</div>
+<% players.each_with_index do |player, i| %>
+  <div class="span1" style="text-align: center">
+    <b><%= player.name %></b>
+    <%= link_to image_tag( player.image_url, size: "68x85" ), player.info_url %>
+    <%= number_field_tag "eliminations#{i}", player_picks[i].value, in: 1..players.count %>
+  </div>
+<% end %>
+

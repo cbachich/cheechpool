@@ -62,11 +62,116 @@ class LeaguesController < ApplicationController
     redirect_to @league
   end
 
+  @picks = []
+
   def picksheet
-    @players = Player.find_all_by_league_id(active_league.id)
+    @league = active_league
+    user = current_user
+    week_number = active_week
+
+    # Build a picks array based on the challenge types for this week
+    challenges = @league.picksheets.find_by_week(week_number).challenges
+    @picks = []
+    challenges.each_with_index do |challenge, i|
+      if challenge.name == 'Preshow'
+        @picks << get_this_weeks_players
+      elsif challenge.name == 'Elimination'
+        players = get_this_weeks_players
+
+        player_picks = []
+        players.each do |player|
+          player_pick = @league.player_picks.find_by_player_id_and_user_id_and_week_and_challenge_id(player.id,user.id,week_number,challenge.id)
+          if player_pick.nil?
+            player_picks << ""
+          else
+            player_picks << player_pick
+          end
+        end
+
+        @picks << [challenge.name, players, player_picks]
+      else
+        teams = Team.find_all_by_league_id(@league.id)
+
+        team_picks = []
+        teams.each do |team|
+          team_pick = @league.team_picks.find_by_team_id_and_user_id_and_week_and_challenge_id(team.id,user.id,week_number,challenge.id)
+          
+          if team_pick.nil?
+            team_picks << false
+          else
+            team_picks << team_pick.picked?
+          end
+        end
+
+        @picks << [challenge.name, teams, team_picks] 
+      end
+    end
+
+    set_picks(@picks)
   end
 
   def make_picks
+    @league = active_league
+    @week_number = active_week
+    @picks = get_picks
+
+    error = false
+    same_value_errors = ""
+    bad_value_errors = ""
+    error_ids = []
+    @picks.each_with_index do |pick|
+      if pick[0] == 'Elimination'
+        players = pick[1]
+        player_picks = pick[2]
+        players.each_with_index do |player, i|
+          elim_value = params["eliminations#{i}"].to_i
+
+          # If the value is zero then the user didn't input a value
+          # or they entered a non numerical number. Inform the user
+          # they performed error.
+          if (elim_value == 0) || (elim_value > players.count)
+            bad_value_errors = bad_value_errors + "(#{player.name})"
+            error = true
+          end
+
+          player_picks.each do |player_pick|
+            if player.id != player_pick.player_id
+              if (player_pick.value == elim_value) &&
+                 (!error_ids.include? player.id)
+                same_value_errors = same_value_errors +"(#{player.name} and #{Player.find(player_pick.player_id).name} have #{elim_value}) "
+                error = true
+                error_ids << player.id
+                error_ids << player_pick.player_id
+              end
+            else
+              player_pick.value = elim_value
+            end
+          end
+        end
+      else
+        reward_pick = params[:team_selection[1]]
+        immunity_pick = params[:team_selection[2]]
+      end
+    end
+
+    if error
+      error_output = ""
+      error_output = "Bad input in player text field: " + bad_value_errors + " " if bad_value_errors != ""
+
+      if same_value_errors != ""
+        error_output = error_output + "Players can not have the same value, please correct the following players: "
+        error_output = error_output + same_value_errors
+      end
+
+      flash[:error] = error_output
+      render '/leagues/picksheet'
+    else
+      flash[:success] = "Picksheet submitted!"
+      redirect_to picksheet_path
+    end
+  end
+
+  def make_pre_picks
     player = Player.find(params[:player_selection])
     league_user = active_league_user
     league_user.player_id = player.id
