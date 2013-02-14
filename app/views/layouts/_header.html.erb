@@ -6,7 +6,7 @@
         <% if signed_in? %>
           <% if active_league? %>
             <li><%= link_to "Picksheet", picksheet_path %></li>
-            <% if active_week >= 1 %>
+            <% if active_week >= 2 %>
               <li><%= link_to "Scoreboard", '/leagues/1/week/1' %></li>
             <% end %>
           <% end %>
