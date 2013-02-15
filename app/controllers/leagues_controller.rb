@@ -67,10 +67,10 @@ class LeaguesController < ApplicationController
   def picksheet
     @league = active_league
     user = current_user
-    week_number = active_week
+    @week_number = active_week
 
     # Build a picks array based on the challenge types for this week
-    challenges = @league.picksheets.find_by_week(week_number).challenges
+    challenges = @league.picksheets.find_by_week(@week_number).challenges
     @picks = []
     challenges.each_with_index do |challenge, i|
       if challenge.name == 'Preshow'
@@ -80,7 +80,7 @@ class LeaguesController < ApplicationController
 
         player_picks = []
         players.each do |player|
-          player_pick = @league.player_picks.find_by_player_id_and_user_id_and_week_and_challenge_id(player.id,user.id,week_number,challenge.id)
+          player_pick = @league.player_picks.find_by_player_id_and_user_id_and_week_and_challenge_id(player.id,user.id,@week_number,challenge.id)
           if player_pick.nil?
             player_picks << ""
           else
@@ -94,7 +94,7 @@ class LeaguesController < ApplicationController
 
         team_picks = []
         teams.each do |team|
-          team_pick = @league.team_picks.find_by_team_id_and_user_id_and_week_and_challenge_id(team.id,user.id,week_number,challenge.id)
+          team_pick = @league.team_picks.find_by_team_id_and_user_id_and_week_and_challenge_id(team.id,user.id,@week_number,challenge.id)
           
           if team_pick.nil?
             team_picks << false
