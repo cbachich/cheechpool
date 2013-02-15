@@ -1,7 +1,7 @@
 <div class="span9">
-  <h2>Pick <%= challenge %> Challenge Winner:</h2>
+  <h2>Pick <%= challenge.name %> Challenge Winner:</h2>
   <p>
-  Vote for the team you think is going to win the <%= challenge %> challenge.
+  Vote for the team you think is going to win the <%= challenge.name %> challenge.
   </p>
 </div>
 <% teams.each_with_index do |team, i| %>
@@ -11,9 +11,9 @@
     </div>
     <div>
       <% if team_picks[i] %>
-        <%= radio_button_tag :team_selection[index], team.id, checked: true %>
+        <%= radio_button_tag "team_selection#{index}", i, checked: true %>
       <% else %>
-        <%= radio_button_tag :team_selection[index], team.id %>
+        <%= radio_button_tag "team_selection#{index}", i %>
       <% end %>
     </div>
   </div>
