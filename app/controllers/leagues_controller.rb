@@ -122,8 +122,8 @@ class LeaguesController < ApplicationController
     # Verify there were no issues with the eliminated player fields
     error_output = check_eliminated_players
     
-    if error_output != ""
-      flash[:error] = error_output
+    if !error_output.empty?
+      flash[:error] = "Sorry! " + error_output
       render '/leagues/picksheet'
     else
       save_picks
@@ -278,8 +278,6 @@ class LeaguesController < ApplicationController
                   error_ids << pi
                   error_ids << ppi
                 end
-              else
-                @picks[pick_i][2][pi] = player_pick
               end
             end
           end
@@ -287,15 +285,18 @@ class LeaguesController < ApplicationController
       end
 
       error_output = ""
-      if bad_value_errors != ""
+      if !bad_value_errors.empty?
         error_output = 
-          "Bad input in player text field: " + 
+          "Picks must be numbers, please correct the following players: " + 
           bad_value_errors + " "
       end
 
-      if same_value_errors != ""
-        error_output = 
-          error_output + 
+      if !same_value_errors.empty?
+        if !bad_value_errors.empty?
+          error_output += "Also, "
+        end
+
+        error_output += 
           "Players can not have the same value, " +
           "please correct the following players: " + 
           same_value_errors
