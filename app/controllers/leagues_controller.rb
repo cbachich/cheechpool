@@ -1,4 +1,5 @@
 class LeaguesController < ApplicationController
+  before_filter :signed_in_user
   
   def show
     @league = League.find(params[:id])
