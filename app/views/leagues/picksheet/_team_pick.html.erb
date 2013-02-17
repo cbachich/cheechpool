@@ -7,7 +7,10 @@
 <% teams.each_with_index do |team, i| %>
   <div class="span4" style="text-align: center">
     <div>
-      <%= image_tag team.image_url, size: "128x128" %>
+      <b><%= team.name %></b>
+    </div>
+    <div>
+      <%= image_tag team.image_url, size: "128x128", alt: team.name %>
     </div>
     <div>
       <% if team_picks[i] %>

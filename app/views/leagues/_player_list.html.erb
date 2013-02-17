@@ -12,7 +12,7 @@
           <% else %>
             <div style="opacity: 0.4">
           <% end %>
-            <%= link_to image_tag( player.image_url, size: "68x85" ), player.info_url %>
+            <%= link_to image_tag( player.image_url, size: "68x85", alt: player.name ), player.info_url %>
           </div>
         </div>
       <% end %> 
