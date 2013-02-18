@@ -63,7 +63,7 @@ class LeaguesController < ApplicationController
     redirect_to @league
   end
 
-  @picks = []
+  @pick_values = []
 
   def picksheet
     @league = active_league
@@ -72,10 +72,10 @@ class LeaguesController < ApplicationController
 
     # Build a picks array based on the challenge types for this week
     challenges = @league.picksheets.find_by_week(@week_number).challenges
-    @picks = []
+    @pick_values = []
     challenges.each_with_index do |challenge, i|
       if challenge.name == 'Preshow'
-        @picks << get_this_weeks_players
+        @pick_values << get_this_weeks_players
       elsif challenge.name == 'Elimination'
         players = get_this_weeks_players
 
@@ -89,7 +89,7 @@ class LeaguesController < ApplicationController
           end
         end
 
-        @picks << [challenge, players, player_picks]
+        @pick_values << { challenge: challenge, players: players, player_picks: player_picks }
       else
         teams = Team.find_all_by_league_id(@league.id)
 
@@ -104,17 +104,17 @@ class LeaguesController < ApplicationController
           end
         end
 
-        @picks << [challenge, teams, team_picks] 
+        @pick_values << { challenge: challenge, teams: teams, team_picks: team_picks } 
       end
     end
 
-    set_picks(@picks)
+    set_picks(@pick_values)
   end
 
   def make_picks
     @league = active_league
     @week_number = active_week
-    @picks = get_picks
+    @pick_values = get_picks
 
     
     # Start by updating all of the fields
@@ -233,18 +233,18 @@ class LeaguesController < ApplicationController
     end
 
     def update_picks
-      @picks.each_with_index do |pick, pi|
-        if pick[0].name == 'Elimination'
-          pick[2].each_with_index do |player_pick, ppi|
-            @picks[pi][2][ppi] = params["eliminations#{ppi}"].to_i
+      @pick_values.each_with_index do |pick, pi|
+        if pick[:challenge].name == 'Elimination'
+          pick[:player_picks].map!.with_index do |player_pick, ppi|
+            player_pick = params["eliminations#{ppi}"].to_i
           end
         else
           team_selection = params["team_selection#{pi}"].to_i
-          pick[2].each_with_index do |team_pick, tpi|
+          pick[:team_picks].map!.with_index do |team_pick, tpi|
             if tpi == team_selection
-              @picks[pi][2][tpi] = true
+              team_pick = true
             else
-              @picks[pi][2][tpi] = false
+              team_pick = false
             end
           end
         end
@@ -257,12 +257,12 @@ class LeaguesController < ApplicationController
       error_ids = []
 
       # Check the eliminated player values
-      @picks.each_with_index do |pick, pick_i|
-        if pick[0].name == 'Elimination'
-          players = pick[1]
-          player_picks = pick[2]
+      @pick_values.each do |pick|
+        if pick[:challenge].name == 'Elimination'
+          players = pick[:players]
+          player_picks = pick[:player_picks]
           players.each_with_index do |player, pi|
-            player_pick = player_picks[pi]
+            player_pick = pick[:player_picks][pi]
 
             # If the value is zero then the user didn't input a value
             # or they entered a non numerical number. Inform the user
@@ -307,33 +307,32 @@ class LeaguesController < ApplicationController
     end
 
     def save_picks
-      @picks.each do |pick|
-        challenge = pick[0]
+      @pick_values.each do |pick|
+        challenge = pick[:challenge]
         if challenge.name == "Elimination"
-          players = pick[1]
-          player_picks = pick[2]
-          players.each_with_index do |player, i|
+          pick[:players].each_with_index do |player, i|
+            new_pick_value = pick[:player_picks][i]
             # Start by seeing if the player pick already exists
-            player_pick = @league.player_picks.find_by_player_id_and_challenge_id_and_week_and_user_id(player.id,pick[0].id,@week_number,current_user.id)
+            player_pick = @league.player_picks.find_by_player_id_and_challenge_id_and_week_and_user_id(player.id,challenge.id,@week_number,current_user.id)
             if !player_pick.nil?
-              player_pick.value = player_picks[i]
+              player_pick.value = new_pick_value
             else
-              player_pick = @league.player_picks.create(player_id: player.id, value: player_picks[i], challenge_id: challenge.id, week: @week_number, user_id: current_user.id)
+              player_pick = @league.player_picks.create(player_id: player.id, value: new_pick_value, challenge_id: challenge.id, week: @week_number, user_id: current_user.id)
             end
 
             player_pick.save
           end
         else
-          teams = pick[1]
-          team_picks = pick[2]
+          teams = pick[:teams]
           teams.each_with_index do |team,i|
+            team_picked = pick[:team_picks][i]
             # Start by seeing if the team pick already exists
             team_pick = @league.team_picks.find_by_team_id_and_challenge_id_and_user_id_and_week(team.id,challenge.id,current_user.id,@week_number)
 
             if !team_pick.nil?
-              team_pick.picked = team_picks[i]
+              team_pick.picked = team_picked
             else
-              team_pick = @league.team_picks.create(team_id: team.id, picked: team_picks[i], challenge_id: challenge.id, user_id: current_user.id, week: @week_number)
+              team_pick = @league.team_picks.create(team_id: team.id, picked: team_picked, challenge_id: challenge.id, user_id: current_user.id, week: @week_number)
             end
 
             team_pick.save
