@@ -71,14 +71,4 @@ module SessionsHelper
   def league_smacks
     active_league.smacks
   end
-
-  $picks
-
-  def set_picks(picks_in)
-    $picks = picks_in
-  end
-
-  def get_picks
-    $picks
-  end
 end

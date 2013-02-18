@@ -67,54 +67,15 @@ class LeaguesController < ApplicationController
 
   def picksheet
     @league = active_league
-    user = current_user
     @week_number = active_week
 
-    # Build a picks array based on the challenge types for this week
-    challenges = @league.picksheets.find_by_week(@week_number).challenges
-    @pick_values = []
-    challenges.each_with_index do |challenge, i|
-      if challenge.name == 'Preshow'
-        @pick_values << get_this_weeks_players
-      elsif challenge.name == 'Elimination'
-        players = get_this_weeks_players
-
-        player_picks = []
-        players.each do |player|
-          player_pick = @league.player_picks.find_by_player_id_and_user_id_and_week_and_challenge_id(player.id,user.id,@week_number,challenge.id)
-          if player_pick.nil?
-            player_picks << ""
-          else
-            player_picks << player_pick.value
-          end
-        end
-
-        @pick_values << { challenge: challenge, players: players, player_picks: player_picks }
-      else
-        teams = Team.find_all_by_league_id(@league.id)
-
-        team_picks = []
-        teams.each do |team|
-          team_pick = @league.team_picks.find_by_team_id_and_user_id_and_week_and_challenge_id(team.id,user.id,@week_number,challenge.id)
-          
-          if team_pick.nil?
-            team_picks << false
-          else
-            team_picks << team_pick.picked?
-          end
-        end
-
-        @pick_values << { challenge: challenge, teams: teams, team_picks: team_picks } 
-      end
-    end
-
-    set_picks(@pick_values)
+    @pick_values = get_pick_values
   end
 
   def make_picks
     @league = active_league
     @week_number = active_week
-    @pick_values = get_picks
+    @pick_values = get_pick_values
 
     
     # Start by updating all of the fields
@@ -230,6 +191,50 @@ class LeaguesController < ApplicationController
         players << player if player.voted_out_week.nil? || (player.voted_out_week >= @week_number) 
       end
       players
+    end
+
+    def get_pick_values
+      user = current_user
+
+      # Build a picks array based on the challenge types for this week
+      challenges = @league.picksheets.find_by_week(@week_number).challenges
+      @pick_values = []
+      challenges.each_with_index do |challenge, i|
+        if challenge.name == 'Preshow'
+          @pick_values << get_this_weeks_players
+        elsif challenge.name == 'Elimination'
+          players = get_this_weeks_players
+
+          player_picks = []
+          players.each do |player|
+            player_pick = @league.player_picks.find_by_player_id_and_user_id_and_week_and_challenge_id(player.id,user.id,@week_number,challenge.id)
+            if player_pick.nil?
+              player_picks << ""
+            else
+              player_picks << player_pick.value
+            end
+          end
+
+          @pick_values << { challenge: challenge, players: players, player_picks: player_picks }
+        else
+          teams = Team.find_all_by_league_id(@league.id)
+
+          team_picks = []
+          teams.each do |team|
+            team_pick = @league.team_picks.find_by_team_id_and_user_id_and_week_and_challenge_id(team.id,user.id,@week_number,challenge.id)
+            
+            if team_pick.nil?
+              team_picks << false
+            else
+              team_picks << team_pick.picked?
+            end
+          end
+
+          @pick_values << { challenge: challenge, teams: teams, team_picks: team_picks } 
+        end
+      end
+
+      @pick_values
     end
 
     def update_picks
