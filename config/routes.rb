@@ -6,17 +6,24 @@ CheechPool::Application.routes.draw do
 
   root to: 'static_pages#home'
 
+  # Users
   match '/signup',    to: 'users#new'
   match '/users/:id/set_active_league/:league_id' => 'users#set_active_league', as: :set_active
+
+  # Leagues
   match '/new_league', to: 'leagues#new'
   match '/leagues/:id/add_user' => 'leagues#add_user', as: :join
   match '/leagues/:id/remove_user' => 'leagues#remove_user', as: :quit
   match '/picksheet', to: 'leagues#picksheet'
   match '/picksheet/make_pre_picks' => 'leagues#make_pre_picks', as: :make_pre_picks
   match '/picksheet/make_picks' => 'leagues#make_picks', as: :make_picks
-  match '/leagues/:league_id/week/:week_number' => 'leagues#scoreboard', as: :scoreboard
+  match '/scoreboard', to: 'leagues#scoreboard'
+
+  # Sessions
   match '/signin',    to: 'sessions#new'
   match '/signout',   to: 'sessions#destroy', via: :delete
+
+  # Static Pages
   match '/help',      to: 'static_pages#help'
   match '/about',     to: 'static_pages#about'
   match '/contact',   to: 'static_pages#contact'

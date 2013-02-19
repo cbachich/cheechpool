@@ -2,44 +2,40 @@
 <h1>
   Scoreboard - Week <%= @week_number %>
 </h1>
-<p style="text-align: center">
-  <% if @week_number != 1 %>
-    <%= link_to "/leagues/#{active_league.id}/week/#{@week_number-1}" do %>
-      <i class="icon-search icon-step-backward"></i>
-    <% end %>
-  <% end %>
-  Navigate Weeks
-  <%= link_to "/leagues/#{active_league.id}/week/#{@week_number+1}" do %>
-    <i class="icon-search icon-step-forward"></i>
-  <% end %>
-</p>
 <table class="table table-striped">
   <thead>
     <tr>
-      <th></th>
-      <% @users.each do |user| %>
-        <th><%= user.name %></th>
+      <th>Users</th>
+      <% @challenges.each do |challenge| %>
+        <% if challenge.name == "Elimination" %>
+          <% for i in 1..@players.count %>
+            <th><%= i %></th>
+          <% end %>
+        <% else %>
+          <th><%= challenge.name %></th>
+        <% end %>
       <% end %>
     </tr>
   </thead>
   <tbody>
-    <% @challenges.each_with_index do |challenge, i| %>
-      <% if challenge.name == "Elimination" %>
-        <%= render 'leagues/gen_rows', rows: @tables[i], player: true %>
-      <% else %>
-        <tr>
+    <% @user_picks_table.each do |row| %>
+      <tr>
+        <td><%= row[0] %></td>
+        <% for i in 1..(row.count-1) %>
           <td>
-            <%= @tables[i][0] %>
+            <% if row[i] != "" %>
+              <div><%= row[i].name %></div>
+            <% end %>
+            <div>
+              <% if row[i].is_a? Player %>
+                <%= image_tag row[i].image_url, size: "40x40", alt: row[i].name, title: row[i].name %>
+              <% elsif row[i].is_a? Team %>
+                <%= image_tag row[i].image_url, size: "60x60", alt: row[i].name, title: row[i].name %>
+              <% end%>
+            </div>
           </td>
-          <% @tables[i].drop(1).each do |content| %>
-            <td>
-              <% if content != "" %>
-                <%= image_tag content, size: "68x68" %>
-              <% end %>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
+        <% end %>
+      </tr>
     <% end %>
   </tbody>
 </table>

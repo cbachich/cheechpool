@@ -107,24 +107,12 @@ class LeaguesController < ApplicationController
   end
 
   def scoreboard
-    @league = League.find(params[:league_id])
-    @week_number = params[:week_number].to_i
-
-    if @league.current_week < @week_number
-      redirect_to "/leagues/#{@league.id}/week/#{@league.current_week}"
-      return
-    end
-
-    @users = @league.users
+    @league = active_league
+    @week_number = active_week
+    @players = get_this_weeks_players
     @challenges = @league.picksheets.find_by_week(@week_number).challenges
-    @tables = []
-    @challenges.each do |challenge|
-      if challenge.name == "Elimination"
-        @tables << create_player_table
-      else
-        @tables << create_picked_table(challenge)
-      end
-    end
+
+    @user_picks_table = create_user_pick_table
     #@reward_table = create_team_table("Reward")
     #@immunity_table = create_team_table("Immunity")
     #@score_table = create_score_table
@@ -143,46 +131,37 @@ class LeaguesController < ApplicationController
       league_user.save
     end
 
-    def create_player_table
-      players = get_this_weeks_players
+    def create_user_pick_table
+      users = @league.users
 
-      player_table = []
-      players.each_with_index do |player, i|
+      user_pick_table = []
+      users.each do |user|
+        user_row = [ user.name ]
+        @challenges.each do |challenge|
+          if challenge.name == "Elimination"
+            for value in 1..@players.count
+              player_pick = @league.player_picks.find_by_user_id_and_week_and_challenge_id_and_value(user.id,@week_number,challenge.id,value)
 
-        # Add the player to the initial column and
-        # add a flag to indicate if the player was voted
-        # out that week
-        if player.voted_out_week == @week_number
-          player_table << [true, player.id]
-        else
-          player_table << [false, player.id]
-        end
-
-        @users.each do |user|
-          player_pick = user.player_picks.find_by_league_id_and_player_id_and_week_and_picked(@league.id, player.id, @week_number,nil)
-          if player_pick.nil?
-            player_table[i] << ""
+              if player_pick.nil?
+                user_row << ""
+              else
+                user_row << Player.find(player_pick.player_id)
+              end
+            end
           else
-            player_table[i] << player_pick.value
+            team_pick = @league.team_picks.find_by_user_id_and_week_and_challenge_id_and_picked(user.id,@week_number,challenge.id,true)
+            if team_pick.nil?
+              user_row << ""
+            else
+              user_row << Team.find(team_pick.team_id)
+            end
           end
+          
         end
+        user_pick_table << user_row
       end
 
-      player_table
-    end
-
-    def create_picked_table(challenge)
-      picked_table = [challenge.name]
-      @users.each do |user|
-        team_pick = user.team_picks.find_by_league_id_and_week_and_picked_and_challenge_id(@league.id, @week_number, true, challenge.id)
-        if team_pick.nil?
-          picked_table << ""
-        else
-          picked_table << Team.find(team_pick.team_id).image_url
-        end
-      end
-
-      picked_table
+      user_pick_table
     end
 
     def get_this_weeks_players
