@@ -6,7 +6,7 @@
         <% if signed_in? %>
           <% if active_league? %>
             <li><%= link_to "Picksheet", picksheet_path %></li>
-            <li><%= link_to "Scoreboard", '/leagues/1/week/1' %></li>
+            <li><%= link_to "Scoreboard", scoreboard_path %></li>
           <% end %>
           <li><%= link_to "Users", users_path %></li>
           <%= render 'layouts/leagues_dropdown' %>

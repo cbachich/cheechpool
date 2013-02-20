@@ -68,7 +68,6 @@ class LeaguesController < ApplicationController
   def picksheet
     @league = active_league
     @week_number = active_week
-
     @pick_values = get_pick_values
   end
 
