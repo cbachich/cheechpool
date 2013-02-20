@@ -2,11 +2,12 @@
 #
 # Table name: leagues
 #
-#  id           :integer          not null, primary key
-#  name         :string(255)
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  current_week :integer          default(1)
+#  id                   :integer          not null, primary key
+#  name                 :string(255)
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  current_week         :integer          default(0)
+#  picksheet_close_date :datetime
 #
 
 require 'spec_helper'

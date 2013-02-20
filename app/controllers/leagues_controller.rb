@@ -73,6 +73,12 @@ class LeaguesController < ApplicationController
   end
 
   def make_picks
+    if picksheet_closed?
+      flash[:error] = "Sorry but picks are closed for this week"
+      redirect_to picksheet_path
+      return
+    end
+
     @league = active_league
     @week_number = active_week
     @pick_values = get_pick_values
@@ -113,9 +119,6 @@ class LeaguesController < ApplicationController
     @challenges = @league.picksheets.find_by_week(@week_number).challenges
 
     @user_picks_table = create_user_pick_table
-    #@reward_table = create_team_table("Reward")
-    #@immunity_table = create_team_table("Immunity")
-    #@score_table = create_score_table
   end
 
   private
