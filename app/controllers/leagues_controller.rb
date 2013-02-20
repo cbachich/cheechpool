@@ -113,12 +113,16 @@ class LeaguesController < ApplicationController
   end
 
   def scoreboard
-    @league = active_league
     @week_number = active_week
-    @players = get_this_weeks_players
-    @challenges = @league.picksheets.find_by_week(@week_number).challenges
+    @week_number -= 1 if !picksheet_closed?
+    
+    if @week_number >= 1
+      @league = active_league
+      @players = get_this_weeks_players
+      @challenges = @league.picksheets.find_by_week(@week_number).challenges
 
-    @user_picks_table = create_user_pick_table
+      @user_picks_table = create_user_pick_table
+    end
   end
 
   private
