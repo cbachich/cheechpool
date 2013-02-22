@@ -71,14 +71,4 @@ module SessionsHelper
   def league_smacks
     active_league.smacks
   end
-
-  def picksheet_closed?
-    ps_date = active_league.picksheet_close_date
-    curr_date = DateTime.current
-    if ps_date.nil? || (curr_date > ps_date)
-      true
-    else
-      false
-    end
-  end
 end

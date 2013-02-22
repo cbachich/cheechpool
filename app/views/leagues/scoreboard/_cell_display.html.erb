@@ -1,0 +1,35 @@
+<td>
+  <% if content.blank? %>
+    <div>
+  <% else %>
+    <!-- If this is last week's results, there must be a winner -->
+    <!-- Hide the others -->
+    <% if !picksheet_closed? && !content[:winner] %>
+      <div style="opacity: 0.2">
+    <% else %>
+      <div>
+    <% end %>
+
+    <!-- Add the player/team name to the top of a cell -->
+    <%= content[:object].name %></div>
+    
+    <!-- If this is last week's results, there must be a winner -->
+    <!-- Hide the others -->
+    <% if !picksheet_closed? && !content[:winner] %>
+      <div style="opacity: 0.2">
+    <% else %>
+      <div>
+    <% end %>
+
+    <!-- Set the size based on the type of object -->
+    <% if content[:object].is_a? Player %>
+      <% size = "45x45" %>
+    <% else %>
+      <% size = "60x60" %>
+    <% end %>
+
+    <!-- Finally add the player/team image to the cell -->
+    <%= image_tag content[:object].image_url, size: size, alt: content[:object].name, title: content[:object].name %> 
+  <% end%>
+  </div>
+</td>

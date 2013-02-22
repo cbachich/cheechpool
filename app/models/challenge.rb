@@ -12,5 +12,7 @@
 
 class Challenge < ActiveRecord::Base
   attr_accessible :name, :picksheet_id, :player
+  has_many :player_wins
+  has_many :team_wins
   belongs_to :picksheets
 end

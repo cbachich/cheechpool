@@ -1,4 +1,6 @@
 class LeaguesController < ApplicationController
+  include LeaguesHelper
+
   before_filter :signed_in_user
   
   def show
@@ -142,29 +144,47 @@ class LeaguesController < ApplicationController
 
       user_pick_table = []
       users.each do |user|
-        user_row = [ user.name ]
+        contents = []
         @challenges.each do |challenge|
           if challenge.name == "Elimination"
             for value in 1..@players.count
-              player_pick = @league.player_picks.find_by_user_id_and_week_and_challenge_id_and_value(user.id,@week_number,challenge.id,value)
+              player_pick = 
+                @league.player_picks.
+                  find_by_user_id_and_week_and_challenge_id_and_value(
+                    user.id,@week_number,challenge.id,value)
 
               if player_pick.nil?
-                user_row << ""
+                cell = ""
               else
-                user_row << Player.find(player_pick.player_id)
+                player = Player.find(player_pick.player_id)
+                eliminated = player.voted_out_week == @week_number
+                cell = { object: player, winner: eliminated }
               end
+
+              contents << cell
             end
           else
-            team_pick = @league.team_picks.find_by_user_id_and_week_and_challenge_id_and_picked(user.id,@week_number,challenge.id,true)
+            team_pick = 
+              @league.team_picks.
+                find_by_user_id_and_week_and_challenge_id_and_picked(
+                  user.id,@week_number,challenge.id,true)
+
             if team_pick.nil?
-              user_row << ""
+              cell = ""
             else
-              user_row << Team.find(team_pick.team_id)
+              team = Team.find(team_pick.team_id)
+              winner = 
+                !TeamWin.find_by_team_id_and_week_and_challenge_id(
+                  team.id,@week_number,challenge.id).nil?
+
+              cell = { object: team, winner: winner}
             end
+
+            contents << cell
           end
           
         end
-        user_pick_table << user_row
+        user_pick_table << { user: user.name, contents: contents }
       end
 
       user_pick_table

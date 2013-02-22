@@ -14,4 +14,5 @@ class TeamWin < ActiveRecord::Base
   attr_accessible :team_id, :week, :challenge_id
 
   belongs_to :teams
+  belongs_to :challenges
 end
