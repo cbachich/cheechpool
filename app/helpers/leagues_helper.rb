@@ -11,7 +11,12 @@ module LeaguesHelper
   end
 
   def user_week_score(user,league,week)
-    user.scores.find_by_league_id_and_week(league.id, week).value
+    score = user.scores.find_by_league_id_and_week(league.id, week)
+    if score.nil?
+      0
+    else
+      score.value
+    end
   end
 
   def user_total_score(user,league)
