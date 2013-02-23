@@ -140,7 +140,7 @@ class LeaguesController < ApplicationController
     end
 
     def create_user_pick_table
-      users = @league.users
+      users = week_score_ordered_users(@league, @week_number)
 
       user_pick_table = []
       users.each do |user|
