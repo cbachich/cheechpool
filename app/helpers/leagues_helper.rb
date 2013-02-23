@@ -10,6 +10,19 @@ module LeaguesHelper
     end
   end
 
+  def user_week_score(user,league,week)
+    user.scores.find_by_league_id_and_week(league.id, week).value
+  end
+
+  def user_total_score(user,league)
+    total = 0
+    scores = user.scores.find_all_by_league_id(league.id)
+    scores.each do |score|
+      total += score.value
+    end
+    total
+  end
+
   def number_of_players(league,week)
     player_count = 0
     league.players.each do |player|

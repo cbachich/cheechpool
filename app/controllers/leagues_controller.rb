@@ -184,7 +184,7 @@ class LeaguesController < ApplicationController
           end
           
         end
-        user_pick_table << { user: user.name, contents: contents }
+        user_pick_table << { user: user, contents: contents }
       end
 
       user_pick_table

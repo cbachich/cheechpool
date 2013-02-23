@@ -17,7 +17,13 @@
   <tbody>
     <% @user_picks_table.each do |row| %>
       <tr>
-        <td><%= row[:user] %></td>
+        <td>
+          <div><b><%= row[:user].name %></b></div>
+          <% if !picksheet_closed? %>
+            <div>Week Score: <%= user_week_score row[:user], @league, @week_number %></div>
+          <% end %>
+          <div>Total Score: <%= user_total_score row[:user], @league %>
+        </td>
         <% row[:contents].each do |content| %>
           <%= render 'leagues/scoreboard/cell_display', content: content %>
         <% end %>
