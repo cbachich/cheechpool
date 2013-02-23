@@ -45,8 +45,8 @@ module LeaguesHelper
   end
 
   def scaled_value(pick_value, num_of_players)
-    point_max = 20
-    (num_of_players - pick_value) * (point_max / (num_of_players - 1))
+    point_max = 20.0
+    ((num_of_players - pick_value) * (point_max / (num_of_players - 1))).to_i
   end
 
   private
