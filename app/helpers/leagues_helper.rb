@@ -10,7 +10,8 @@ module LeaguesHelper
     end
   end
 
-  def winner(object, week_number)
-    true
+  def scaled_value(pick_value, num_of_players)
+    point_max = 20
+    (num_of_players - pick_value) * (point_max / (num_of_players - 1))
   end
 end

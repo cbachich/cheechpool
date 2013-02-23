@@ -6,7 +6,7 @@
       <% @challenges.each do |challenge| %>
         <% if challenge.name == "Elimination" %>
           <% for i in 1..@players.count %>
-            <th><%= i %></th>
+            <th><%= i %> (<%= scaled_value(i, @players.count) %>)</th>
           <% end %>
         <% else %>
           <th><%= challenge.name %></th>
