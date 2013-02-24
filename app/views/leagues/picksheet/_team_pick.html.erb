@@ -1,23 +1,27 @@
-<div class="span9">
-  <h2>Pick <%= challenge.name %> Challenge Winner:</h2>
-  <p>
-  Vote for the team you think is going to win the <%= challenge.name %> challenge.
-  </p>
-</div>
-<% teams.each_with_index do |team, i| %>
-  <div class="span4" style="text-align: center">
-    <div>
-      <b><%= team.name %></b>
-    </div>
-    <div>
-      <%= image_tag team.image_url, size: "128x128", alt: team.name %>
-    </div>
-    <div>
-      <% if team_picks[i] %>
-        <%= radio_button_tag "team_selection#{index}", i, checked: true %>
-      <% else %>
-        <%= radio_button_tag "team_selection#{index}", i %>
-      <% end %>
-    </div>
+<div class="span9 team_pick_row">
+  <div class="span5 offset2">
+    <h2>Pick <%= challenge.name %> Challenge Winner:</h2>
+    <p>
+    Vote for the team you think is going to win the <%= challenge.name %> challenge.
+    </p>
   </div>
-<% end %>
+  <div class="span5 offset2">
+    <% teams.each_with_index do |team, i| %>
+      <div class="span2" style="text-align: center">
+        <div>
+          <b><%= team.name %></b>
+        </div>
+        <div>
+          <%= image_tag team.image_url, size: "128x128", alt: team.name %>
+        </div>
+        <div>
+          <% if team_picks[i] %>
+            <%= radio_button_tag "team_selection#{index}", i, checked: true %>
+          <% else %>
+            <%= radio_button_tag "team_selection#{index}", i %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

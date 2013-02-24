@@ -7,8 +7,8 @@
 <% players.each_with_index do |player, i| %>
   <div class="span1" style="text-align: center">
     <b><%= player.name %></b>
-    <%= image_tag player.image_url, size: "68x85", alt: player.name %>
-    <%= number_field_tag "eliminations#{i}", player_picks[i], in: 1..players.count %>
+    <%= image_tag player.image_url, alt: player.name %>
+    <%= number_field_tag "eliminations#{i}", player_picks[i], in: 1..players.count, class: "number_input" %>
   </div>
 <% end %>
 

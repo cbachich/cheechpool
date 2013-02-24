@@ -1,6 +1,6 @@
 <% if @league.users.any? %>
   <h3>Users (<%= @league.users.count %>)</h3>
-  <div class="row">
+  <div class="span9">
     <% @league.users.each do |user| %>
       <% user_player = get_league_user_player(user,@league) %>
       <div class="span2" style="margin-bottom: 10px">
