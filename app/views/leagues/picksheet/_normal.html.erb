@@ -3,7 +3,7 @@
   <%= form_tag make_picks_path do %>
     <% @pick_values.each_with_index do |pick, i| %>
       <% if pick[:challenge].name == 'Elimination' %>
-        <%= render '/leagues/picksheet/player_elim', players: pick[:players], player_picks: pick[:player_picks]%>
+        <%= render '/leagues/picksheet/player_elim', team_picks: pick[:team_picks] %>
       <% else %>
         <%= render '/leagues/picksheet/team_pick', challenge: pick[:challenge], teams: pick[:teams], team_picks: pick[:team_picks], index: i %>
       <% end %>
