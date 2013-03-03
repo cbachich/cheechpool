@@ -122,8 +122,12 @@ class LeaguesController < ApplicationController
     if @week_number >= 1
       @league = active_league
       @players = get_this_weeks_players
-      @challenges = @league.picksheets.find_by_week(@week_number).challenges
 
+      # Extract data for the overall table
+      @user_scores = get_user_scores(@league,@week_number)
+
+      # Extract data for the week table
+      @challenges = @league.picksheets.find_by_week(@week_number).challenges
       @user_picks_table = create_user_pick_table
     end
   end
@@ -368,5 +372,18 @@ class LeaguesController < ApplicationController
           end
         end
       end
+    end
+
+    def get_user_scores(league,weeks)
+      user_scores = []
+      total_score_ordered_users(league).each do |user|
+        scores = []
+        for i in 1..weeks
+          scores << user_week_score(user,league,i)
+        end
+        scores << user_total_score(user,league)
+        user_scores << {name: user.name, scores: scores}
+      end
+      user_scores
     end
 end

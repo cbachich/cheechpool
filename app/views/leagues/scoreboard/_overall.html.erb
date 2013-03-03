@@ -1,0 +1,27 @@
+<% if @week_number < 6 %>
+  <div class="span4">
+<% else %>
+  <div class="span8">
+<% end %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Users</th>
+        <% for i in 1..@week_number %>
+          <th><%= i %></th>
+        <% end %>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @user_scores.each do |user_score| %>
+        <tr>
+          <td><%= user_score[:name] %></td>
+          <% user_score[:scores].each do |score| %>
+            <td><%= score %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

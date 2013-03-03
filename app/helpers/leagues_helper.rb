@@ -33,7 +33,7 @@ module LeaguesHelper
   end
 
   def total_score_ordered_users(league)
-    sort_users(league)
+    sort_users(league,nil)
   end
 
   def number_of_players(league,week)

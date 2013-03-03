@@ -1,33 +1,7 @@
 <h1>Week <%= @week_number %> Scoreboard</h1>
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th>Users</th>
-      <% @challenges.each do |challenge| %>
-        <% if challenge.name == "Elimination" %>
-          <% for i in 1..@players.count %>
-            <th><%= i %> (<%= scaled_value(i, @players.count) %>)</th>
-          <% end %>
-        <% else %>
-          <th><%= challenge.name %></th>
-        <% end %>
-      <% end %>
-    </tr>
-  </thead>
-  <tbody>
-    <% @user_picks_table.each do |row| %>
-      <tr>
-        <td>
-          <div><b><%= row[:user].name %></b></div>
-          <% if !picksheet_closed? %>
-            <div>Week: <%= user_week_score row[:user], @league, @week_number %></div>
-          <% end %>
-          <div>Total: <%= user_total_score row[:user], @league %>
-        </td>
-        <% row[:contents].each do |content| %>
-          <%= render 'leagues/scoreboard/cell_display', content: content %>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<h3>Overall Scores</h3>
+<div class="span9">
+  <%= render 'leagues/scoreboard/overall' %>
+</div>
+<h3>Week Scores</h3>
+<%= render 'leagues/scoreboard/week'%>
