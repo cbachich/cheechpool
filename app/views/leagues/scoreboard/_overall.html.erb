@@ -6,6 +6,7 @@
   <table class="table table-bordered">
     <thead>
       <tr>
+        <th>Place</th>
         <th>Users</th>
         <% for i in 1..@week_number %>
           <th><%= i %></th>
@@ -14,8 +15,9 @@
       </tr>
     </thead>
     <tbody>
-      <% @user_scores.each do |user_score| %>
+      <% @user_scores.each_with_index do |user_score, i| %>
         <tr>
+          <td><%= i+1 %></td>
           <td><%= user_score[:name] %></td>
           <% user_score[:scores].each do |score| %>
             <td><%= score %></td>
