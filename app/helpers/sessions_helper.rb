@@ -33,6 +33,10 @@ module SessionsHelper
     end
   end
 
+  def admin_user
+    redirect_to(root_path) unless current_user.admin?
+  end
+
   def current_leagues
     current_user.leagues
   end

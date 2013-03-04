@@ -1,0 +1,13 @@
+<div class="row">
+  <div class="span9">
+    <h2>Eliminated Player(s)</h2>
+    <p>Select each player that was voted out this week</p>
+  </div>
+  <% @players.each do |player| %>
+    <div class="span1" style="text-align: center">
+      <b><%= player.name %></b>
+      <%= image_tag player.image_url, alt: player.name %>
+      <%= check_box_tag "eliminated_#{player.id}"  %>
+    </div>
+  <% end %>
+</div>

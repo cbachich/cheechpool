@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="span5 offset2">
+    <h2>Select the challenges for next week:</h2>
+  </div>
+  <div class="span7 offset1">
+    <div class="span2">
+      <%= label_tag 'next_week_elimination', "Player Elimination" %>
+      <%= check_box_tag 'next_week_elimination', 'yes', true %> 
+    </div>
+    <div class="span2">
+      <%= label_tag 'next_week_reward', 'Reward' %>
+      <%= check_box_tag 'next_week_reward', 'yes', true %> 
+    </div>
+    <div class="span2">
+      <%= label_tag 'next_week_immunity', 'Immunity' %>
+      <%= check_box_tag 'next_week_immunity', 'yes', true %> 
+    </div>
+  </div>
+  <div class="span5 offset2">
+    <h2>Select the date and time to close the time sheet:</h2>
+    <div class="span1">
+      <%= label_tag 'year', 'Year' %>
+      <%= number_field_tag 'year', '2013' %>
+    </div>
+    <div class="span1">
+      <%= label_tag 'month', 'Month' %>
+      <%= number_field_tag 'month', '3' %>
+    </div>
+    <div class="span1">
+      <%= label_tag 'day', 'Day' %>
+      <%= number_field_tag 'day', '6' %>
+    </div>
+    <div class="span1">
+      <%= label_tag 'hour', 'Hour' %>
+      <%= number_field_tag 'hour', '19' %>
+    </div>
+  </div>
+</div>

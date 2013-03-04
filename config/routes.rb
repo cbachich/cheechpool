@@ -18,6 +18,8 @@ CheechPool::Application.routes.draw do
   match '/picksheet/make_pre_picks' => 'leagues#make_pre_picks', as: :make_pre_picks
   match '/picksheet/make_picks' => 'leagues#make_picks', as: :make_picks
   match '/scoreboard', to: 'leagues#scoreboard'
+  match '/admin',      to: 'leagues#admin'
+  match '/admin/move_week' => 'leagues#move_week', as: :move_week
 
   # Sessions
   match '/signin',    to: 'sessions#new'

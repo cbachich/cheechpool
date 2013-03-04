@@ -2,6 +2,7 @@ class LeaguesController < ApplicationController
   include LeaguesHelper
 
   before_filter :signed_in_user
+  before_filter :admin_user, only: :admin
   
   def show
     @league = League.find(params[:id])
@@ -71,7 +72,7 @@ class LeaguesController < ApplicationController
     @league = active_league
     @week_number = active_week
     @pick_values = get_pick_values
-    @player_count = get_this_weeks_players.count
+    @player_count = get_this_weeks_players(@league,@week_number).count
   end
 
   def make_picks
@@ -84,7 +85,7 @@ class LeaguesController < ApplicationController
     @league = active_league
     @week_number = active_week
     @pick_values = get_pick_values
-    @player_count = get_this_weeks_players.count
+    @player_count = get_this_weeks_players(@league,@week_number).count
 
     
     # Start by updating all of the fields
@@ -121,7 +122,7 @@ class LeaguesController < ApplicationController
     
     if @week_number >= 1
       @league = active_league
-      @players = get_this_weeks_players
+      @players = get_this_weeks_players(@league,@week_number)
 
       # Extract data for the overall table
       @user_scores = get_user_scores(@league,@week_number)
@@ -130,6 +131,19 @@ class LeaguesController < ApplicationController
       @challenges = @league.picksheets.find_by_week(@week_number).challenges
       @user_picks_table = create_user_pick_table
     end
+  end
+
+  def admin
+    league = active_league
+    week = active_week
+    week -= 1 if !picksheet_closed?
+
+    @challenges = league.picksheets.find_by_week(week).challenges
+    @players = get_this_weeks_players(league,week)
+    @teams = league.teams
+  end
+
+  def move_week
   end
 
   private
@@ -196,10 +210,10 @@ class LeaguesController < ApplicationController
       user_pick_table
     end
 
-    def get_this_weeks_players
+    def get_this_weeks_players(league,week)
       players = []
-      @league.players.each do |player|
-        players << player if player.voted_out_week.nil? || (player.voted_out_week >= @week_number) 
+      league.players.each do |player|
+        players << player if player.voted_out_week.nil? || (player.voted_out_week >= week) 
       end
       players
     end
@@ -221,7 +235,7 @@ class LeaguesController < ApplicationController
       @pick_values = []
       challenges.each_with_index do |challenge, i|
         if challenge.name == 'Preshow'
-          @pick_values << get_this_weeks_players
+          @pick_values << get_this_weeks_players(@league,@week_number)
         elsif challenge.name == 'Elimination'
           teams = teams_for_week(@league,@week_number)
 
