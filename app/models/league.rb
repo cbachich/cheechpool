@@ -33,6 +33,11 @@ class League < ActiveRecord::Base
     end
   end
 
+  def close_picksheet_now
+    self.picksheet_close_date = DateTime.current
+    save
+  end
+
   def current_challenges
     challenges_for_week(current_week)
   end

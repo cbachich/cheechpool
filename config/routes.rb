@@ -20,6 +20,7 @@ CheechPool::Application.routes.draw do
   match '/scoreboard', to: 'leagues#scoreboard'
   match '/admin',      to: 'leagues#admin'
   match '/admin/move_week' => 'leagues#move_week', as: :move_week
+  match '/admin/close_picksheet' => 'leagues#close_picksheet', as: :close_picksheet
 
   # Sessions
   match '/signin',    to: 'sessions#new'

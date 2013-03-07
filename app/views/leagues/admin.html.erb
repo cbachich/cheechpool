@@ -1,17 +1,7 @@
 <% provide(:title, "Admin") %>
 <h1>League Admin Control</h1>
-<%= form_tag move_week_path do %>
-  <h3>Week results</h3>
-  <% @challenges.each do |challenge| %>
-    <% if challenge.name == "Elimination" %>
-      <%= render 'leagues/admin/eliminated_players' %>
-    <% else %>
-      <%= render 'leagues/admin/team_winner', challenge: challenge %>
-    <% end %>
-  <% end %>
-  <h3>Next Week</h3>
-  <%= render 'leagues/admin/next_week' %>
-  <div class="span9" style="text-align: center; margin-top: 10px">
-    <%= submit_tag "Move Week", class: "btn btn-large btn-primary" %>
-  </div>
+<% if picksheet_closed? %>
+  <%= render 'leagues/admin/results' %>
+<% else %>
+  <%= render 'leagues/admin/preclose' %>
 <% end %>

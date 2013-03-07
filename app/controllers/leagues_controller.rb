@@ -188,6 +188,11 @@ class LeaguesController < ApplicationController
     redirect_to admin_path
   end
 
+  def close_picksheet
+    active_league.close_picksheet_now
+    redirect_to admin_path
+  end
+
   private
 
     def join_league(league,user,admin)
