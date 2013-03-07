@@ -20,19 +20,19 @@
     <h2>Select the date and time to close the time sheet:</h2>
     <div class="span1">
       <%= label_tag 'year', 'Year' %>
-      <%= number_field_tag 'year', '2013' %>
+      <%= number_field_tag 'year', '2013', in: 2013..3000 %>
     </div>
     <div class="span1">
       <%= label_tag 'month', 'Month' %>
-      <%= number_field_tag 'month', '3' %>
+      <%= number_field_tag 'month', '3', in: 1..12 %>
     </div>
     <div class="span1">
       <%= label_tag 'day', 'Day' %>
-      <%= number_field_tag 'day', '6' %>
+      <%= number_field_tag 'day', '6', in: 1..31 %>
     </div>
     <div class="span1">
       <%= label_tag 'hour', 'Hour' %>
-      <%= number_field_tag 'hour', '19' %>
+      <%= number_field_tag 'hour', '19', in: 1..24 %>
     </div>
   </div>
 </div>

@@ -144,6 +144,48 @@ class LeaguesController < ApplicationController
   end
 
   def move_week
+    league = active_league
+    week = active_week
+    challenges = league.challenges_for_week(week)
+
+    # Start by grabbing this weeks results
+    eliminated_players = []
+    winners = []
+    challenges.each do |challenge|
+      if challenge.name == "Elimination"
+        eliminated_players = get_eliminated_players(league,week)
+      else
+        winner = get_winner(challenge)
+        winners << {challenge: challenge, team: winner} if !winner.nil?
+      end
+    end
+
+    # Verify selections in Week Results have been made
+    if eliminated_players.empty? || ((challenges.count-1) != winners.count)
+      flash[:error] = "Week Results is not complete"
+      redirect_to admin_path
+      return
+    end
+
+    # Get the new challenges for next week
+    new_challenges = get_new_challenges
+    
+    # Finally get the cut off time
+    cutoff_date = get_cutoff_date
+    
+    # Verify selections in Next Week have been made
+    if new_challenges.empty? || cutoff_date.nil?
+      flash[:error] = "Next Week is not complete"
+      redirect_to admin_path
+      return
+    end
+    
+    # If we get to this point, everything is ready and the week can be pushed
+    # forward
+    league.set_results(eliminated_players, winners) 
+    league.move_week(cutoff_date, new_challenges)
+    
+    redirect_to admin_path
   end
 
   private
@@ -399,5 +441,52 @@ class LeaguesController < ApplicationController
         user_scores << {name: user.name, scores: scores}
       end
       user_scores
+    end
+
+    def get_eliminated_players(league, week)
+      players = get_this_weeks_players(league,week)
+      eliminated_players = []
+      players.each do |player|
+        if !params["eliminated_#{player.id}"].nil?
+          eliminated_players << player
+        end
+      end
+      eliminated_players
+    end
+
+    def get_winner(challenge)
+      team_id = params["team_selection_#{challenge.name}"]
+      if !team_id.nil?
+        Team.find(team_id)
+      else
+        nil
+      end
+    end
+
+    def get_new_challenges
+      challenges = []
+      if !params['next_week_elimination'].nil?
+        challenges << "Elimination"
+      end
+      if !params['next_week_reward'].nil?
+        challenges << "Reward"
+      end
+      if !params['next_week_immunity'].nil?
+        challenges << "Immunity"
+      end
+      challenges
+    end
+
+    def get_cutoff_date
+      year = params['year'].to_i
+      month = params['month'].to_i
+      day = params['day'].to_i
+      hour = params['hour'].to_i
+
+      if !((year<1) || (month<1) || (day<1) || (hour<1))
+        DateTime.civil(year,month,day,hour)
+      else
+        nil
+      end
     end
 end

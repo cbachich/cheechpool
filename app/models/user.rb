@@ -14,6 +14,8 @@
 #
 
 class User < ActiveRecord::Base
+  include SessionsHelper
+
   attr_accessible :email, 
                   :name, 
                   :password, 
@@ -48,6 +50,22 @@ class User < ActiveRecord::Base
   validates :password_confirmation,
             presence: true,
             on: :create
+
+  def add_score(league,week,value)
+    scores.create(league_id: league.id, week: week, value: value)
+  end
+
+  def player_pick(player, league, week)
+    player_picks.find_by_player_id_and_league_id_and_week(player.id, league.id, week)
+  end
+
+  def team_picked?(challenge,winner,week)
+    team_pick = 
+      team_picks.find_by_challenge_id_and_team_id_and_week_and_picked(
+        challenge.id, winner.team_id, week, true)
+
+    (!team_pick.nil? && team_pick.picked)
+  end
 
   private
 

@@ -7,7 +7,7 @@
     <div class="span1" style="text-align: center">
       <b><%= player.name %></b>
       <%= image_tag player.image_url, alt: player.name %>
-      <%= check_box_tag "eliminated_#{player.id}"  %>
+      <%= check_box_tag "eliminated_#{player.id}" %>
     </div>
   <% end %>
 </div>

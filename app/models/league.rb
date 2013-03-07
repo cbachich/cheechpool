@@ -25,42 +25,90 @@ class League < ActiveRecord::Base
 
   validates :name, presence:true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
 
-  def user_in_league(user)
-    if self.users.any?
-      self.users.exists?(user)
+  def challenges_for_week(week)
+    if picksheet_for_week?(week)
+      picksheet_for_week(week).challenges
+    else
+      []
     end
   end
 
-  def add_scores_for_week(week)
-    users = self.users
-    challenges = self.picksheets.find_by_week(week).challenges
-    total_players = number_of_players(self,week)
+  def current_challenges
+    challenges_for_week(current_week)
+  end
 
-    users.each do |user|
-      value = 0
-      challenges.each do |challenge|
-        if challenge.name == "Elimination"
-          voted_out_players = self.players.find_all_by_voted_out_week(week)
-          voted_out_players.each do |voted_out_player|
-            player_pick = user.player_picks.find_by_player_id_and_league_id_and_week(voted_out_player.id, self.id, week)
-            if !player_pick.nil?
-             value += scaled_value(player_pick.value,total_players)
+  def move_week(cutoff_date,new_challenges)
+    self.current_week += 1
+    self.picksheet_close_date = cutoff_date
+    picksheet = self.picksheets.create(week: current_week)
+    new_challenges.each do |challenge|
+      picksheet.challenges.create(name: challenge)
+    end
+    save
+  end
+
+  def picksheet_closed?
+    picksheet_close_date.nil? || (DateTime.current > picksheet_close_date)
+  end
+  
+  def picksheet_for_week?(week)
+    !picksheet_for_week(week).nil?
+  end
+
+  def picksheet_for_week(week)
+    picksheets.find_by_week(week)
+  end
+
+  def players_for_week(week)
+    players.select {|p| !p.voted_out_by?(week) }
+  end
+
+  def players_left
+    players.select {|p| !p.voted_out_by?(current_week) }
+  end
+
+  def set_results(eliminated_players,winners)
+    eliminated_players.each { |player| player.voted_out(current_week) }
+    winners.each { |winner| winner[:challenge].team_winner(winner[:team]) }
+    add_scores(eliminated_players)
+  end
+
+  def user_in_league(user)
+    if users.any?
+      users.exists?(user)
+    end
+  end
+
+  def voted_out_players
+    players.find_all_by_voted_out_week(current_week)
+  end
+
+  private
+
+    def add_scores(eliminated_players)
+      challenges = current_challenges
+      total_players = players_left.count + eliminated_players.count
+
+      users.each do |user|
+        value = 0
+        challenges.each do |challenge|
+          if challenge.name == "Elimination"
+            eliminated_players.each do |eliminated_player|
+              player_pick = user.player_pick(eliminated_player, self, current_week)
+              if !player_pick.nil?
+                value += scaled_value(player_pick.value,total_players)
+              end
+            end
+          else
+            winner = TeamWin.find_by_challenge_id(challenge.id)
+            if user.team_picked?(challenge,winner,current_week)
+              value += 10
             end
           end
-        else
-          winner = TeamWin.find_by_challenge_id(challenge.id)
-          team_pick = 
-            user.team_picks.
-              find_by_challenge_id_and_team_id_and_week_and_picked(
-                challenge.id, winner.team_id, week, true)
-
-          if !team_pick.nil? && team_pick.picked
-            value += 10
-          end
         end
-      end
 
-      user.scores.create(league_id: self.id, week: week, value: value)
+        user.add_score(self,current_week,value)
+      end
     end
-  end
+
 end
