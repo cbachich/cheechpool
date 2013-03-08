@@ -1,0 +1,32 @@
+<div class="span4">
+  <div class="row">  
+    <h3>Cutoff Date for Picksheet</h2>
+    <p>
+      Enter the date and time the picksheet for this week will close. 
+      After this point, users will no longer be able to make their picks for the week.
+    </p>
+    <p class="text-warning">
+      <strong>Warning:</strong> Make sure to ensure this date and time is
+      correct! Once the week has been pushed forward, you will not be able to
+      change this date!
+    </p>
+  </div>
+  <div class="row">
+    <div class="span1">
+      <%= label_tag 'year', 'Year' %>
+      <%= number_field_tag 'year', '2013', in: 2013..3000 %>
+    </div>
+    <div class="span1">
+      <%= label_tag 'month', 'Month' %>
+      <%= number_field_tag 'month', '3', in: 1..12 %>
+    </div>
+    <div class="span1">
+      <%= label_tag 'day', 'Day' %>
+      <%= number_field_tag 'day', '6', in: 1..31 %>
+    </div>
+    <div class="span1">
+      <%= label_tag 'hour', 'Hour' %>
+      <%= number_field_tag 'hour', '19', in: 1..24 %>
+    </div>
+  </div>
+</div>

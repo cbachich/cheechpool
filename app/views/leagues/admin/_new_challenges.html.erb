@@ -1,0 +1,23 @@
+<div class="span4">
+  <div class="row">
+    <h3>Next Week Challenges</h3>
+  </div>
+  <div class="row">
+    <%= label_tag 'next_week_elimination' do %>
+      <%= check_box_tag 'next_week_elimination', 'yes', true %> 
+      Player Elimination
+    <% end %>
+  </div>
+  <div class="row">
+    <%= label_tag 'next_week_reward' do %>
+      <%= check_box_tag 'next_week_reward', 'yes', true %> 
+      Reward
+    <% end %>
+  </div>
+  <div class="row">
+    <%= label_tag 'next_week_immunity' do %>
+      <%= check_box_tag 'next_week_immunity', 'yes', true %> 
+      Immunity
+    <% end %>
+  </div>
+</div>

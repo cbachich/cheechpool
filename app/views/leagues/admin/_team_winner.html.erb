@@ -1,21 +1,13 @@
-<div class="row">
-  <div class="span5 offset2">
-    <h2>Select <%= challenge.name %> Challenge Winner:</h2>
+<div class="span4">
+  <div class="span4">
+    <h3><%= challenge.name %> Challenge Winner</h3>
     <p>Choose the team that won this week's challenge.</p>
   </div>
-  <div class="span5 offset2">
-    <% @teams.each_with_index do |team, i| %>
-      <div class="span2" style="text-align: center">
-        <div>
-          <b><%= team.name %></b>
-        </div>
-        <div>
-          <%= image_tag team.image_url, size: "128x128", alt: team.name %>
-        </div>
-        <div>
-          <%= radio_button_tag "team_selection_#{challenge.name}", team.id %>
-        </div>
-      </div>
-    <% end %>
-  </div>
+  <% @teams.each_with_index do |team, i| %>
+    <div class="span1" style="text-align: center">
+      <b><%= team.name %></b>
+      <%= image_tag team.image_url, size: "128x128", alt: team.name %>
+      <%= radio_button_tag "team_selection_#{challenge.name}", team.id %>
+    </div>
+  <% end %>
 </div>
