@@ -55,6 +55,10 @@ class User < ActiveRecord::Base
     scores.create(league_id: league.id, week: week, value: value)
   end
 
+  def made_picks?(week)
+    player_picks.exists?(week: week) || team_picks.exists?(week: week)
+  end
+
   def player_pick(player, league, week)
     player_picks.find_by_player_id_and_league_id_and_week(player.id, league.id, week)
   end

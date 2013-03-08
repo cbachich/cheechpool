@@ -1,3 +1,47 @@
-<div class="span4 offset3">
-  <%= link_to "Close picksheet now!", close_picksheet_path, confirm: "Are you sure?", class: "btn btn-large btn-primary"%>
+<div class="span4">
+  <div class="span4">
+    <h3>User Picks Made So Far</h3>
+    <p>
+      The following table displays an 'X' next to each user that has made their
+      picks this week.
+    </p>
+  </div>
+  <div class="span3" style="margin-top: 10px">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Made Picks?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.name %></td>
+            <% if user.made_picks?(@week) %>
+              <td>X</td>
+            <% else %>
+              <td></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="span4">
+  <div class="span4">
+    <h3>Move Week Forward</h3>
+    <p>
+      If something strange occurs during the normal show week and the picksheet
+      needs go be closed early, you can use this button to close the picksheet
+      now.
+    </p>
+    <p class="text-warning">
+      <strong>Warning:</strong>Once you close the picksheet there is no turning back.
+    </p>
+  </div>
+  <div class="span3" style="margin-top: 10px">
+    <%= link_to "Close picksheet now!", close_picksheet_path, confirm: "Are you sure?", class: "btn btn-large btn-primary"%>
+  </div>
 </div>

@@ -135,12 +135,16 @@ class LeaguesController < ApplicationController
 
   def admin
     league = active_league
-    week = active_week
-    week -= 1 if !picksheet_closed?
+    @week = active_week
 
-    @challenges = league.picksheets.find_by_week(week).challenges
-    @players = get_this_weeks_players(league,week)
-    @teams = league.teams
+    if !picksheet_closed?
+      @users = league.users
+    else
+      @week -= 1 if !picksheet_closed?
+      @challenges = league.picksheets.find_by_week(@week).challenges
+      @players = get_this_weeks_players(league,@week)
+      @teams = league.teams
+    end
   end
 
   def move_week
