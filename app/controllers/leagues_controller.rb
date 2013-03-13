@@ -155,17 +155,23 @@ class LeaguesController < ApplicationController
     # Start by grabbing this weeks results
     eliminated_players = []
     winners = []
+    error = false
     challenges.each do |challenge|
       if challenge.name == "Elimination"
         eliminated_players = get_eliminated_players(league,week)
+        error = true if eliminated_players.empty?
       else
         winner = get_winner(challenge)
-        winners << {challenge: challenge, team: winner} if !winner.nil?
+        if winner.nil?
+          error = true
+        else
+          winners << {challenge: challenge, team: winner} if !winner.nil?
+        end
       end
     end
 
     # Verify selections in Week Results have been made
-    if eliminated_players.empty? || ((challenges.count-1) != winners.count)
+    if error
       flash[:error] = "Week Results is not complete"
       redirect_to admin_path
       return
