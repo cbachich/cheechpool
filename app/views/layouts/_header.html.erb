@@ -8,7 +8,11 @@
             <% if current_user.admin? %>
               <li><%= link_to "Admin", admin_path %></li>
             <% end %>
-            <li><%= link_to "Picksheet", picksheet_path %></li>
+            <% pick_text = "Picksheet"
+               if !current_user.made_picks?(active_week)
+                 pick_text += " <span class=\"badge badge-important\"><i class=\"icon-flag icon-white\"></i></span>"
+               end %>
+            <li><%= link_to pick_text.html_safe, picksheet_path %></li>
             <li><%= link_to "Scoreboard", scoreboard_path %></li>
           <% end %>
           <li><%= link_to "Users", users_path %></li>
