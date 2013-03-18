@@ -70,9 +70,6 @@ class LeaguesController < ApplicationController
 
   def picksheet
     @league = active_league
-    @week_number = active_week
-    @pick_values = get_pick_values
-    @player_count = get_this_weeks_players(@league,@week_number).count
   end
 
   def make_picks
@@ -83,25 +80,13 @@ class LeaguesController < ApplicationController
     end
 
     @league = active_league
-    @week_number = active_week
-    @pick_values = get_pick_values
-    @player_count = get_this_weeks_players(@league,@week_number).count
 
-    
-    # Start by updating all of the fields
-    update_picks
-
-    # Verify there were no issues with the eliminated player fields
-    error_output = check_eliminated_players
-    
-    if !error_output.empty?
-      flash[:error] = "Sorry! " + error_output
-      render '/leagues/picksheet'
-    else
-      save_picks
+    if !picksheet_form_errors
+      current_user.save_picks
       flash[:success] = "Picksheet submitted!"
-      redirect_to picksheet_path
     end
+    
+    redirect_to picksheet_path
   end
 
   def make_pre_picks
@@ -353,34 +338,43 @@ class LeaguesController < ApplicationController
       end
     end
 
-    def check_eliminated_players
+    def picksheet_form_errors
       same_value_errors = ""
       bad_value_errors = ""
-      other_players = []
+      used_values = {}
+      league = active_league
+      players = league.players_left
+      user = current_user
 
-      # Check the eliminated player values
-      @pick_values.each do |pick|
-        if pick[:challenge].name == 'Elimination'
-          pick[:team_picks].each do |team_pick|
-            team_pick[:player_picks].each do |player_pick|
-              value = player_pick[:value]
-              player = player_pick[:player]
+      # Start by checking the number fields for player elimination
+      players.each do |player|
+        value = params["elim_#{player.id}"].to_i
+        
+        # If the value is zero then the user didn't input a value
+        # or they entered a non numerical number
+        if (value == 0) || (value > players.count)
+          bad_value_errors += "(#{player.name})"
+        end
 
-              # If the value is zero then the user didn't input a value
-              # or they entered a non numerical number. Inform the user
-              # they performed error.
-              if (value == 0) || (value > @player_count)
-                bad_value_errors = bad_value_errors + "(#{player.name})"
-              end
+        if used_values[value].nil?
+          used_values.merge!(value => player)
+        else
+          same_value_errors += "(#{player.name} and #{used_values[value].name} have #{value}) "
+        end
 
-              other_players.each do |other_player|
-                if value == other_player[:value]
-                  same_value_errors = same_value_errors +"(#{player.name} and #{other_player[:name]} have #{value}) "
-                end
-              end
+        user.set_temporary_player_pick_value(player,value)
+      end
 
-              other_players << { name: player.name, value: value }
-            end
+      # Next verify there is input in the reward/immunity challenges
+      selection_errors = ""
+      league.current_challenges.each do |challenge|
+        if challenge.name != "Elimination"
+          team_id = params["select_#{challenge.id}"]
+          if !team_id.nil?
+            team = Team.find(team_id.to_i)
+            user.set_temporary_team_selection(challenge,team)
+          else
+            selection_errors += "(#{challenge.name}) "
           end
         end
       end
@@ -400,10 +394,20 @@ class LeaguesController < ApplicationController
         error_output += 
           "Players can not have the same value, " +
           "please correct the following players: " + 
-          same_value_errors
+          same_value_errors + " "
       end
 
-      error_output
+      if !selection_errors.empty?
+        error_output += 
+          "No selection made the following: " +
+          selection_errors
+      end
+
+      if !error_output.empty?
+        flash[:error] = "Sorry! " + error_output
+      end
+
+      !error_output.empty?
     end
 
     def save_picks

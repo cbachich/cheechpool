@@ -18,5 +18,9 @@ class Team < ActiveRecord::Base
   has_many :players
   has_many :team_wins
 
-  belongs_to :leagues
+  belongs_to :league
+
+  def players_left
+    players.select {|p| !p.voted_out_by?(league.current_week) }
+  end
 end

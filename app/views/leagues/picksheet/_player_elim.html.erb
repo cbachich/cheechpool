@@ -1,18 +1,18 @@
+<% total_players = @league.players_left.count %>
 <div class="span9">
-  <h2>Rank Players:</h2>
+  <h3>Rank Players</h3>
   <p>
-    Rank the players based on the likeliness they will be voted out of the game this week. The lowest number is associated with the player you think is <b>MOST</b> likely to be voted out this week, while the highest number is associated with the <b>LEAST</b> likely player. Only one number can be assigned to each player. So you should have all numbers ranging from 1 to <%= @player_count %>.
+    Rank the players based on the likeliness they will be voted out of the game this week. The lowest number is associated with the player you think is <b>MOST</b> likely to be voted out this week, while the highest number is associated with the <b>LEAST</b> likely player. Only one number can be assigned to each player. So you should have all numbers ranging from 1 to <%= total_players %>.
   </p>
 </div>
-<% team_picks.each do |team_pick| %>
-  <div class="span9" style="text-align: center">
-    <h3><%= team_pick[:team].name %></h3>
-    <% team_pick[:player_picks].each do |player_pick| %>
-      <% player = player_pick[:player] %>
+<% @league.teams_left.each do |team| %>
+  <div class="span4" style="text-align: center">
+    <h2><%= team.name %></h2>
+    <% team.players_left.each do |player| %>
       <div class="span1" style="text-align: center">
         <b><%= player.name %></b>
         <%= image_tag player.image_url, alt: player.name %>
-        <%= number_field_tag "eliminations#{player.id}", player_pick[:value], in: 1..@player_count, class: "number_input" %>
+        <%= number_field_tag "elim_#{player.id}", current_user.player_pick_value(player), in: 1..total_players, class: "number_input" %>
       </div>
     <% end %>
   </div>

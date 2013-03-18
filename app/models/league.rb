@@ -78,6 +78,10 @@ class League < ActiveRecord::Base
     add_scores(eliminated_players)
   end
 
+  def teams_left
+    players_left.map{|p|Team.find(p.team_id)}.uniq
+  end
+
   def user_in_league(user)
     if users.any?
       users.exists?(user)

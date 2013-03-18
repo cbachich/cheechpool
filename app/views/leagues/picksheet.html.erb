@@ -1,6 +1,6 @@
 <% provide(:title, "Picksheet") %>
-<% if active_week == 0 %>
-  <%= render 'leagues/picksheet/preshow', players: @pick_values[0] %>
+<% if @league.current_week == 0 %>
+  <%= render 'leagues/picksheet/preshow' %>
 <% elsif picksheet_closed? %>
   <%= render 'leagues/picksheet/closed' %>
 <% else %>

@@ -1,13 +1,13 @@
-<div class="span9 team_pick_row">
-  <div class="span5 offset2">
-    <h2>Pick <%= challenge.name %> Challenge Winner:</h2>
+<div class="span4 team_pick_row">
+  <div class="span4">
+    <h3><%= challenge.name %> Challenge Winner</h3>
     <p>
-    Vote for the team you think is going to win the <%= challenge.name %> challenge.
+      Vote for the team you think is going to win the <%= challenge.name %> challenge.
     </p>
   </div>
-  <div class="span5 offset2">
-    <% teams.each_with_index do |team, i| %>
-      <div class="span2" style="text-align: center">
+  <div class="span4">
+    <% @league.teams_left.each do |team| %>
+      <div class="span1" style="text-align: center">
         <div>
           <b><%= team.name %></b>
         </div>
@@ -15,10 +15,10 @@
           <%= image_tag team.image_url, size: "128x128", alt: team.name %>
         </div>
         <div>
-          <% if team_picks[i] %>
-            <%= radio_button_tag "team_selection#{index}", i, checked: true %>
+          <% if current_user.team_picked?(challenge,team) %>
+            <%= radio_button_tag "select_#{challenge.id}", team.id, checked: true %>
           <% else %>
-            <%= radio_button_tag "team_selection#{index}", i %>
+            <%= radio_button_tag "select_#{challenge.id}", team.id %>
           <% end %>
         </div>
       </div>
