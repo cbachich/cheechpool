@@ -1,4 +1,4 @@
-<% if @week_number < 6 %>
+<% if @week < 6 %>
   <div class="span4">
 <% else %>
   <div class="span8">
@@ -8,20 +8,21 @@
       <tr>
         <th>Place</th>
         <th>Users</th>
-        <% for i in 1..@week_number %>
+        <% for i in 1..@week %>
           <th><%= i %></th>
         <% end %>
         <th>Total</th>
       </tr>
     </thead>
     <tbody>
-      <% @user_scores.each_with_index do |user_score, i| %>
+      <% @league.users.each_with_index do |user, i| %>
         <tr>
           <td><%= i+1 %></td>
-          <td><%= user_score[:name] %></td>
-          <% user_score[:scores].each do |score| %>
-            <td><%= score %></td>
+          <td><%= user.name %></td>
+          <% for w in 1..@week %>
+            <td><%= user.week_score(w) %></td>
           <% end %>
+          <td><%= user.total_score %></td>
         </tr>
       <% end %>
     </tbody>

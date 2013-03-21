@@ -65,7 +65,7 @@ class League < ActiveRecord::Base
   end
 
   def players_for_week(week)
-    players.select {|p| !p.voted_out_by?(week) }
+    players.select {|p| !p.voted_out_by?(week-1) }
   end
 
   def players_left
@@ -102,21 +102,21 @@ class League < ActiveRecord::Base
         value = 0
         challenges.each do |challenge|
           if challenge.name == "Elimination"
-            eliminated_players.each do |eliminated_player|
-              player_pick = user.player_pick(eliminated_player, self, current_week)
+            eliminated_players.each do |player|
+              player_pick = user.player_pick(player)
               if !player_pick.nil?
                 value += scaled_value(player_pick.value,total_players)
               end
             end
           else
-            winner = TeamWin.find_by_challenge_id(challenge.id)
-            if user.team_picked?(challenge,winner,current_week)
+            winner = TeamWin.find_by_challenge_id(challenge.id).team
+            if user.team_picked?(challenge,winner)
               value += 10
             end
           end
         end
 
-        user.add_score(self,current_week,value)
+        user.add_score(current_week,value)
       end
     end
 

@@ -55,16 +55,29 @@ class User < ActiveRecord::Base
     League.find(active_league_id)
   end
 
-  def add_score(league,week,value)
-    scores.create(league_id: league.id, week: week, value: value)
+  def add_score(week,value)
+    scores.create(league_id: active_league.id, week: week, value: value)
   end
-
-  
 
   def current_player_picks
-    league_player_picks.select {|p| p.week == active_league.current_week }
+    player_picks_for_week(active_league.current_week)
   end
 
+  def player_picks_for_week(week)
+    league_player_picks.select { 
+      |p| p.week == week 
+    }.sort { |a,b| a.value <=> b.value }
+  end
+
+  def week_score(week)
+    score = scores.find_by_league_id_and_week(active_league.id, week)
+    if score.nil?
+      0
+    else
+      score.value
+    end
+  end
+  
   def league_player_picks
     player_picks.find_all_by_league_id(active_league_id)
   end
@@ -145,6 +158,20 @@ class User < ActiveRecord::Base
     else
       team_pick.picked
     end
+  end
+
+  def get_team_picked(challenge)
+    team_pick = team_picks.find_by_challenge_id(challenge.id)
+    team_pick.team if !team_pick.nil?
+  end
+
+  def total_score
+    total = 0
+    league_scores = scores.find_all_by_league_id(active_league.id)
+    league_scores.each do |score|
+      total += score.value
+    end
+    total
   end
 
   private

@@ -102,19 +102,13 @@ class LeaguesController < ApplicationController
   end
 
   def scoreboard
-    @week_number = active_week
-    @week_number -= 1 if !picksheet_closed?
+    @league = active_league
+    @week = @league.current_week
+    @week -= 1 if !picksheet_closed?
     
-    if @week_number >= 1
-      @league = active_league
-      @players = get_this_weeks_players(@league,@week_number)
-
-      # Extract data for the overall table
-      @user_scores = get_user_scores(@league,@week_number)
-
-      # Extract data for the week table
-      @challenges = @league.picksheets.find_by_week(@week_number).challenges
-      @user_picks_table = create_user_pick_table
+    if @week >= 1
+      @players = @league.players_for_week(@week)
+      @challenges = @league.challenges_for_week(@week)
     end
   end
 

@@ -17,20 +17,21 @@ class Player < ActiveRecord::Base
   attr_accessible :info_url, :image_url, :name, :voted_out_week, :league_id
 
   has_many :player_wins
+  has_many :player_picks
 
   belongs_to :teams
   belongs_to :leagues
 
   def voted_out?
-    !self.voted_out_week.nil?
+    !voted_out_week.nil?
   end
 
   def voted_out_by?(week)
-    if !self.voted_out_week.nil? && (self.voted_out_week <= week)
-      true
-    else
-      false
-    end
+    voted_out? && (voted_out_week <= week)
+  end
+
+  def voted_out_this_week?(week)
+    voted_out? && (voted_out_week == week)
   end
 
   def voted_out(week)

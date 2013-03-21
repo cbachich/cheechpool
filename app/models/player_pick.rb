@@ -18,4 +18,5 @@ class PlayerPick < ActiveRecord::Base
   attr_accessible :league_id, :picked, :player_id, :user_id, :value, :week, :challenge_id
   belongs_to :users
   belongs_to :leagues
+  belongs_to :player
 end

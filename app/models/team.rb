@@ -17,10 +17,16 @@ class Team < ActiveRecord::Base
   
   has_many :players
   has_many :team_wins
+  has_many :team_picks
 
   belongs_to :league
 
   def players_left
     players.select {|p| !p.voted_out_by?(league.current_week) }
+  end
+
+  def won_challenge?(challenge)
+    team_win = TeamWin.find_by_challenge_id(challenge.id)
+    (!team_win.nil? && (team_win.team_id == self.id))
   end
 end
