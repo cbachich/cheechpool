@@ -5,7 +5,7 @@
       <% if challenge.name == "Elimination" %>
         <%= render 'leagues/admin/eliminated_players' %>
       <% else %>
-        <%= render 'leagues/admin/team_winner', challenge: challenge %>
+        <%= render 'leagues/admin/challenge_winner', challenge: challenge %>
       <% end %>
     <% end %>
   </div>

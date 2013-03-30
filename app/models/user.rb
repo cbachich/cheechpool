@@ -69,6 +69,10 @@ class User < ActiveRecord::Base
     }.sort { |a,b| a.value <=> b.value }
   end
 
+  def players_for_week(week)
+    player_value_picks_for_week(week).map { |pp| pp.player }
+  end
+
   def week_score(week)
     score = scores.find_by_league_id_and_week(active_league.id, week)
     if score.nil?
@@ -165,12 +169,12 @@ class User < ActiveRecord::Base
   end
 
   def pick(challenge)
-    pp = player_picks.where(challenge_id: challenge.id).first
-    if !player_picks.empty?
-      object = pp.player
+    pp = player_picks.where(challenge_id: challenge.id)
+    if !pp.empty?
+      object = pp.first.player
     else
-      tp = team_picks.where(challenge_id: challenge.id).first
-      object = tp.team
+      tp = team_picks.where(challenge_id: challenge.id)
+      object = tp.first.team if !tp.empty?
     end
     object
   end
