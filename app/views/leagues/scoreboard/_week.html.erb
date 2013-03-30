@@ -21,22 +21,29 @@
           <% if !picksheet_closed? %>
             <div>Week: <%= user.week_score(@week) %></div>
           <% end %>
-          <% @challenges.each do |challenge| %>
-            <% if challenge.name == "Elimination" %>
-              <% user.player_value_picks_for_week(@week).each do |pvp| %>
-                <% player = pvp.player %>
-                <%= render 'leagues/scoreboard/cell_display', 
-                           object: player,
-                           challenge: challenge         
-                %>
-              <% end %>
-            <% else %>
-              <% object = user.pick(challenge) %>
-              <%= render 'leagues/scoreboard/cell_display',
-                         object: object,
-                         challenge: challenge %>
-            <% end %>
-          <% end %>
+          <% @challenges.each do |challenge|
+               if challenge.name == "Elimination"
+                 players = []
+                 if user.made_picks?(@week)
+                   players = user.players_for_week(@week)
+                 else
+                   @players.each do |p|
+                     players << nil
+                   end
+                 end
+                 
+                 players.each do |player| %>
+               <%= render 'leagues/scoreboard/cell_display', 
+                     object: player,
+                     challenge: challenge %>         
+            <% end
+               else 
+                 object = user.pick(challenge) %>
+             <%= render 'leagues/scoreboard/cell_display',
+                   object: object,
+                   challenge: challenge %>
+            <% end
+             end %>
         </td>
       </tr>
     <% end %>

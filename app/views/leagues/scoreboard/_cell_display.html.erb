@@ -1,6 +1,7 @@
 <td>
   <% if object.nil? %>
     <div>
+      <%= image_tag "http://www.deviantart.com/download/198313911/no_profile_picture_by_normero-d3a2jzr.jpg", size: "45x45", alt: "None", title: "None" %>
   <% else %>
     <% if challenge.name == "Elimination"
          winner = object.voted_out_this_week?(@week)

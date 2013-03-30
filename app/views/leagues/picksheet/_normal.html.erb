@@ -5,9 +5,9 @@
       <% if c.name == 'Elimination' %>
         <%= render '/leagues/picksheet/player_elim' %>
       <% elsif c.player.nil? || !c.player %>
-        <%= render '/leagues/picksheet/team_pick', challenge: c, objects: @league.teams_left %>
+        <%= render '/leagues/picksheet/challenge_pick', challenge: c, objects: @league.teams_left %>
       <% elsif c.player %>
-        <%= render '/leagues/picksheet/team_pick', challenge: c, objects: @league.players_left %>
+        <%= render '/leagues/picksheet/challenge_pick', challenge: c, objects: @league.players_left %>
       <% end %>
     <% end %>
     
