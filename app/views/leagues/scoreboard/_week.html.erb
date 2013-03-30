@@ -23,15 +23,17 @@
           <% end %>
           <% @challenges.each do |challenge| %>
             <% if challenge.name == "Elimination" %>
-              <% user.player_picks_for_week(@week).each do |player_pick| %>
-                <% player = player_pick.player %>
+              <% user.player_value_picks_for_week(@week).each do |pvp| %>
+                <% player = pvp.player %>
                 <%= render 'leagues/scoreboard/cell_display', 
-                           object: player %>
+                           object: player,
+                           challenge: challenge         
+                %>
               <% end %>
             <% else %>
-              <% team = user.get_team_picked(challenge) %>
+              <% object = user.pick(challenge) %>
               <%= render 'leagues/scoreboard/cell_display',
-                         object: team,
+                         object: object,
                          challenge: challenge %>
             <% end %>
           <% end %>

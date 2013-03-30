@@ -47,7 +47,7 @@ class League < ActiveRecord::Base
     self.picksheet_close_date = cutoff_date
     picksheet = self.picksheets.create(week: current_week)
     new_challenges.each do |challenge|
-      picksheet.challenges.create(name: challenge)
+      picksheet.challenges.create(name: challenge[:name], player: challenge[:player])
     end
     save
   end
@@ -74,7 +74,13 @@ class League < ActiveRecord::Base
 
   def set_results(eliminated_players,winners)
     eliminated_players.each { |player| player.voted_out(current_week) }
-    winners.each { |winner| winner[:challenge].team_winner(winner[:team]) }
+    winners.each do |winner| 
+      if winner[:challenge].is_players?
+        winner[:challenge].player_winner(winner[:object])
+      else
+        winner[:challenge].team_winner(winner[:object])
+      end
+    end
     add_scores(eliminated_players)
   end
 
@@ -103,15 +109,22 @@ class League < ActiveRecord::Base
         challenges.each do |challenge|
           if challenge.name == "Elimination"
             eliminated_players.each do |player|
-              player_pick = user.player_pick(player)
+              player_pick = user.player_value_pick(player)
               if !player_pick.nil?
                 value += scaled_value(player_pick.value,total_players)
               end
             end
           else
-            winner = TeamWin.find_by_challenge_id(challenge.id).team
-            if user.team_picked?(challenge,winner)
-              value += 10
+            challenge.winners.each do |winner|
+              if winner.is_a? PlayerWin
+                object = winner.player
+              else
+                object = winner.team
+              end
+
+              if user.picked?(challenge,object)
+                value += 10
+              end
             end
           end
         end

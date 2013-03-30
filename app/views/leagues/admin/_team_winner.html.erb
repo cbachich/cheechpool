@@ -1,13 +1,19 @@
 <div class="span4">
   <div class="span4">
     <h3><%= challenge.name %> Challenge Winner</h3>
-    <p>Choose the team that won this week's challenge.</p>
+    <p>Choose who won this week's challenge.</p>
   </div>
-  <% @teams.each_with_index do |team, i| %>
+  <% if challenge.is_players?
+       objects = @league.players_left
+     else
+       objects = @league.teams_left
+     end
+  %>
+  <% objects.each do |object| %>
     <div class="span1" style="text-align: center">
-      <b><%= team.name %></b>
-      <%= image_tag team.image_url, size: "128x128", alt: team.name %>
-      <%= radio_button_tag "team_selection_#{challenge.name}", team.id %>
+      <b><%= object.name %></b>
+      <%= image_tag object.image_url, size: "128x128", alt: object.name %>
+      <%= radio_button_tag "challenge_selection_#{challenge.name}", object.id %>
     </div>
   <% end %>
 </div>

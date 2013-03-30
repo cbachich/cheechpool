@@ -113,17 +113,7 @@ class LeaguesController < ApplicationController
   end
 
   def admin
-    league = active_league
-    @week = active_week
-
-    if !picksheet_closed?
-      @users = league.users
-    else
-      @week -= 1 if !picksheet_closed?
-      @challenges = league.picksheets.find_by_week(@week).challenges
-      @players = get_this_weeks_players(league,@week)
-      @teams = league.teams
-    end
+    @league = active_league
   end
 
   def move_week
@@ -144,7 +134,7 @@ class LeaguesController < ApplicationController
         if winner.nil?
           error = true
         else
-          winners << {challenge: challenge, team: winner} if !winner.nil?
+          winners << {challenge: challenge, object: winner} if !winner.nil?
         end
       end
     end
@@ -234,10 +224,15 @@ class LeaguesController < ApplicationController
       selection_errors = ""
       league.current_challenges.each do |challenge|
         if challenge.name != "Elimination"
-          team_id = params["select_#{challenge.id}"]
-          if !team_id.nil?
-            team = Team.find(team_id.to_i)
-            user.set_temporary_team_selection(challenge,team)
+          object_id = params["select_#{challenge.id}"]
+          if !object_id.nil?
+            if challenge.is_players?
+              object = Player.find(object_id.to_i)
+            else
+              object = Team.find(object_id.to_i)
+            end
+            
+            user.set_temporary_selection(challenge,object)
           else
             selection_errors += "(#{challenge.name}) "
           end
@@ -287,9 +282,13 @@ class LeaguesController < ApplicationController
     end
 
     def get_winner(challenge)
-      team_id = params["team_selection_#{challenge.name}"]
-      if !team_id.nil?
-        Team.find(team_id)
+      object_id = params["challenge_selection_#{challenge.name}"]
+      if !object_id.nil?
+        if challenge.is_players?
+          Player.find(object_id)
+        else
+          Team.find(object_id)
+        end
       else
         nil
       end
@@ -298,13 +297,13 @@ class LeaguesController < ApplicationController
     def get_new_challenges
       challenges = []
       if !params['next_week_elimination'].nil?
-        challenges << "Elimination"
+        challenges << {name: "Elimination", player: true}
       end
       if !params['next_week_reward'].nil?
-        challenges << "Reward"
+        challenges << {name: "Reward", player: !params['reward_player'].nil?}
       end
       if !params['next_week_immunity'].nil?
-        challenges << "Immunity"
+        challenges << {name: "Immunity", player: !params['immunity_player'].nil?}
       end
       challenges
     end

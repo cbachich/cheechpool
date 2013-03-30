@@ -59,12 +59,12 @@ class User < ActiveRecord::Base
     scores.create(league_id: active_league.id, week: week, value: value)
   end
 
-  def current_player_picks
-    player_picks_for_week(active_league.current_week)
+  def current_player_value_picks
+    player_value_picks_for_week(active_league.current_week)
   end
 
-  def player_picks_for_week(week)
-    league_player_picks.select { 
+  def player_value_picks_for_week(week)
+    league_player_value_picks.select { 
       |p| p.week == week 
     }.sort { |a,b| a.value <=> b.value }
   end
@@ -78,20 +78,20 @@ class User < ActiveRecord::Base
     end
   end
   
-  def league_player_picks
-    player_picks.find_all_by_league_id(active_league_id)
+  def league_player_value_picks
+    player_picks.where("league_id = ? AND value >= 0",active_league_id)
   end
 
   def made_picks?(week)
     player_picks.exists?(week: week) || team_picks.exists?(week: week)
   end
 
-  def player_pick(player)
-    current_player_picks.select { |pp| pp.player_id == player.id }.first
+  def player_value_pick(player)
+    current_player_value_picks.select { |pp| pp.player_id == player.id }.first
   end
 
-  def player_pick_value(player)
-    pick = player_pick(player)
+  def player_pick_value_display(player)
+    pick = player_value_pick(player)
     if pick.nil?
       temp_pick = temp_league_values[player]
       if temp_pick.nil?
@@ -107,8 +107,7 @@ class User < ActiveRecord::Base
   def save_picks
     league = active_league
     temp_league_values.each do |player, value|
-      pick = player_picks.find_by_league_id_and_player_id_and_week(
-        league.id, player.id, league.current_week)
+      pick = player_value_pick(player)
       if pick.nil?
         player_picks.create(
              player_id: player.id, 
@@ -122,19 +121,36 @@ class User < ActiveRecord::Base
       end
     end
 
-    temp_league_selections.each do |challenge, team|
-      pick = team_picks.find_by_challenge_id(challenge.id)
-      if pick.nil?
-        team_picks.create(
-               team_id: team.id, 
-                picked: true, 
-             league_id: league.id,
-          challenge_id: challenge.id, 
-                  week: league.current_week)
+    temp_league_selections.each do |challenge, object|
+      if object.is_a? Player
+        pick = player_picks.find_by_challenge_id(challenge.id)
+        if pick.nil?
+          player_picks.create(
+               player_id: object.id,
+                  picked: true,
+               league_id: league.id,
+            challenge_id: challenge.id,
+                    week: league.current_week)
+        else
+          pick.player_id = object.id
+          pick.save
+        end
       else
-        pick.team_id = team.id
-        pick.save
+        pick = team_picks.find_by_challenge_id(challenge.id)
+
+        if pick.nil?
+          team_picks.create(
+                 team_id: object.id, 
+                  picked: true, 
+               league_id: league.id,
+            challenge_id: challenge.id, 
+                    week: league.current_week)
+        else
+          pick.team_id = object.id
+          pick.save
+        end
       end
+     
     end
 
     clear_temp_league_picks
@@ -144,25 +160,38 @@ class User < ActiveRecord::Base
     temp_league_values.merge!(player => value)
   end
 
-  def set_temporary_team_selection(challenge,team)
-    temp_league_selections.merge!(challenge => team)
+  def set_temporary_selection(challenge,object)
+    temp_league_selections.merge!(challenge => object)
   end
 
-  def team_picked?(challenge,team)
-    team_pick = 
-      team_picks.find_by_challenge_id_and_team_id_and_week_and_picked(
-        challenge.id, team.id, active_league.current_week, true)
-
-    if team_pick.nil?
-      (temp_league_selections[challenge] == team)
+  def pick(challenge)
+    pp = player_picks.where(challenge_id: challenge.id).first
+    if !player_picks.empty?
+      object = pp.player
     else
-      team_pick.picked
+      tp = team_picks.where(challenge_id: challenge.id).first
+      object = tp.team
     end
+    object
   end
 
-  def get_team_picked(challenge)
-    team_pick = team_picks.find_by_challenge_id(challenge.id)
-    team_pick.team if !team_pick.nil?
+  def picked?(challenge,object)
+    if challenge.is_players?
+      pick = 
+        player_picks.where(challenge_id: challenge.id, player_id: object.id)
+    else
+      pick = 
+        team_picks.where(challenge_id: challenge.id, team_id: object.id)
+    end
+
+    if pick.empty? 
+      #(temp_league_selections[challenge] == object)
+      false
+    else
+      pick = pick.first
+      pick.picked = false if pick.picked.nil?
+      pick.picked
+    end
   end
 
   def total_score

@@ -6,19 +6,19 @@
     </p>
   </div>
   <div class="span4">
-    <% @league.teams_left.each do |team| %>
+    <% objects.each do |object| %>
       <div class="span1" style="text-align: center">
         <div>
-          <b><%= team.name %></b>
+          <b><%= object.name %></b>
         </div>
         <div>
-          <%= image_tag team.image_url, size: "128x128", alt: team.name %>
+          <%= image_tag object.image_url, size: "128x128", alt: object.name %>
         </div>
         <div>
-          <% if current_user.team_picked?(challenge,team) %>
-            <%= radio_button_tag "select_#{challenge.id}", team.id, checked: true %>
+          <% if current_user.picked?(challenge,object) %>
+            <%= radio_button_tag "select_#{challenge.id}", object.id, checked: true %>
           <% else %>
-            <%= radio_button_tag "select_#{challenge.id}", team.id %>
+            <%= radio_button_tag "select_#{challenge.id}", object.id %>
           <% end %>
         </div>
       </div>

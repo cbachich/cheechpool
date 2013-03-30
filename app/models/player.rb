@@ -38,4 +38,9 @@ class Player < ActiveRecord::Base
     self.voted_out_week = week
     self.save
   end
+
+  def won_challenge?(challenge)
+    pw = PlayerWin.find_by_challenge_id(challenge.id)
+    (!pw.nil? && (pw.player_id == self.id))
+  end
 end

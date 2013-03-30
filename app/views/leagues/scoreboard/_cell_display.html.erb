@@ -2,7 +2,7 @@
   <% if object.nil? %>
     <div>
   <% else %>
-    <% if object.is_a? Player 
+    <% if challenge.name == "Elimination"
          winner = object.voted_out_this_week?(@week)
          size = "45x45"
        else

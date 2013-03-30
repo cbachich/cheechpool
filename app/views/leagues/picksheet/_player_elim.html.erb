@@ -12,7 +12,7 @@
       <div class="span1" style="text-align: center">
         <b><%= player.name %></b>
         <%= image_tag player.image_url, alt: player.name %>
-        <%= number_field_tag "elim_#{player.id}", current_user.player_pick_value(player), in: 1..total_players, class: "number_input" %>
+        <%= number_field_tag "elim_#{player.id}", current_user.player_pick_value_display(player), in: 1..total_players, class: "number_input" %>
       </div>
     <% end %>
   </div>

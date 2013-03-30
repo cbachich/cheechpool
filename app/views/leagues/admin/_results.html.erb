@@ -1,7 +1,7 @@
 <%= form_tag move_week_path do %>
   <div class="row"><h2>Week results</h2></div>
   <div class="row">
-    <% @challenges.each do |challenge| %>
+    <% @league.current_challenges.each do |challenge| %>
       <% if challenge.name == "Elimination" %>
         <%= render 'leagues/admin/eliminated_players' %>
       <% else %>

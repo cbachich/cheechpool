@@ -16,15 +16,27 @@ class Challenge < ActiveRecord::Base
   has_many :team_wins
   belongs_to :picksheets
 
+  def is_players?
+    if player.nil?
+      false
+    else
+      player
+    end
+  end
+
   def week
     Picksheet.find(self.picksheet_id).week
+  end
+
+  def player_winner(player)
+    self.player_wins.create(player_id: player.id, week: week)
   end
 
   def team_winner(team)
     self.team_wins.create(team_id: team.id, week: week)
   end
 
-  def team_winners
-    self.team_wins.all
+  def winners
+    team_wins.all | player_wins.all 
   end
 end

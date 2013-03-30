@@ -3,7 +3,7 @@
     <h3>Eliminated Player(s)</h3>
     <p>Select each player that was voted out this week</p>
   </div>
-  <% @players.each do |player| %>
+  <% @league.players_left.each do |player| %>
   <div class="span1" style="text-align: center">
     <b><%= player.name %></b>
     <%= image_tag player.image_url, alt: player.name %>
