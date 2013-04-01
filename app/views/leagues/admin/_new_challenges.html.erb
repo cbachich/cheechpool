@@ -3,7 +3,7 @@
     <h3>Next Week Challenges</h3>
   </div>
   <div class="row">
-    <div class="span3">
+    <div class="span2">
       <%= label_tag 'next_week_elimination' do %>
         <%= check_box_tag 'next_week_elimination', 'yes', true %> 
         Player Elimination
@@ -36,6 +36,19 @@
         <%= check_box_tag 'immunity_player', 'yes', true %>
         Player?
       <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span3">
+      <%= label_tag 'merge' do %>
+        <%= check_box_tag 'merge', 'yes', false %> 
+        Merge
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span3">
+      <%= text_field_tag 'merge_img_url', nil, placeholder: 'Enter the merge image url here' %>
     </div>
   </div>
 </div>

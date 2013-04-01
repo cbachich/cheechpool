@@ -42,6 +42,14 @@ class League < ActiveRecord::Base
     challenges_for_week(current_week)
   end
 
+  def merge_teams(img_url)
+    new_team = teams.create(name: "Merged", start_week: current_week, image_url: img_url)
+    players_left.each do |player|
+      player.team = new_team
+      player.save
+    end
+  end
+
   def move_week(cutoff_date,new_challenges)
     self.current_week += 1
     self.picksheet_close_date = cutoff_date

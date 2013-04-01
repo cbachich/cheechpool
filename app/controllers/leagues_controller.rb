@@ -163,6 +163,9 @@ class LeaguesController < ApplicationController
     # forward
     league.set_results(eliminated_players, winners) 
     league.move_week(cutoff_date, new_challenges)
+    if merged?
+      league.merge_teams(params['merge_img_url'])
+    end
     
     redirect_to admin_path
   end
@@ -292,6 +295,10 @@ class LeaguesController < ApplicationController
       else
         nil
       end
+    end
+
+    def merged?
+      !params['merge'].nil?
     end
 
     def get_new_challenges

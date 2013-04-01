@@ -19,8 +19,8 @@ class Player < ActiveRecord::Base
   has_many :player_wins
   has_many :player_picks
 
-  belongs_to :teams
-  belongs_to :leagues
+  belongs_to :team
+  belongs_to :league
 
   def voted_out?
     !voted_out_week.nil?
