@@ -59,6 +59,13 @@ class User < ActiveRecord::Base
     scores.create(league_id: active_league.id, week: week, value: value)
   end
 
+  def delete_score(week)
+    s = scores.find_by_week(week)
+    if !s.nil?
+      s.delete
+    end
+  end
+
   def current_player_value_picks
     player_value_picks_for_week(active_league.current_week)
   end

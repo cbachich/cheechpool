@@ -42,6 +42,10 @@ class League < ActiveRecord::Base
     challenges_for_week(current_week)
   end
 
+  def delete_user_scores_for_week(week)
+    users.each {|u| u.delete_score(week)}
+  end
+
   def merge_teams(img_url)
     new_team = teams.create(name: "Merged", start_week: current_week, image_url: img_url)
     players_left.each do |player|
