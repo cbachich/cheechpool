@@ -94,6 +94,14 @@ class League < ActiveRecord::Base
     end
   end
 
+  def users_by_total_score
+    users.sort{|u1,u2| u2.total_score <=> u1.total_score}
+  end
+
+  def users_by_week_score(week)
+    users.sort{|u1,u2| u2.week_score(week) <=> u1.week_score(week)}
+  end
+
   def voted_out_players
     players.find_all_by_voted_out_week(current_week)
   end

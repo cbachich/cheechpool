@@ -15,7 +15,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @league.users.each_with_index do |user, i| %>
+      <% @league.users_by_total_score.each_with_index do |user, i| %>
         <tr>
           <td><%= i+1 %></td>
           <td><%= user.name %></td>

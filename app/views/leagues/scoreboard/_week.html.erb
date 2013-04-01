@@ -14,7 +14,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @league.users.each do |user| %>
+    <% @league.users_by_week_score(@week).each do |user| %>
       <tr>
         <td>
           <div><b><%= user.name %></b></div>
