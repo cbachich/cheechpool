@@ -9,7 +9,7 @@
               <li><%= link_to "Admin", admin_path %></li>
             <% end %>
             <% pick_text = "Picksheet"
-               if !current_user.made_picks?(active_week)
+               if !picksheet_closed? && !current_user.made_picks?(active_week)
                  pick_text += " <span class=\"badge badge-important\"><i class=\"icon-flag icon-white\"></i></span>"
                end %>
             <li><%= link_to pick_text.html_safe, picksheet_path %></li>
