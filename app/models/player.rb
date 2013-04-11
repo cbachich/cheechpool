@@ -40,7 +40,6 @@ class Player < ActiveRecord::Base
   end
 
   def won_challenge?(challenge)
-    pw = PlayerWin.find_by_challenge_id(challenge.id)
-    (!pw.nil? && (pw.player_id == self.id))
+    !PlayerWin.where(challenge_id: challenge.id, player_id: self.id).empty?
   end
 end

@@ -13,7 +13,7 @@
     <div class="span1" style="text-align: center">
       <b><%= object.name %></b>
       <%= image_tag object.image_url, size: "128x128", alt: object.name %>
-      <%= radio_button_tag "challenge_selection_#{challenge.name}", object.id %>
+      <%= check_box_tag "challenge_#{challenge.id}_#{object.id}" %>
     </div>
   <% end %>
 </div>

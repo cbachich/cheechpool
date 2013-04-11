@@ -84,13 +84,15 @@ class League < ActiveRecord::Base
     players.select {|p| !p.voted_out_by?(current_week) }
   end
 
-  def set_results(eliminated_players,winners)
+  def set_results(eliminated_players,challenge_winners)
     eliminated_players.each { |player| player.voted_out(current_week) }
-    winners.each do |winner| 
-      if winner[:challenge].is_players?
-        winner[:challenge].player_winner(winner[:object])
-      else
-        winner[:challenge].team_winner(winner[:object])
+    challenge_winners.each do |cw|
+      cw[:objects].each do |o|
+        if cw[:challenge].is_players?
+          cw[:challenge].player_winner(o)
+        else
+          cw[:challenge].team_winner(o)
+        end
       end
     end
     add_scores(eliminated_players)

@@ -124,17 +124,18 @@ class LeaguesController < ApplicationController
     # Start by grabbing this weeks results
     eliminated_players = []
     winners = []
+    challenge_winners = []
     error = false
     challenges.each do |challenge|
       if challenge.name == "Elimination"
         eliminated_players = get_eliminated_players(league,week)
         error = true if eliminated_players.empty?
       else
-        winner = get_winner(challenge)
-        if winner.nil?
+        winners = get_winners(league, week, challenge)
+        if winners.empty?
           error = true
         else
-          winners << {challenge: challenge, object: winner} if !winner.nil?
+          challenge_winners << {challenge: challenge, objects: winners}
         end
       end
     end
@@ -161,7 +162,7 @@ class LeaguesController < ApplicationController
     
     # If we get to this point, everything is ready and the week can be pushed
     # forward
-    league.set_results(eliminated_players, winners) 
+    league.set_results(eliminated_players, challenge_winners) 
     league.move_week(cutoff_date, new_challenges)
     if merged?
       league.merge_teams(params['merge_img_url'])
@@ -284,17 +285,20 @@ class LeaguesController < ApplicationController
       eliminated_players
     end
 
-    def get_winner(challenge)
-      object_id = params["challenge_selection_#{challenge.name}"]
-      if !object_id.nil?
-        if challenge.is_players?
-          Player.find(object_id)
-        else
-          Team.find(object_id)
-        end
+    def get_winners(league, week, challenge)
+      winners = []
+      if challenge.is_players?
+        objects = get_this_weeks_players(league,week)
       else
-        nil
+        objects = league.teams
       end
+      
+      objects.each do |object|
+        if !params["challenge_#{challenge.id}_#{object.id}"].nil?
+          winners << object
+        end
+      end
+      winners
     end
 
     def merged?
