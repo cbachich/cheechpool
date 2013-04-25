@@ -132,9 +132,7 @@ class LeaguesController < ApplicationController
         error = true if eliminated_players.empty?
       else
         winners = get_winners(league, week, challenge)
-        if winners.empty?
-          error = true
-        else
+        if !winners.empty?
           challenge_winners << {challenge: challenge, objects: winners}
         end
       end
