@@ -1,0 +1,42 @@
+<h1>Finale Picksheet</h1>
+<div class="span4">
+  <h2>Your preshow pick (<strong class="text-info">100 points</strong>):</h2>
+  <% player = get_league_user_player(current_user, @league)
+     img_class = "center"
+     if !player.voted_out_week.nil? 
+       img_class += " player_voted_out"
+       description = "Unfortunately, your player was eliminated and you are ineligible for the final 100 points. Sorry!"
+     else
+      description = "If your Survivor wins the show, you'll get a cool 100 points! Good luck!"
+     end %>
+  <p><%= description %></p>
+  <div class="<%= img_class %>">
+    <%= image_tag player.image_url, alt: player.name %>
+  </div>
+</div>
+<%= form_tag make_picks_path do %>
+  <% @league.current_challenges.each do |challenge| %> 
+    <% if challenge.name == "Winner" %>
+         <%= render "leagues/picksheet/finale_challenge",
+               header: "Who will win the show?",
+               points: 40,
+               body: "The time has come to select who you think is going to win it all! Choose wisely, this pick is worth 40 points!",
+               challenge: challenge %>
+    <% elsif challenge.name == "First" %>
+         <%= render "leagues/picksheet/finale_challenge",
+               header: "Who wins the first challenge?",
+               points: 20,
+               body: "Choose who you think will win the first challenge. This will net you another 20 points!",
+               challenge: challenge %>
+    <% elsif challenge.name == "Second" %>
+         <%= render "leagues/picksheet/finale_challenge",
+               header: "Who wins the second challenge?",
+               points: 20,
+               body: "Choose who you think will win the second challenge (if there is one). This will net you another 20 points!",
+               challenge: challenge %>
+       <% end %>
+  <% end %>
+  <div class="offset3 span2" style="padding-top: 30px">
+    <%= submit_tag "Submit Picks", class: "btn btn-large btn-primary" %>
+  </div>
+<% end %>

@@ -161,9 +161,14 @@ class LeaguesController < ApplicationController
     # If we get to this point, everything is ready and the week can be pushed
     # forward
     league.set_results(eliminated_players, challenge_winners) 
-    league.move_week(cutoff_date, new_challenges)
-    if merged?
-      league.merge_teams(params['merge_img_url'])
+    if finale?
+      league.setup_finale(cutoff_date)
+    else
+      league.move_week(cutoff_date, new_challenges)
+
+      if merged?
+        league.merge_teams(params['merge_img_url'])
+      end
     end
     
     redirect_to admin_path
@@ -203,29 +208,29 @@ class LeaguesController < ApplicationController
       players = league.players_left
       user = current_user
 
-      # Start by checking the number fields for player elimination
-      players.each do |player|
-        value = params["elim_#{player.id}"].to_i
-        
-        # If the value is zero then the user didn't input a value
-        # or they entered a non numerical number
-        if (value == 0) || (value > players.count)
-          bad_value_errors += "(#{player.name})"
-        end
-
-        if used_values[value].nil?
-          used_values.merge!(value => player)
-        else
-          same_value_errors += "(#{player.name} and #{used_values[value].name} have #{value}) "
-        end
-
-        user.set_temporary_player_pick_value(player,value)
-      end
-
       # Next verify there is input in the reward/immunity challenges
       selection_errors = ""
       league.current_challenges.each do |challenge|
-        if challenge.name != "Elimination"
+        if challenge.name == "Elimination"
+          # Start by checking the number fields for player elimination
+          players.each do |player|
+            value = params["elim_#{player.id}"].to_i
+            
+            # If the value is zero then the user didn't input a value
+            # or they entered a non numerical number
+            if (value == 0) || (value > players.count)
+              bad_value_errors += "(#{player.name})"
+            end
+
+            if used_values[value].nil?
+              used_values.merge!(value => player)
+            else
+              same_value_errors += "(#{player.name} and #{used_values[value].name} have #{value}) "
+            end
+
+            user.set_temporary_player_pick_value(player,value)
+          end
+        else
           object_id = params["select_#{challenge.id}"]
           if !object_id.nil?
             if challenge.is_players?
@@ -301,6 +306,10 @@ class LeaguesController < ApplicationController
 
     def merged?
       !params['merge'].nil?
+    end
+
+    def finale?
+      !params['finale'].nil?
     end
 
     def get_new_challenges

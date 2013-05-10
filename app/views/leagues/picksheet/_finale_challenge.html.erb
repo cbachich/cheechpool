@@ -1,0 +1,22 @@
+<div class="span4">
+  <h2><%= header %> (<strong class="text-info"><%= points %> points</strong>)</h2>
+  <p><%= body %></p>
+  <% @league.players_left.each do |player| %>
+    <div class="span1 challenge_player">
+      <div>
+        <b><%= player.name %></b>
+      </div>
+      <div>
+        <%= image_tag player.image_url, alt: player.name %>
+        </div>
+        <div class="center">
+          <% if current_user.picked?(challenge,player) %>
+            <%= radio_button_tag "select_#{challenge.id}", player.id, checked: true %>
+          <% else %> 
+            <%= radio_button_tag "select_#{challenge.id}", player.id %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+</div>
+

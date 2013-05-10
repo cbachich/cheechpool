@@ -64,6 +64,25 @@ class League < ActiveRecord::Base
     save
   end
 
+  def setup_finale(cutoff_date)
+    self.current_week += 1
+    self.finale_week = current_week
+    self.picksheet_close_date = cutoff_date
+    picksheet = self.picksheets.create(week: current_week)
+    picksheet.challenges.create(name: "Winner", player: true)
+    picksheet.challenges.create(name: "First", player: true)
+    picksheet.challenges.create(name: "Second", player: true)
+    save
+  end
+
+  def preshow_week?
+    current_week == 0
+  end
+
+  def finale_week?
+    current_week == finale_week
+  end
+
   def picksheet_closed?
     picksheet_close_date.nil? || (DateTime.current > picksheet_close_date)
   end

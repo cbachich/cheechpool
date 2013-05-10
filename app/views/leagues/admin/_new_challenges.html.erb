@@ -51,4 +51,12 @@
       <%= text_field_tag 'merge_img_url', nil, placeholder: 'Enter the merge image url here' %>
     </div>
   </div>
+  <div class="row">
+    <div class="span2">
+      <%= label_tag 'finale' do %>
+        <%= check_box_tag 'finale', 'yes', false %> 
+        Is next week the finale?
+      <% end %>
+    </div>
+  </div>
 </div>
