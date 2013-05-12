@@ -2,6 +2,9 @@
   <thead>
     <tr>
       <th>Users</th>
+      <% if @league.finale_week? %>
+        <th>Preshow</th>
+      <% end %>
       <% @challenges.each do |challenge| %>
         <% if challenge.name == "Elimination" %>
           <% for i in 1..@players.count %>
@@ -20,6 +23,19 @@
           <div><b><%= user.name %></b></div>
           <% if !picksheet_closed? %>
             <div>Week: <%= user.week_score(@week) %></div>
+          <% end %>
+          <% if @league.finale_week?
+               player = get_league_user_player(user, @league)
+               div_opacity = ""
+               div_opacity += "opacity: 0.2" if player.voted_out? %>
+               <td>
+                 <div style="<%= div_opacity %>">
+                   <%= player.name %>
+                 </div>
+                 <div style="<%= div_opacity %>">
+                   <%= image_tag player.image_url, size: "60x60", alt: player.name %>
+                 </div>
+               </td>
           <% end %>
           <% @challenges.each do |challenge|
                if challenge.name == "Elimination"
