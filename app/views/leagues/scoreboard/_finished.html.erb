@@ -1,11 +1,30 @@
 <h1>Season Results</h1>
 <div class="row">
-  <h2>The winner of this season is..</h2> 
-  <h1 class="text-info"><%= @league.winner.name %></h1>
+  <h2>The winner of this season is...</h2> 
+  <% winner = @league.winner %>
+  <h1 class="text-info"><%= winner.name %></h1>
   <div class="center">
-    <%= link_to gravatar_for( @league.winner, size: 70, class: "grav-center" ), user_path(@league.winner) %>
+    <%= link_to gravatar_for( winner, size: 70, class: "grav-center" ), user_path(winner) %>
   </div>
 </div>
+<div class="row" style="margin-top: 20px">
+  <h2>In 2nd place...</h2> 
+  <% second = @league.second_place %>
+  <h1 class="text-info"><%= second.name %></h1>
+  <div class="center">
+    <%= link_to gravatar_for( second, size: 70, class: "grav-center" ), user_path(second) %>
+  </div>
+</div>
+<% if @league.users.count > 2 %>
+  <div class="row" style="margin-top: 20px">
+    <h2>In 3rd place...</h2> 
+    <% third = @league.third_place %>
+    <h1 class="text-info"><%= third.name %></h1>
+    <div class="center">
+      <%= link_to gravatar_for( third, size: 70, class: "grav-center" ), user_path(third) %>
+    </div>
+  </div>
+<% end %>
 <div class="row" style="margin-top: 20px">
   <h2>Final Scoreboard</h2>
   <%= render 'leagues/scoreboard/overall' %>

@@ -13,7 +13,7 @@
 class League < ActiveRecord::Base
   include LeaguesHelper
 
-  attr_accessible :name
+  attr_accessible :name, :users
   has_and_belongs_to_many :users
   has_many :smacks
   has_many :players
@@ -163,6 +163,14 @@ class League < ActiveRecord::Base
 
   def winner
     users_by_total_score[0] 
+  end
+
+  def second_place
+    users_by_total_score[1]
+  end
+
+  def third_place
+    users_by_total_score[2]
   end
 
   private
