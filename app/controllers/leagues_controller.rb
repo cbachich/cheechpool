@@ -104,7 +104,7 @@ class LeaguesController < ApplicationController
   def scoreboard
     @league = active_league
     @week = @league.current_week
-    @week -= 1 if !picksheet_closed?
+    @week -= 1 if (!picksheet_closed? || @league.finished?)
     
     if @week >= 1
       @players = @league.players_for_week(@week)
@@ -114,6 +114,41 @@ class LeaguesController < ApplicationController
 
   def admin
     @league = active_league
+  end
+
+  def finish_season
+    league = active_league
+    challenges = league.current_challenges
+
+    # Grab the final results
+    winner = nil
+    challenge_winners = []
+    challenges.each do |c|
+      if c.name == "Winner"
+        if !params["overall_winner"].nil?
+          winner = Player.find(params["overall_winner"].to_i) 
+          challenge_winners << {challenge: c, players: [winner]}
+        else
+          flash[:error] = "Overall Winner has no selection"
+          redirect_to admin_path
+          return
+        end
+      else
+        winners = get_winners(league, c)
+        if winners.empty?
+          flash[:error] = "#{c.name} has no selection"
+          redirect_to admin_path
+          return
+        end
+        challenge_winners << {challenge: c, players: winners}
+      end
+    end
+
+    # Set the final results for the league
+    league.set_final_results(winner, challenge_winners)
+
+    flash[:success] = "Form was completed successfully"
+    redirect_to admin_path
   end
 
   def move_week
@@ -160,7 +195,7 @@ class LeaguesController < ApplicationController
     
     # If we get to this point, everything is ready and the week can be pushed
     # forward
-    league.set_results(eliminated_players, challenge_winners) 
+    league.set_week_results(eliminated_players, challenge_winners) 
     if finale?
       league.setup_finale(cutoff_date)
     else
@@ -288,10 +323,10 @@ class LeaguesController < ApplicationController
       eliminated_players
     end
 
-    def get_winners(league, week, challenge)
+    def get_winners(league, challenge)
       winners = []
       if challenge.is_players?
-        objects = get_this_weeks_players(league,week)
+        objects = league.players_left
       else
         objects = league.teams
       end

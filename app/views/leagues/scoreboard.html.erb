@@ -1,7 +1,9 @@
 <% provide(:title, "Scoreboard") %>
-<% if @week >= 1 %>
-  <%= render 'leagues/scoreboard/normal' %>
-<% else %>
+<% if @league.finished? %>
+  <%= render 'leagues/scoreboard/finished' %>
+<% elsif @league.preshow_week? %>
   <%= render 'leagues/scoreboard/closed' %>
+<% else %>
+  <%= render 'leagues/scoreboard/normal' %>
 <% end %>
 

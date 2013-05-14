@@ -1,0 +1,13 @@
+<%= form_tag finish_season_path do %>
+  <div class="row"><h2>Finale Results</h2></div>
+  <% @league.current_challenges.each do |challenge| %>
+    <% if challenge.name == "Winner" %>
+      <%= render 'leagues/admin/season_winner' %>
+    <% else %> 
+      <%= render 'leagues/admin/challenge_winner', challenge: challenge %>
+    <% end %>
+  <% end %>
+  <div class="span8 button_row">
+    <%= submit_tag "Finish Season", class: "btn btn-large btn-primary" %>
+  </div>
+<% end %>

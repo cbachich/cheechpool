@@ -82,6 +82,10 @@ class League < ActiveRecord::Base
   def finale_week?
     current_week == finale_week
   end
+  
+  def finished?
+    current_week > finale_week
+  end
 
   def picksheet_closed?
     picksheet_close_date.nil? || (DateTime.current > picksheet_close_date)
@@ -103,7 +107,25 @@ class League < ActiveRecord::Base
     players.select {|p| !p.voted_out_by?(current_week) }
   end
 
-  def set_results(eliminated_players,challenge_winners)
+  def set_final_results(winner, challenge_winners)
+    
+    challenge_winners.each do |cw|
+      cw[:players].each do |p|
+        cw[:challenge].player_winner(p)
+      end
+    end
+
+    players_left.each do |p|
+      p.voted_out(current_week) if p != winner
+    end
+
+    add_finale_scores(winner)
+
+    self.current_week += 1
+    save
+  end
+
+  def set_week_results(eliminated_players,challenge_winners)
     eliminated_players.each { |player| player.voted_out(current_week) }
     challenge_winners.each do |cw|
       cw[:objects].each do |o|
@@ -139,7 +161,36 @@ class League < ActiveRecord::Base
     players.find_all_by_voted_out_week(current_week)
   end
 
+  def winner
+    users_by_total_score[0] 
+  end
+
   private
+
+    def add_finale_scores(winner)
+      users.each do |user|
+        value = 0
+
+        # Start by adding 100 points if this user's preshow player won
+        value += 100 if winner == user.league_player(self)
+
+        # Next add points for the other challenges
+        current_challenges.each do |c|
+          c.winners.each do |w|
+            if user.picked?(c,w.player)
+              if c.name == "Winner"
+                value += 40
+              else
+                value += 20
+              end
+            end
+          end
+        end
+
+        # Actually add the score for the user
+        user.add_score(current_week,value)
+      end
+    end
 
     def add_scores(eliminated_players)
       challenges = current_challenges

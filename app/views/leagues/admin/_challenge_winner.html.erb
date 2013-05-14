@@ -11,9 +11,15 @@
   %>
   <% objects.each do |object| %>
     <div class="span1" style="text-align: center">
-      <b><%= object.name %></b>
-      <%= image_tag object.image_url, size: "128x128", alt: object.name %>
-      <%= check_box_tag "challenge_#{challenge.id}_#{object.id}" %>
+      <div class="row">
+        <b><%= object.name %></b>
+      </div>
+      <div class="row">
+        <%= image_tag object.image_url, size: "128x128", alt: object.name %>
+      </div>
+      <div class="row">
+        <%= check_box_tag "challenge_#{challenge.id}_#{object.id}" %>
+      </div>
     </div>
   <% end %>
 </div>

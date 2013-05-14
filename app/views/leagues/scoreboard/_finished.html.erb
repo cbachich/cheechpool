@@ -1,0 +1,12 @@
+<h1>Season Results</h1>
+<div class="row">
+  <h2>The winner of this season is..</h2> 
+  <h1 class="text-info"><%= @league.winner.name %></h1>
+  <div class="center">
+    <%= link_to gravatar_for( @league.winner, size: 70, class: "grav-center" ), user_path(@league.winner) %>
+  </div>
+</div>
+<div class="row" style="margin-top: 20px">
+  <h2>Final Scoreboard</h2>
+  <%= render 'leagues/scoreboard/overall' %>
+</div>

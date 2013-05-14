@@ -1,0 +1,19 @@
+<div class="span4">
+  <div class="row">
+    <h3>Overall Winner</h3>
+    <p>Choose who won the entire show.</p>
+  </div>
+  <% @league.players_left.each do |p| %>
+    <div class="span1" style="text-align: center">
+      <div class="row">
+        <b><%= p.name %></b>
+      </div>
+      <div class="row">
+        <%= image_tag p.image_url, size: "128x128", alt: p.name %>
+      </div>
+      <div class="row">
+        <%= radio_button_tag "overall_winner", p.id %>
+      </div>
+    </div>
+  <% end %>
+</div>

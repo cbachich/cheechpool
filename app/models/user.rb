@@ -55,6 +55,12 @@ class User < ActiveRecord::Base
     League.find(active_league_id)
   end
 
+  def league_player(league)
+    player_id =
+      LeagueUser.find_by_user_id_and_league_id(self.id,league.id).player_id
+    Player.find(player_id)
+  end
+
   def add_score(week,value)
     scores.create(league_id: active_league.id, week: week, value: value)
   end

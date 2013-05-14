@@ -1,7 +1,13 @@
 <% provide(:title, "Admin") %>
 <h1>League Admin Control</h1>
-<% if picksheet_closed? %>
-  <%= render 'leagues/admin/results' %>
+<% if @league.finished? %>
+  <h2>The season has finished. Your job here is done!</h2>
+<% elsif picksheet_closed? %>
+  <% if @league.finale_week? %>
+    <%= render 'leagues/admin/finale' %>
+  <% else %>
+    <%= render 'leagues/admin/results' %>
+  <% end %>
 <% else %>
   <%= render 'leagues/admin/preclose' %>
 <% end %>

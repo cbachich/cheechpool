@@ -250,3 +250,10 @@ aside {
   float: left;
   margin-right: 10px;
 }
+
+.center .gravatar {
+  float: none;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
