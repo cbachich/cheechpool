@@ -5,14 +5,16 @@
       <ul class="nav pull-right">
         <% if signed_in? %>
           <% if active_league? %>
-            <% if current_user.admin? %>
-              <li><%= link_to "Admin", admin_path %></li>
+            <% if !active_league.finished? %>
+              <% if current_user.admin? %>
+                <li><%= link_to "Admin", admin_path %></li>
+              <% end %>
+              <% pick_text = "Picksheet"
+                if !picksheet_closed? && !current_user.made_picks?(active_week)
+                  pick_text += " <span class=\"badge badge-important\"><i class=\"icon-flag icon-white\"></i></span>"
+                end %>
+              <li><%= link_to pick_text.html_safe, picksheet_path %></li>
             <% end %>
-            <% pick_text = "Picksheet"
-               if !picksheet_closed? && !current_user.made_picks?(active_week)
-                 pick_text += " <span class=\"badge badge-important\"><i class=\"icon-flag icon-white\"></i></span>"
-               end %>
-            <li><%= link_to pick_text.html_safe, picksheet_path %></li>
             <li><%= link_to "Scoreboard", scoreboard_path %></li>
           <% end %>
           <li><%= link_to "Users", users_path %></li>
