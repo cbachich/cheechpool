@@ -6,9 +6,9 @@
     <div class="span2">
       <h3>Player <%= i %></h3>
       <%= label_tag "player_name_#{i}", "Name" %>
-      <%= text_field_tag "player_name_#{i}", "Player #{i}" %>
+      <%= text_field_tag "player_name_#{i}" %>
       <%= label_tag "player_image_#{i}", "Image Url" %>
-      <%= text_field_tag "player_image_#{i}", "http://wwwimage.cbsstatic.com/base/files/styles/136x170/public/cast/arasvytas.jpg" %>
+      <%= text_field_tag "player_image_#{i}" %>
       <%= label_tag "player_team_#{i}", "Team" %>
       <%= select_tag "player_team_#{i}", options_for_select(@team_names) %>
     </div>

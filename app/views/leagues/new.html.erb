@@ -6,17 +6,17 @@
 
       <div class="span6 offset1">
         <%= label_tag "league_name", "League Name" %>
-        <%= text_field_tag "league_name", "Test League" %>
+        <%= text_field_tag "league_name" %>
       </div>
 
       <% for i in 1..2 %>
         <div class="span4">
           <h3>Team <%= i %></h3>
           <%= label_tag "team_name_#{i}", "Name" %>
-          <%= text_field_tag "team_name_#{i}", "Team #{i}" %>
+          <%= text_field_tag "team_name_#{i}" %>
 
           <%= label_tag "team_image_#{i}", "Image Url" %>
-          <%= text_field_tag "team_image_#{i}", "http://images.wikia.com/survivor/images/e/e5/Survivor_27_Palaui_Blood_vs_Water.png" %>
+          <%= text_field_tag "team_image_#{i}" %>
         </div>
       <% end %>
 
