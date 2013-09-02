@@ -14,7 +14,7 @@
 #
 
 class Player < ActiveRecord::Base
-  attr_accessible :info_url, :image_url, :name, :voted_out_week, :league_id
+  attr_accessible :info_url, :image_url, :name, :voted_out_week, :team_id, :league_id
 
   has_many :player_wins
   has_many :player_picks

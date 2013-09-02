@@ -1,7 +1,7 @@
 <h1>Finale Picksheet</h1>
 <div class="span4">
   <h2>Your preshow pick (<strong class="text-info">100 points</strong>):</h2>
-  <% player = get_league_user_player(current_user, @league)
+  <% player = league_user_player(current_user, @league)
      img_class = "center"
      if !player.voted_out_week.nil? 
        img_class += " player_voted_out"

@@ -21,6 +21,7 @@ class User < ActiveRecord::Base
                   :password, 
                   :password_confirmation,
                   :active_league_id
+
   has_secure_password
   has_many :smacks, dependent: :destroy
   has_and_belongs_to_many :leagues
@@ -53,6 +54,13 @@ class User < ActiveRecord::Base
 
   def active_league
     League.find(active_league_id)
+  end
+
+  def remove_active_league(league_id)
+    if active_league_id == Integer(league_id)
+      self.active_league_id = nil
+      self.save
+    end
   end
 
   def league_player(league)

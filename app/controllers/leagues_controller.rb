@@ -14,19 +14,30 @@ class LeaguesController < ApplicationController
     end
   end
 
+
   def new
-    @league = League.new
   end
 
-  def create
-    @league = League.new(params[:league])
+  def new_players
+    @league = League.new(name: params["league_name"])
     if @league.save
-      flash[:success] = "League created!"
-      join_league(@league, current_user, true)
-      redirect_to @league
+      for i in 1..2
+        @league.teams.create(
+          name: params["team_name_#{i}"],
+          image_url: params["team_image_#{i}"])
+      end
+      @team_names = @league.teams.map{|team| team.name }
     else
-      render 'new'
+      redirect_to root_url
     end
+  end
+
+  def add_players
+    league = League.find(params[:league_id])
+    league.add_players(params)
+    flash[:success] = "League created: #{league.name}"
+    join_league(league, current_user, true)
+    redirect_to league
   end
 
   def index
@@ -35,6 +46,7 @@ class LeaguesController < ApplicationController
 
   def destroy
     League.find(params[:id]).destroy
+    current_user.remove_active_league(params[:id])
     flash[:success] = "League destroyed!"
     redirect_to leagues_path
   end
@@ -220,11 +232,13 @@ class LeaguesController < ApplicationController
       user.active_league_id = league.id
       user.save
       league_user = LeagueUser.create(league_id: league.id, user_id: user.id, admin: admin)
-      
+
       # Select a random player for an initial pick
       players = league.players
-      league_user.player_id = players[rand(players.count)].id
-      league_user.save
+      if !players.empty?
+        league_user.player_id = players[rand(players.count)].id
+        league_user.save
+      end
     end
 
     def get_this_weeks_players(league,week)

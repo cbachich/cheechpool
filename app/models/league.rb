@@ -8,6 +8,7 @@
 #  updated_at           :datetime         not null
 #  current_week         :integer          default(0)
 #  picksheet_close_date :datetime
+#  finale_week          :integer
 #
 
 class League < ActiveRecord::Base
@@ -24,6 +25,18 @@ class League < ActiveRecord::Base
   has_many :scores
 
   validates :name, presence:true, length: { maximum: 50 }, uniqueness: { case_sensitive: false }
+
+  def add_players(params)
+    for i in 1..20
+      if !params["player_name_#{i}"].empty?
+        team = self.teams.find_by_name(params["player_team_#{i}"])
+        self.players.create(
+          name: params["player_name_#{i}"],
+          image_url: params["player_image_#{i}"],
+          team_id: team.id)
+      end
+    end
+  end
 
   def challenges_for_week(week)
     if picksheet_for_week?(week)
@@ -80,11 +93,19 @@ class League < ActiveRecord::Base
   end
 
   def finale_week?
-    current_week == finale_week
+    if finale_week.nil?
+      false
+    else
+      current_week == finale_week
+    end
   end
   
   def finished?
-    current_week > finale_week
+    if finale_week.nil?
+      false
+    else
+      current_week > finale_week
+    end
   end
 
   def picksheet_closed?

@@ -25,7 +25,7 @@
             <div>Week: <%= user.week_score(@week) %></div>
           <% end %>
           <% if @league.finale_week?
-               player = get_league_user_player(user, @league)
+               player = league_user_player(user, @league)
                div_opacity = ""
                div_opacity += "opacity: 0.2" if player.voted_out? %>
                <td>

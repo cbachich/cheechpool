@@ -1,0 +1,20 @@
+<% provide(:title, 'Modify League') %>
+<h1>Add players to <%= @league.name %></h1>
+<%= form_tag add_players_path do %>
+  <%= hidden_field_tag :league_id, @league.id %>
+  <% for i in 1..20 %>
+    <div class="span2">
+      <h3>Player <%= i %></h3>
+      <%= label_tag "player_name_#{i}", "Name" %>
+      <%= text_field_tag "player_name_#{i}", "Player #{i}" %>
+      <%= label_tag "player_image_#{i}", "Image Url" %>
+      <%= text_field_tag "player_image_#{i}", "http://wwwimage.cbsstatic.com/base/files/styles/136x170/public/cast/arasvytas.jpg" %>
+      <%= label_tag "player_team_#{i}", "Team" %>
+      <%= select_tag "player_team_#{i}", options_for_select(@team_names) %>
+    </div>
+  <% end %>
+  <div class="span8">
+    <%= submit_tag "Create new league", class: "btn btn-large btn-primary" %>
+  </div>
+<% end %>
+</p>

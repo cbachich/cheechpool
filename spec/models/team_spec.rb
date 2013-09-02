@@ -4,7 +4,7 @@
 #
 #  id           :integer          not null, primary key
 #  name         :string(255)
-#  start_week   :integer
+#  start_week   :integer          default(1)
 #  disband_week :integer
 #  image_url    :string(255)
 #  created_at   :datetime         not null

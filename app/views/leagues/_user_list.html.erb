@@ -2,22 +2,25 @@
   <h3>Users (<%= @league.users.count %>)</h3>
   <div class="span9">
     <% @league.users.each do |user| %>
-      <% user_player = get_league_user_player(user,@league) %>
-      <div class="span2" style="margin-bottom: 10px">
-        <div style="text-align: center">
-          <%= link_to user.name, user %>
-        </div>
-        <div style="margin-left: 25px">
-          <%= gravatar_for user, size: 52 %>
-          <% if get_league_user_player(user,@league).voted_out_week.nil? %>
-            <div>
-          <% else %>
-            <div style="opacity: 0.4">
-          <% end %>
-            <%= link_to image_tag( user_player.image_url, size: "52x52", alt: user_player.name ), user_player.info_url %>
+      <% lu = league_user(user,@league) %>
+      <% if !lu.nil? && !lu.player_id.nil? %>
+        <% user_player = Player.find(lu.player_id) %>
+        <div class="span2" style="margin-bottom: 10px">
+          <div style="text-align: center">
+            <%= link_to user.name, user %>
+          </div>
+          <div style="margin-left: 25px">
+            <%= gravatar_for user, size: 52 %>
+            <% if user_player.voted_out_week.nil? %>
+              <div>
+            <% else %>
+              <div style="opacity: 0.4">
+            <% end %>
+              <%= link_to image_tag( user_player.image_url, size: "52x52", alt: user_player.name ), user_player.info_url %>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
   </div>
 <% end %>

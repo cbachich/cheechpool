@@ -2,14 +2,26 @@
 <h1>Create League</h1>
 
 <div class="row">
-  <div class="span6 offset1">
-    <%= form_for(@league) do |f| %>
-      <%= render 'shared/error_messages', object: f.object %>
+    <%= form_tag new_players_path do %>
 
-      <%= f.label :name %>
-      <%= f.text_field :name %>
+      <div class="span6 offset1">
+        <%= label_tag "league_name", "League Name" %>
+        <%= text_field_tag "league_name", "Test League" %>
+      </div>
 
-      <%= f.submit "Create new league", class: "btn btn-large btn-primary" %>
+      <% for i in 1..2 %>
+        <div class="span4">
+          <h3>Team <%= i %></h3>
+          <%= label_tag "team_name_#{i}", "Name" %>
+          <%= text_field_tag "team_name_#{i}", "Team #{i}" %>
+
+          <%= label_tag "team_image_#{i}", "Image Url" %>
+          <%= text_field_tag "team_image_#{i}", "http://images.wikia.com/survivor/images/e/e5/Survivor_27_Palaui_Blood_vs_Water.png" %>
+        </div>
+      <% end %>
+
+      <div class="span8">
+        <%= submit_tag "Create new league", class: "btn btn-large btn-primary" %>
+      </div>
     <% end %>
-  </div>
 </div>

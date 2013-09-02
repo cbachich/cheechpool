@@ -12,6 +12,8 @@ CheechPool::Application.routes.draw do
 
   # Leagues
   match '/new_league', to: 'leagues#new'
+  match '/new_players', to: 'leagues#new_players', as: :new_players
+  match '/add_players', to: 'leagues#add_players', as: :add_players
   match '/leagues/:id/add_user' => 'leagues#add_user', as: :join
   match '/leagues/:id/remove_user' => 'leagues#remove_user', as: :quit
   match '/picksheet', to: 'leagues#picksheet'

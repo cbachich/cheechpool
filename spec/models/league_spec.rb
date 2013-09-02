@@ -8,6 +8,7 @@
 #  updated_at           :datetime         not null
 #  current_week         :integer          default(0)
 #  picksheet_close_date :datetime
+#  finale_week          :integer
 #
 
 require 'spec_helper'
