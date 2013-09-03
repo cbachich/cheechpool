@@ -2,7 +2,7 @@ class LeaguesController < ApplicationController
   include LeaguesHelper
 
   before_filter :signed_in_user
-  before_filter :admin_user, only: :admin
+  before_filter :admin_user, only: [:admin, :modify, :save_changes]
   
   def show
     @league = League.find(params[:id])

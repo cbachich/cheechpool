@@ -1,6 +1,6 @@
 <h1 class="pull-left">
   <%= link_to "CheechPool", root_path %>
   <% if active_league? %>
-    <small>- <%= active_league.name %></small>
+    <small>- <%= link_to active_league.name, active_league %></small>
   <% end %>
 </h1>
