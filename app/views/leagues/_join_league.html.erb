@@ -2,8 +2,11 @@
   <% if @league.current_week == 0 %>
     <% if  @league.user_in_league(current_user) %>
       <% if @league_user.admin? %>
+        <p>Need to make changes?
+          <%= link_to "Modify it!", modify_path(id: @league.id), class: "btn btn-info" %>
+        </p>
         <p>Tired of the league? 
-          <%= link_to "Delete it!", @league, class: "btn btn-large btn-primary", method: :delete, 
+          <%= link_to "Delete it!", @league, class: "btn btn-mini btn-danger", method: :delete, 
             confirm: "Are you sure?" %>
         </p>
       <% else %>

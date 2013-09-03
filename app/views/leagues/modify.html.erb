@@ -1,0 +1,19 @@
+<% provide(:title, "Modify League") %>
+<h1>Modify League</h1>
+<%= form_tag save_path, id: @league.id do %>
+  <% @players.each.with_index(1) do |player, i| %>
+    <div class="span2">
+      <h3>Player <%= i %></h3>
+      <%= label_tag "name_#{player.id}", "Name" %>
+      <%= text_field_tag "name_#{player.id}", player.name %>
+      <%= image_tag player.image_url %>
+      <%= label_tag "image_#{player.id}", "Image Url" %>
+      <%= text_field_tag "image_#{player.id}", player.image_url %>
+      <%= label_tag "team_#{player.id}", "Team" %>
+      <%= select_tag "team_#{player.id}", options_for_select(@team_names, player.team.name) %>
+    </div>
+  <% end %>
+  <div class="span8">
+    <%= submit_tag "Save Changes", class: "btn btn-large btn-primary" %>
+  </div>
+<% end %>

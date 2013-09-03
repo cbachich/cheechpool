@@ -38,6 +38,16 @@ class League < ActiveRecord::Base
     end
   end
 
+  def modify_players(params)
+    players.each do |player|
+      team = self.teams.find_by_name(params["team_#{player.id}"])
+      player.name = params["name_#{player.id}"]
+      player.image_url = params["image_#{player.id}"]
+      player.team_id = team.id
+      player.save
+    end
+  end
+
   def challenges_for_week(week)
     if picksheet_for_week?(week)
       picksheet_for_week(week).challenges

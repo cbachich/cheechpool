@@ -40,6 +40,19 @@ class LeaguesController < ApplicationController
     redirect_to league
   end
 
+  def modify
+    @league = active_league
+    @players = @league.players
+    @team_names = @league.teams.map{|team| team.name }
+  end
+
+  def save_changes
+    league = League.find(params[:id])
+    league.modify_players(params)
+    flash[:success] = "League changes saved"
+    redirect_to :back
+  end
+
   def index
     @leagues = League.paginate(page: params[:page])
   end
