@@ -7,6 +7,7 @@ class SmacksController < ApplicationController
     if !@smack.save
       flash[:error] = "Smack couldn't be posted!"
     end
+    UserMailer.smack_email(@smack).deliver
     redirect_to root_path
   end
 

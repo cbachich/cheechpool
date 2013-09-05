@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Cheech: <%= @smack.league.name %></h1>
+    <h2><%= @smack.user.name %> just posted some smack:</h2>
+    <p>
+      <%= @smack.content %>
+    </p>
+    <h3>Are you going to take that?? <%= link_to root_url, "Go post your own smack!" %></h3>
+  </body>
+</html>

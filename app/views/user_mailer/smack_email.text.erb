@@ -1,0 +1,14 @@
+<% output = ""
+   (1..@smack.league.name.length+8).each do |i| %>
+  <% output = output + "=" %>
+<% end %>
+Cheech: <%= @smack.league.name %>
+<%= output %>
+
+<%= @smack.user.name %> just posted some smack:
+
+<%= @smack.content %>
+
+Are you going to take that?? Go post your own smack at:
+<%= root_url %>
+

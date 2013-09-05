@@ -174,6 +174,10 @@ class League < ActiveRecord::Base
     players_left.map{|p|Team.find(p.team_id)}.uniq
   end
 
+  def users_emails
+    users.map {|user| user.email}
+  end
+
   def user_in_league(user)
     if users.any?
       users.exists?(user)
