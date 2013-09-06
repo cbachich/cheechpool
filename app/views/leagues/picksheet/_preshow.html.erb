@@ -3,7 +3,7 @@
 <p>
     If you want to do some investigating, click on each player picture to get navigated to their bio page. Make sure to navigate back to this page to make your selection!
 </p>
-<div class="row-fluid">
+<div class="row">
   <%= form_tag make_pre_picks_path do %>
     <% @league.players.each do |player| %>
       <div class="span2" style="text-align: center; border: solid 1px; margin-top: 10px">
