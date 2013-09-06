@@ -1,5 +1,4 @@
 @import "bootstrap";
-@import "bootstrap-responsive";
 
 /* mixins, variables, etc. */
 
@@ -157,6 +156,16 @@ input, textarea, select, .uneditable-input {
 .field_with_errors {
   @extend .control-group;
   @extend .error;
+}
+
+/* home */
+
+.home {
+  padding: 0 20px;
+
+  p {
+    padding: 0 20px;
+  }
 }
 
 /* users index */
