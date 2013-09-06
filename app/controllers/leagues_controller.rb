@@ -68,11 +68,12 @@ class LeaguesController < ApplicationController
     @league = League.find(params[:id])
     if LeagueUser.exists?(user_id: current_user.id, league_id: @league.id)
       flash[:error] = "User already joined in this league!"
+      redirect_to @league
     else
       join_league(@league, current_user, false)
       flash[:success] = "Joined this league!"
+      redirect_to root_url
     end
-    redirect_to @league
   end
 
   def remove_user
