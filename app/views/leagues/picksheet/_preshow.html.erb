@@ -16,7 +16,7 @@
         </div>
         <div>
           <span>
-            <%= link_to image_tag( player.image_url, size: "68x85" ), player.info_url %>
+            <%= link_to image_tag( player.image_url, size: "68x85" ), player.info_url, target: "_blank" %>
           </span>
           <span>
             <%= label_tag :player_selection, player.name %>
