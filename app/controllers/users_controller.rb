@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.paginate(page: params[:page])
+    @users = active_league.users.paginate(page: params[:page])
   end
 
   def destroy
