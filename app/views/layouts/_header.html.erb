@@ -6,9 +6,6 @@
         <% if signed_in? %>
           <% if active_league? %>
             <% if !active_league.finished? %>
-              <% if current_user.admin? %>
-                <li><%= link_to "Admin", admin_path %></li>
-              <% end %>
               <% pick_text = "Picksheet"
                 if !picksheet_closed? && !current_user.made_picks?(active_week)
                   pick_text += " <span class=\"badge badge-important\"><i class=\"icon-flag icon-white\"></i></span>"
