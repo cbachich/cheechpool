@@ -28,11 +28,12 @@ class League < ActiveRecord::Base
 
   def add_players(params)
     for i in 1..20
-      if !params["player_name_#{i}"].empty?
-        team = self.teams.find_by_name(params["player_team_#{i}"])
+      if !params["name_#{i}"].empty?
+        team = self.teams.find_by_name(params["team_#{i}"])
         self.players.create(
-          name: params["player_name_#{i}"],
-          image_url: params["player_image_#{i}"],
+          name: params["name_#{i}"],
+          image_url: params["image_#{i}"],
+          info_url: params["bio_#{i}"],
           team_id: team.id)
       end
     end
@@ -43,6 +44,7 @@ class League < ActiveRecord::Base
       team = self.teams.find_by_name(params["team_#{player.id}"])
       player.name = params["name_#{player.id}"]
       player.image_url = params["image_#{player.id}"]
+      player.info_url = params["bio_#{player.id}"]
       player.team_id = team.id
       player.save
     end

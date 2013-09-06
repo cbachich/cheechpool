@@ -5,12 +5,14 @@
   <% for i in 1..20 %>
     <div class="span2">
       <h3>Player <%= i %></h3>
-      <%= label_tag "player_name_#{i}", "Name" %>
-      <%= text_field_tag "player_name_#{i}" %>
-      <%= label_tag "player_image_#{i}", "Image Url" %>
-      <%= text_field_tag "player_image_#{i}" %>
-      <%= label_tag "player_team_#{i}", "Team" %>
-      <%= select_tag "player_team_#{i}", options_for_select(@team_names) %>
+      <%= label_tag "name_#{i}", "Name" %>
+      <%= text_field_tag "name_#{i}" %>
+      <%= label_tag "team_#{i}", "Team" %>
+      <%= select_tag "team_#{i}", options_for_select(@team_names) %>
+      <%= label_tag "bio_#{i}", "Bio Url" %>
+      <%= text_field_tag "bio_#{i}" %>
+      <%= label_tag "image_#{i}", "Image Url" %>
+      <%= text_field_tag "image_#{i}" %>
     </div>
   <% end %>
   <div class="span8">

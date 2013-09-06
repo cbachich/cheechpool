@@ -6,11 +6,13 @@
       <h3>Player <%= i %></h3>
       <%= label_tag "name_#{player.id}", "Name" %>
       <%= text_field_tag "name_#{player.id}", player.name %>
-      <%= image_tag player.image_url %>
-      <%= label_tag "image_#{player.id}", "Image Url" %>
-      <%= text_field_tag "image_#{player.id}", player.image_url %>
       <%= label_tag "team_#{player.id}", "Team" %>
       <%= select_tag "team_#{player.id}", options_for_select(@team_names, player.team.name) %>
+      <%= label_tag "bio_#{player.id}", "Bio Url" %>
+      <%= text_field_tag "bio_#{player.id}", player.info_url %>
+      <%= label_tag "image_#{player.id}", "Image Url" %>
+      <%= text_field_tag "image_#{player.id}", player.image_url %>
+      <%= image_tag player.image_url %>
     </div>
   <% end %>
   <div class="span8">
