@@ -1,7 +1,15 @@
 <% if signed_in? %>
   <% if active_league? %>
-    <h1><%= active_league.name %></h1>
-    <%= render 'shared/feed_items' %>
+    <div class="row home">
+      <h1><%= active_league.name %></h1>
+      <p>
+      Welcome back <%= current_user.name %>! Make sure to talk a bunch of smack this season
+      by entering whatever is on your mind in the box to the left. Also, make sure to make
+      your picks each week, by selecting the <%= link_to "Picksheet", picksheet_url %> link
+      up top.
+      </p>
+      <%= render 'shared/feed_items' %>
+    </div>
   <% else %>
     <div class="center hero-unit">
       <h1>Not signed up in any leagues!</h1>
