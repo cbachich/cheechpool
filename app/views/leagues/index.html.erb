@@ -1,10 +1,7 @@
 <% provide(:title, 'All leagues') %>
 <h1>All leagues</h1>
-<% if current_user.admin? %>
-  <p>Want to run your own league? <%= link_to "Create your own!", new_league_path %></p> 
-<% else %>
-  <p>Below is a list of all the leagues that are currently running this season. Select one to view who is in the league and details for the show. If you like what you see, click the join button!</p>
-<% end %>
+<p>Below is a list of all the leagues that are currently running this season. Select one to view who is in the league and details for the show. If you like what you see, click the join button!</p>
+<p>Want to run your own league? <%= link_to "Create your own!", new_league_path %></p> 
 
 <%= will_paginate %>
 
