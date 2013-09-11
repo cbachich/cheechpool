@@ -1,7 +1,7 @@
 <div style="text-align: center">
   <% if @league.current_week == 0 %>
     <% if  @league.user_in_league(current_user) %>
-      <% if @league_user.admin? %>
+      <% if current_user.league_admin?(@league) %>
         <p>Need to make changes?
           <%= link_to "Modify it!", modify_path(id: @league.id), class: "btn btn-info" %>
         </p>

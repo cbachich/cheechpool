@@ -3,7 +3,7 @@
     Account<b class="caret"></b>
   </a>
   <ul class="dropdown-menu">
-    <% if current_user.admin? %>
+    <% if active_league? && current_user.league_admin?(active_league) %>
       <li><%= link_to "Admin", admin_path %></li>
     <% end %>
     <li><%= link_to "Profile", current_user %></li>

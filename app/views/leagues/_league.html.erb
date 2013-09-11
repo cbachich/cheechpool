@@ -1,6 +1,6 @@
 <li>
   <%= link_to league.name, league %>
-  <% if current_user.admin? %>
+  <% if current_user.admin? || current_user.league_admin?(league) %>
     | <%= link_to "delete", league, method: :delete, confirm: "Are you sure?" %>
   <% end %>
 </li>

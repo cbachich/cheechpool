@@ -63,6 +63,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def league_admin?(league)
+    lu = LeagueUser.find_by_user_id_and_league_id(self.id, league.id)
+    !lu.nil? && lu.admin?
+  end
+
   def league_player(league)
     player_id =
       LeagueUser.find_by_user_id_and_league_id(self.id,league.id).player_id
