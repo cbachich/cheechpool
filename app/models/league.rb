@@ -105,7 +105,7 @@ class League < ActiveRecord::Base
   end
 
   def no_scoreboard_week?
-    current_week <= 1
+    (current_week == 0) || ((current_week == 1) && !picksheet_closed?)
   end
 
   def finale_week?
