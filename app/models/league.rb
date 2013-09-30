@@ -104,6 +104,10 @@ class League < ActiveRecord::Base
     current_week == 0
   end
 
+  def no_scoreboard_week?
+    current_week <= 1
+  end
+
   def finale_week?
     if finale_week.nil?
       false
