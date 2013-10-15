@@ -11,6 +11,7 @@
 #  team_id        :integer
 #  league_id      :integer
 #  info_url       :string(255)
+#  redemption     :boolean          default(FALSE)
 #
 
 require 'spec_helper'

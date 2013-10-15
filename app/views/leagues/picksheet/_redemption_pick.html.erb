@@ -1,0 +1,27 @@
+<div class="span4 challenge_pick_row">
+  <div class="span4">
+    <h3>Redemption Loser</h3>
+    <p>
+      Vote for the player you think is going to lose on Redemption Island and be sent home.
+    </p>
+  </div>
+  <div class="span4">
+    <% @league.redemption_players.each do |player| %>
+      <div class="span1" style="text-align: center">
+        <div>
+          <b><%= player.name %></b>
+        </div>
+        <div>
+          <%= image_tag player.image_url, size: "128x128", alt: player.name %>
+        </div>
+        <div>
+          <% if current_user.picked?(challenge,player) %>
+            <%= radio_button_tag "select_#{challenge.id}", player.id, checked: true %>
+          <% else %>
+            <%= radio_button_tag "select_#{challenge.id}", player.id %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

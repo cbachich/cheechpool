@@ -203,7 +203,7 @@ class LeaguesController < ApplicationController
     end
 
     # Get the new challenges for next week
-    new_challenges = get_new_challenges
+    new_challenges = get_new_challenges(league)
     
     # Finally get the cut off time
     cutoff_date = get_cutoff_date
@@ -349,7 +349,9 @@ class LeaguesController < ApplicationController
 
     def get_winners(league, challenge)
       winners = []
-      if challenge.is_players?
+      if challenge.name == "Redemption"
+        objects = league.redemption_players
+      elsif challenge.is_players?
         objects = league.players_left
       else
         objects = league.teams
@@ -371,7 +373,7 @@ class LeaguesController < ApplicationController
       !params['finale'].nil?
     end
 
-    def get_new_challenges
+    def get_new_challenges(league)
       challenges = []
       if !params['next_week_elimination'].nil?
         challenges << {name: "Elimination", player: true}
@@ -381,6 +383,13 @@ class LeaguesController < ApplicationController
       end
       if !params['next_week_immunity'].nil?
         challenges << {name: "Immunity", player: !params['immunity_player'].nil?}
+      end
+      if !params['redemption'].nil?
+        challenges << {name: "Redemption", player: true}
+        league.players.each do |player|
+          player.redemption = !params["redemption_#{player.id}"].nil?
+          player.save
+        end
       end
       challenges
     end

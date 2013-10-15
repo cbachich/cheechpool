@@ -1,0 +1,19 @@
+<div class="span4">
+  <div class="span4">
+    <h3>Redemption Challenge Loser</h3>
+    <p>Choose who lost this week's Redemption Island.</p>
+  </div>
+  <% @league.redemption_players.each do |player| %>
+    <div class="span1" style="text-align: center">
+      <div class="row">
+        <b><%= player.name %></b>
+      </div>
+      <div class="row">
+        <%= image_tag player.image_url, size: "128x128", alt: player.name %>
+      </div>
+      <div class="row">
+        <%= check_box_tag "challenge_#{challenge.id}_#{player.id}" %>
+      </div>
+    </div>
+  <% end %>
+</div>

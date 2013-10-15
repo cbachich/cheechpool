@@ -144,6 +144,10 @@ class League < ActiveRecord::Base
     players.select {|p| !p.voted_out_by?(current_week) }
   end
 
+  def redemption_players
+    players.select {|p| p.redemption}
+  end
+
   def set_final_results(winner, challenge_winners)
     
     challenge_winners.each do |cw|

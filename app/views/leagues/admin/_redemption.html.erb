@@ -1,0 +1,19 @@
+<div class="span8">
+  <div class="span8">
+    <h3>Redemption Island</h3>
+    <p>Select the players on Redemption Island</p>
+  </div>
+  <div class="span8">
+    <%= label_tag 'redemption' do %>
+      <%= check_box_tag 'redemption', 'yes', true %> 
+      Redemption Island
+    <% end %>
+  </div>
+  <% @league.players.each do |player| %>
+  <div class="span1" style="text-align: center">
+    <b><%= player.name %></b>
+    <%= image_tag player.image_url, alt: player.name %>
+    <%= check_box_tag "redemption_#{player.id}", 'yes', player.redemption %>
+  </div>
+<% end %>
+</div>

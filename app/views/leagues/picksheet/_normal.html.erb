@@ -4,6 +4,8 @@
     <% @league.current_challenges.each do |c| %>
       <% if c.name == 'Elimination' %>
         <%= render '/leagues/picksheet/player_elim' %>
+      <% elsif c.name == 'Redemption' %>
+        <%= render '/leagues/picksheet/redemption_pick', challenge: c %>
       <% elsif c.player.nil? || !c.player %>
         <%= render '/leagues/picksheet/challenge_pick', challenge: c, objects: @league.teams_left %>
       <% elsif c.player %>

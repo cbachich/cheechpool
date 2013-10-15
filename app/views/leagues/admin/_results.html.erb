@@ -4,6 +4,8 @@
     <% @league.current_challenges.each do |challenge| %>
       <% if challenge.name == "Elimination" %>
         <%= render 'leagues/admin/eliminated_players' %>
+      <% elsif challenge.name == "Redemption" %>
+        <%= render 'leagues/admin/redemption_loser', challenge: challenge %>
       <% else %>
         <%= render 'leagues/admin/challenge_winner', challenge: challenge %>
       <% end %>
