@@ -8,6 +8,8 @@ CheechPool::Application.routes.draw do
 
   # Users
   match '/signup',    to: 'users#new'
+  match '/reset',     to: 'users#reset'
+  match '/reset_password', to: 'users#reset_password'
   match '/users/:id/set_active_league/:league_id' => 'users#set_active_league', as: :set_active
 
   # Leagues

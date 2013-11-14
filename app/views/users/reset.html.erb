@@ -1,0 +1,15 @@
+<% provide(:title, "Reset Password") %>
+<h1>Reset Password</h1>
+
+<div class="container">
+  <%= form_tag reset_password_path do %>
+    <div class="row center">
+      <%= label_tag :email, "Enter the email address that you wish to be reset:" %>
+      <%= email_field_tag :email, nil, placeholder: "example@email.com", style: "width: 200px" %>
+    </div>
+
+    <div class="row center" style="margin-top: 10px">
+      <%= submit_tag "Reset", class: "btn btn-large btn-primary" %>
+    </div>
+    <% end %>
+</div>

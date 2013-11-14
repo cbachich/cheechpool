@@ -65,6 +65,20 @@ class UsersController < ApplicationController
   def admin
   end
 
+  def reset
+  end
+
+  def reset_password
+    user = User.find_by_email(params[:email].downcase)
+    if user.nil?
+      flash[:error] = "Email was not found."
+    else
+      user.reset_password
+      flash[:success] = "New password was sent to your email address."
+    end
+    redirect_to reset_path
+  end
+
   private
 
     def correct_user

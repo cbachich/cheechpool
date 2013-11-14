@@ -5,4 +5,10 @@ class UserMailer < ActionMailer::Base
     @smack = smack
     mail(to: smack.league.users_emails, subject: "CheechPool: #{smack.user.name} posted smack!")
   end
+
+  def password_reset_email(user,password)
+    @user = user
+    @password = password
+    mail(to: user.email, subject: "Cheechpool: Your password has been reset!")
+  end
 end

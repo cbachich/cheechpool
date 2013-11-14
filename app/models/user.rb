@@ -52,6 +52,13 @@ class User < ActiveRecord::Base
             presence: true,
             on: :create
 
+  def reset_password
+    new_password = SecureRandom.urlsafe_base64(8)
+    self.password = self.password_confirmation = new_password
+    self.save
+    UserMailer.password_reset_email(self,new_password).deliver
+  end
+
   def active_league
     League.find(active_league_id)
   end
